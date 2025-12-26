@@ -57,11 +57,11 @@ export const users = {
 		id: "U1", // id пользователя
 
 		nickname: "TopSeller", // позывной выбранный пользоватем
+		login: "top_seller", // логин пользователя (не сменяемый)
 		restrictions: {
 			chat: { until: 1710090000, reason: "SPAM", byId: "U1", createdAt: 34343434434 },
 			sell: { until: 1710090000, reason: "SPAM", byId: "U1", createdAt: 34343434434 },
 		},
-		login: "top_seller", // логин пользователя (не сменяемый)
 	},
 };
 
