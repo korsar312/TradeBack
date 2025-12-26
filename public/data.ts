@@ -58,8 +58,8 @@ export const users = {
 
 		nickname: "TopSeller", // позывной выбранный пользоватем
 		restrictions: {
-			chat: { until: 1710090000, reason: "SPAM", by: "U1", createdAt: 34343434434 },
-			sell: { until: 1710090000, reason: "SPAM", by: "U1", createdAt: 34343434434 },
+			chat: { until: 1710090000, reason: "SPAM", byId: "U1", createdAt: 34343434434 },
+			sell: { until: 1710090000, reason: "SPAM", byId: "U1", createdAt: 34343434434 },
 		},
 		login: "top_seller", // логин пользователя (не сменяемый)
 	},
