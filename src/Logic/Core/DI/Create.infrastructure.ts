@@ -4,15 +4,20 @@ import { InfrastructureLinks } from "../Infrastructure/InfrastructureLinks";
 import type { ProjectInterface } from "./Project.interface.ts";
 import { Links } from "../../Config/List/Links.ts";
 import { createHmrSingleton } from "./CreateHmrSingleton.ts";
-import { Consts } from "../../Config/Consts.ts";
+import { InfrastructureBD } from "../Infrastructure/InfrastructureBD";
+import BDImp from "../Infrastructure/InfrastructureBD/Imp/BD.imp.ts";
 
 function createInfrastructure() {
-	const linksImps = new LinksImp(Links, Consts.baseUrl);
+	const linksImps = new LinksImp(Links);
 	const links = new InfrastructureLinks(linksImps);
+
+	const DBImps = new BDImp();
+	const DB = new InfrastructureBD(DBImps);
 
 	const infrastructure = new DI<ProjectInterface.TModuleInf>();
 
 	infrastructure.use("Links", links);
+	infrastructure.use("BD", DB);
 
 	return infrastructure.get;
 }

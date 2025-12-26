@@ -1,10 +1,12 @@
-import { InfrastructureLinks } from "../Infrastructure/InfrastructureLinks";
-import { ServiceCatalogue } from "../Services/ServiceCatalogue";
-import { ServiceMessage } from "../Services/ServiceMessage";
+import type { InfrastructureLinks } from "../Infrastructure/InfrastructureLinks";
+import type { ServiceCatalogue } from "../Services/ServiceCatalogue";
+import type { ServiceMessage } from "../Services/ServiceMessage";
+import type { InfrastructureBD } from "../Infrastructure/InfrastructureBD";
 
 export namespace ProjectInterface {
 	export type TModuleInf = {
 		Links: InfrastructureLinks;
+		BD: InfrastructureBD;
 	};
 
 	export type TModuleService = {

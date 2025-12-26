@@ -1,15 +1,6 @@
-import type { CatalogueInterface } from "../../Services/ServiceCatalogue/Catalogue.interface.ts";
-import type { OrderInterface } from "../../Services/ServiceOrder/Order.interface.ts";
-import type { UserInterface } from "../../Services/ServiceUser/User.interface.ts";
-
 export namespace LinksInterface {
 	export interface IAdapter {
-		LOGIN(token: string): Promise<UserInterface.TUser>;
-		GET_GOODS(): Promise<CatalogueInterface.TItemMap>;
-		GET_ITEM(id: string[]): Promise<CatalogueInterface.TItemMap>;
-		GET_ITEM_DETAIL(id: string[]): Promise<CatalogueInterface.TItemMap>;
-		GET_ORDERS(): Promise<OrderInterface.TOrderMap>;
-		GET_ORDER_DETAIL(id: string[]): Promise<OrderInterface.TOrderMap>;
+		//LOGIN(token: string): Promise<UserInterface.TUser>;
 	}
 
 	export type EMethod = keyof typeof Method;

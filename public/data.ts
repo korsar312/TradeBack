@@ -8,7 +8,7 @@ export const deal = {
 		evaluationId: "E1", // id отзыва (отзыв может быть только от баера. Если нет null)
 		sellerId: "U1", // id продавца
 		buyerId: "U2", // id покупателя (если нет null)
-		status: "COMPLETE",
+		status: "COMPLETE", // PENDING_PAYMENT | IN_ESCROW | FULFILLED | COMPLETE | CANCELLED | DISPUTED
 	},
 };
 
@@ -16,17 +16,23 @@ export const listing = {
 	I1: {
 		id: "I1", // id объявления
 		dealId: "L1", // id связей
+		itemId: "IC1", // id связей
 
 		type: "CARD", // тип товара продажи
 		createdAt: 1710000000, // время создания объявления
-		status: "ARCHIVED", // статус объявления
+		status: "ARCHIVED", // DRAFT | ACTIVE | RESERVED | SOLD | ARCHIVED // статус объявления
 		name: "Classic", // название данное продавцом
 		desc: "Именная карта", // описание данное продавцом
+	},
+};
 
-		info: {
-			bank: "loto", // некие данные зависимые от типа товара
-			name: "Иван Петров", // некие данные зависимые от типа товара
-		},
+export const itemCard = {
+	IC1: {
+		id: "IC1", // id товара
+		listingId: "I1", // id лота
+
+		bank: "loto", // некие данные зависимые от типа товара
+		name: "Иван Петров", // некие данные зависимые от типа товара
 	},
 };
 
@@ -35,7 +41,7 @@ export const payment = {
 		id: "P1", // id оплаты
 		dealId: "L1", // id связей
 
-		status: "IN_FREEZE", // статус продажи предмета
+		status: "IN_ESCROW", // INIT | AUTHORIZED | IN_ESCROW | RELEASED | REFUNDED | FAILED // статус продажи предмета
 		price: 12000, // цена данная продавцом в копейках
 	},
 };
@@ -56,12 +62,39 @@ export const users = {
 	U1: {
 		id: "U1", // id пользователя
 
-		nickname: "TopSeller", // позывной выбранный пользоватем
+		nickname: "TopSeller", // позывной выбранный пользователем
 		login: "top_seller", // логин пользователя (не сменяемый)
-		restrictions: {
-			chat: { until: 1710090000, reason: "SPAM", byId: "U1", createdAt: 34343434434 },
-			sell: { until: 1710090000, reason: "SPAM", byId: "U1", createdAt: 34343434434 },
-		},
+		createdAt: 1710000000000, // дата создания
+	},
+	U2: {
+		id: "U2", // id пользователя
+
+		nickname: "BuyerOne", // позывной выбранный пользователем
+		login: "buyer_one", // логин пользователя (не сменяемый)
+		createdAt: 1710001000000, // дата создания
+	},
+};
+
+export const userRestrictions = {
+	R1: {
+		id: "R1", // id рестрикции
+		userId: "U1", // id пользователя
+
+		type: "CHAT", // CHAT | SELL | BUY | WITHDRAW | LOGIN ... // тип рестрикции
+		until: 1710090000000, // рестрикции до
+		reason: "SPAM", // причина
+		byId: "U_ADMIN", // кто выдал ограничение
+		createdAt: 1710080000000, // когда выдал ограничение
+	},
+	R2: {
+		id: "R2", // id рестрикции
+		userId: "U1", // id пользователя
+
+		type: "SELL", // тип рестрикции
+		until: 1710090000000, // рестрикции до
+		reason: "SPAM", // причина
+		byId: "U_ADMIN", // кто выдал ограничение
+		createdAt: 1710080000000, // когда выдал ограничение
 	},
 };
 
