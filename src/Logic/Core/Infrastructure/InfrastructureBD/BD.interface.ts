@@ -132,17 +132,17 @@ export namespace BDInterface {
 	}
 
 	export interface ICreate {
-		user: CreateEntity<CreateUser>;
-		usersAuth: CreateEntity<CreateUsersAuth>;
-		userRestriction: CreateEntity<CreateUserRestriction>;
-		listing: CreateEntity<CreateListing>;
-		itemCard: CreateEntity<CreateItemCard>;
-		deal: CreateEntity<CreateDeal>;
-		payment: CreateEntity<CreatePayment>;
-		delivery: CreateEntity<CreateDelivery>;
-		evaluation: CreateEntity<CreateEvaluation>;
-		chat: CreateEntity<CreateChat>;
-		message: CreateEntity<CreateMessage>;
+		User: CreateEntity<CreateUser>;
+		UsersAuth: CreateEntity<CreateUsersAuth>;
+		UserRestriction: CreateEntity<CreateUserRestriction>;
+		Listing: CreateEntity<CreateListing>;
+		ItemCard: CreateEntity<CreateItemCard>;
+		Deal: CreateEntity<CreateDeal>;
+		Payment: CreateEntity<CreatePayment>;
+		Delivery: CreateEntity<CreateDelivery>;
+		Evaluation: CreateEntity<CreateEvaluation>;
+		Chat: CreateEntity<CreateChat>;
+		Message: CreateEntity<CreateMessage>;
 	}
 
 	export interface IRead {
