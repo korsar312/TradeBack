@@ -1,13 +1,9 @@
 import type { MessageInterface as Interface } from "../Message.interface.ts";
 import ServiceBase, { type IServiceProps } from "../../Service.base.ts";
 
-class MessageImp extends ServiceBase<Interface.Store> implements Interface.IAdapter {
-	private getCurrentLang(store: Interface.Store): Interface.ELang {
-		return store.lang;
-	}
-
-	private getStoreWord(store: Interface.Store, word: Interface.EWordAll, lang: Interface.ELang): string {
-		if (word && word in store.dictionary) return store.dictionary[word as keyof typeof store.dictionary][lang];
+class MessageImp extends ServiceBase implements Interface.IAdapter {
+	private getStoreWord(dictionary: Interface.TDictionary, word: Interface.EWordAll, lang: Interface.ELang): string {
+		if (word && word in dictionary) return dictionary[word as keyof typeof dictionary][lang];
 
 		switch (typeof word) {
 			case "boolean":
@@ -51,20 +47,17 @@ class MessageImp extends ServiceBase<Interface.Store> implements Interface.IAdap
 
 	//==============================================================================================
 
-	constructor(props: IServiceProps, dictionary: Interface.TDictionary) {
-		const store: Interface.Store = {
-			dictionary,
-			lang: "RU",
-		};
-
-		super(props, store);
+	constructor(
+		props: IServiceProps,
+		private readonly dictionary: Interface.TDictionary,
+	) {
+		super(props);
 	}
 
 	//==============================================================================================
 
-	public getWord(word: Interface.EWordAll, param?: Interface.TWordParam) {
-		const lang = this.getCurrentLang(this.store);
-		const text = this.getStoreWord(this.store, word, lang);
+	public getWord(word: Interface.EWordAll, lang: Interface.ELang, param?: Interface.TWordParam) {
+		const text = this.getStoreWord(this.dictionary, word, lang);
 
 		return this.changeWord(text, param);
 	}

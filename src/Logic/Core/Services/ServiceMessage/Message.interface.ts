@@ -1,11 +1,6 @@
 export namespace MessageInterface {
 	export interface IAdapter {
-		getWord(text: EWordAll, param?: TWordParam): string;
-	}
-
-	export interface Store {
-		dictionary: TDictionary;
-		lang: ELang;
+		getWord(text: EWordAll, lang: ELang, param?: TWordParam): string;
 	}
 
 	export type EWord = keyof typeof Word;

@@ -1,3 +1,5 @@
+import { UserInterface } from "../../Services/ServiceUser/User.interface";
+
 export namespace BDInterface {
 	/* ===================== ENUM TYPES ===================== */
 
@@ -17,35 +19,11 @@ export namespace BDInterface {
 	export type ListingType = "CARD";
 
 	/** Restriction.type */
-	export type RestrictionType = "CHAT" | "SELL" | "BUY" | "WITHDRAW" | "LOGIN";
 
 	/** Evaluation.type */
 	export type EvaluationType = "like" | "dislike";
 
 	/* ===================== ENTITIES ===================== */
-
-	export interface User {
-		id: string; // id пользователя
-		nickname: string; // никнейм
-		login: string; // логин (unique)
-		createdAt: number; // timestamp (INTEGER)
-	}
-
-	export interface UsersAuth {
-		id: string; // id записи аутентификации
-		userId: string; // FK users.id (unique => 1↔1)
-		tokenHash: string; // хеш токена/пароля
-	}
-
-	export interface UserRestriction {
-		id: string; // id ограничения
-		userId: string; // кому выдано (FK users.id)
-		type: RestrictionType; // тип ограничения
-		untilTs: number; // до какого времени действует
-		reason: string; // причина
-		byId: string | null; // кто выдал (может быть "U_ADMIN")
-		createdAt: number; // когда выдано
-	}
 
 	export interface Listing {
 		id: string; // id объявления
@@ -115,9 +93,9 @@ export namespace BDInterface {
 
 	/* ===================== CREATE INPUTS (id optional) ===================== */
 
-	export type CreateUser = Omit<User, "id"> & { id?: string };
-	export type CreateUsersAuth = Omit<UsersAuth, "id"> & { id?: string };
-	export type CreateUserRestriction = Omit<UserRestriction, "id"> & { id?: string };
+	export type CreateUser = Omit<UserInterface.IUser, "id"> & { id?: string };
+	export type CreateUsersAuth = Omit<UserInterface.IUsersAuth, "id"> & { id?: string };
+	export type CreateUserRestriction = Omit<UserInterface.IUserRestriction, "id"> & { id?: string };
 	export type CreateListing = Omit<Listing, "id"> & { id?: string };
 	export type CreateItemCard = Omit<ItemCard, "id"> & { id?: string };
 	export type CreateDeal = Omit<Deal, "id"> & { id?: string };
@@ -147,64 +125,70 @@ export namespace BDInterface {
 	export interface IAdapter {
 		initSchema(): void;
 
-		create: {
-			user: CreateEntity<CreateUser>;
-			usersAuth: CreateEntity<CreateUsersAuth>;
-			userRestriction: CreateEntity<CreateUserRestriction>;
-			listing: CreateEntity<CreateListing>;
-			itemCard: CreateEntity<CreateItemCard>;
-			deal: CreateEntity<CreateDeal>;
-			payment: CreateEntity<CreatePayment>;
-			delivery: CreateEntity<CreateDelivery>;
-			evaluation: CreateEntity<CreateEvaluation>;
-			chat: CreateEntity<CreateChat>;
-			message: CreateEntity<CreateMessage>;
-		};
+		create: ICreate;
+		read: IRead;
+		update: IUpdate;
+		delete: IDelete;
+	}
 
-		read: {
-			user: ReadEntity<User>;
-			usersAuth: ReadEntity<UsersAuth>;
-			userRestriction: ReadEntity<UserRestriction>;
-			listing: ReadEntity<Listing>;
-			itemCard: ReadEntity<ItemCard>;
-			deal: ReadEntity<Deal>;
-			payment: ReadEntity<Payment>;
-			delivery: ReadEntity<Delivery>;
-			evaluation: ReadEntity<Evaluation>;
-			chat: ReadEntity<Chat>;
-			message: ReadEntity<Message>;
+	export interface ICreate {
+		user: CreateEntity<CreateUser>;
+		usersAuth: CreateEntity<CreateUsersAuth>;
+		userRestriction: CreateEntity<CreateUserRestriction>;
+		listing: CreateEntity<CreateListing>;
+		itemCard: CreateEntity<CreateItemCard>;
+		deal: CreateEntity<CreateDeal>;
+		payment: CreateEntity<CreatePayment>;
+		delivery: CreateEntity<CreateDelivery>;
+		evaluation: CreateEntity<CreateEvaluation>;
+		chat: CreateEntity<CreateChat>;
+		message: CreateEntity<CreateMessage>;
+	}
 
-			/* связи */
-			listMessagesByChat: (chatId: string) => Message[];
-			listDealsByUser: (userId: string) => Deal[];
-		};
+	export interface IRead {
+		User: ReadEntity<UserInterface.IUser>;
+		UsersAuth: ReadEntity<UserInterface.IUsersAuth>;
+		UserRestriction: ReadEntity<UserInterface.IUserRestriction>;
+		Listing: ReadEntity<Listing>;
+		ItemCard: ReadEntity<ItemCard>;
+		Deal: ReadEntity<Deal>;
+		Payment: ReadEntity<Payment>;
+		Delivery: ReadEntity<Delivery>;
+		Evaluation: ReadEntity<Evaluation>;
+		Chat: ReadEntity<Chat>;
+		Message: ReadEntity<Message>;
 
-		update: {
-			user: UpdateEntity<User>;
-			usersAuth: UpdateEntity<UsersAuth>;
-			userRestriction: UpdateEntity<UserRestriction>;
-			listing: UpdateEntity<Listing>;
-			itemCard: UpdateEntity<ItemCard>;
-			deal: UpdateEntity<Deal>;
-			payment: UpdateEntity<Payment>;
-			delivery: UpdateEntity<Delivery>;
-			evaluation: UpdateEntity<Evaluation>;
-			chat: UpdateEntity<Chat>;
-			message: UpdateEntity<Message>;
-		};
+		/* связи */
+		ListMessagesByChat: (chatId: string) => Message[];
+		ListDealsByUser: (userId: string) => Deal[];
+		UsersAuthByLogin: (login: string) => UserInterface.IUsersAuth | null; // поиск users_auth по users.login
+	}
 
-		delete: {
-			user: DeleteEntity;
-			usersAuth: DeleteEntity;
-			userRestriction: DeleteEntity;
-			listing: DeleteEntity;
-			itemCard: DeleteEntity;
-			deal: DeleteEntity;
-			payment: DeleteEntity;
-			delivery: DeleteEntity;
-			evaluation: DeleteEntity;
-			chat: DeleteEntity;
-			message: DeleteEntity;
-		};
+	export interface IUpdate {
+		User: UpdateEntity<UserInterface.IUser>;
+		UsersAuth: UpdateEntity<UserInterface.IUsersAuth>;
+		UserRestriction: UpdateEntity<UserInterface.IUserRestriction>;
+		Listing: UpdateEntity<Listing>;
+		ItemCard: UpdateEntity<ItemCard>;
+		Deal: UpdateEntity<Deal>;
+		Payment: UpdateEntity<Payment>;
+		Delivery: UpdateEntity<Delivery>;
+		Evaluation: UpdateEntity<Evaluation>;
+		Chat: UpdateEntity<Chat>;
+		Message: UpdateEntity<Message>;
+	}
+
+	export interface IDelete {
+		User: DeleteEntity;
+		UsersAuth: DeleteEntity;
+		UserRestriction: DeleteEntity;
+		Listing: DeleteEntity;
+		ItemCard: DeleteEntity;
+		Deal: DeleteEntity;
+		Payment: DeleteEntity;
+		Delivery: DeleteEntity;
+		Evaluation: DeleteEntity;
+		Chat: DeleteEntity;
+		Message: DeleteEntity;
 	}
 }

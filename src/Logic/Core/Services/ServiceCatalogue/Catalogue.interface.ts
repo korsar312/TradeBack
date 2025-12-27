@@ -18,8 +18,4 @@ export namespace CatalogueInterface {
 	export type TRating = PublicInterface.TRating;
 	export type EBank = PublicInterface.EBank;
 	export type TItemMap = Record<string, TItem>;
-
-	export interface Store {
-		goods: TItemMap;
-	}
 }
