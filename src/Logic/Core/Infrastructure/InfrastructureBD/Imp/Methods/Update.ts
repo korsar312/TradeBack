@@ -5,9 +5,9 @@ import type { BDInterface as Interface } from "../../BD.interface.ts";
 export class Update extends BDHelpers implements Interface.IUpdate {
 	User = this.mkUpdateEntity<UserInterface.IUser>(
 		"users",
-		["nickname", "login", "created_at"],
-		(u) => ({ nickname: u.nickname, login: u.login, created_at: u.createdAt }),
-		{ nickname: "nickname", login: "login", createdAt: "created_at" },
+		["nickname", "role", "login", "created_at"],
+		(u) => ({ nickname: u.nickname, role: u.role, login: u.login, created_at: u.createdAt }),
+		{ nickname: "nickname", role: "role", login: "login", createdAt: "created_at" },
 	);
 
 	UsersAuth = this.mkUpdateEntity<UserInterface.IUserAuth>(

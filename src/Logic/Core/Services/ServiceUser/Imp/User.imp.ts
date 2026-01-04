@@ -8,7 +8,7 @@ class UserImp extends ServiceBase implements Interface.IAdapter {
 		const id = "user__" + crypto.randomUUID();
 		const nickname = UserNames[Math.floor(Math.random() * UserNames.length)];
 
-		return { id, login, createdAt: new Date().valueOf(), nickname };
+		return { id, login, createdAt: new Date().valueOf(), nickname, role: "USER" };
 	}
 
 	private createUserAuth(userId: string): Interface.IUserAuth {
@@ -19,11 +19,12 @@ class UserImp extends ServiceBase implements Interface.IAdapter {
 	}
 
 	private getAuthData(login: string): Interface.IUserAuth | null {
-		return this.API.BD.read.UsersAuth(login);
+		return this.API.BD.read.UsersAuthByLogin(login);
 	}
 
 	public saveNewUser(login: string): string {
 		const authData = this.getAuthData(login);
+
 		if (authData) throw new Error("USER_ALREADY_EXIST" satisfies ErrorInterface.EErrorReason);
 
 		const user = this.createUser(login);
@@ -41,6 +42,7 @@ class UserImp extends ServiceBase implements Interface.IAdapter {
 
 	public login(login: string, token: string): string {
 		const authData = this.getAuthData(login);
+
 		if (!authData || authData.tokenHash !== token) throw new Error("AUTH_INVALID" satisfies ErrorInterface.EErrorReason);
 
 		const user = this.getUser(authData.userId);

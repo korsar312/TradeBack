@@ -4,6 +4,7 @@ PRAGMA foreign_keys = ON;
 CREATE TABLE IF NOT EXISTS users (
                                      id          TEXT PRIMARY KEY,          -- id пользователя (строковый, например "U1" или UUID)
                                      nickname    TEXT NOT NULL,             -- отображаемый никнейм
+                                     role        TEXT NOT NULL,             -- роль пользователя
                                      login       TEXT NOT NULL UNIQUE,      -- логин (не сменяемый, уникальный)
                                      created_at  INTEGER NOT NULL           -- timestamp создания (INTEGER; единицы выбираете вы: сек/мс)
 );

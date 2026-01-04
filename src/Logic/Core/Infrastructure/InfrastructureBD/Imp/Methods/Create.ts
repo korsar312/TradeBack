@@ -4,7 +4,13 @@ import { BDHelpers } from "./BD.Helpers.ts";
 export class Create extends BDHelpers implements Interface.ICreate {
 	User = (d: Interface.CreateUser) => {
 		const id = this.idOrNew(d.id);
-		this.run(`INSERT INTO users (id, nickname, login, created_at) VALUES (?, ?, ?, ?)`, [id, d.nickname, d.login, d.createdAt]);
+		this.run(`INSERT INTO users (id, nickname, role, login, created_at) VALUES (?, ?, ?, ?, ?)`, [
+			id,
+			d.nickname,
+			d.role,
+			d.login,
+			d.createdAt,
+		]);
 		return id;
 	};
 

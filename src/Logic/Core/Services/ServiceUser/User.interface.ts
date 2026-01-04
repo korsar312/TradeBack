@@ -8,6 +8,7 @@ export namespace UserInterface {
 	export interface IUser {
 		id: string; // id пользователя
 		nickname: string; // никнейм
+		role: ERole; // роль (ADMIN)
 		login: string; // логин (unique)
 		createdAt: number; // timestamp (INTEGER)
 	}
@@ -29,6 +30,7 @@ export namespace UserInterface {
 	}
 
 	export type ERestriction = keyof typeof Restriction;
+	export type ERole = keyof typeof Role;
 }
 
 const Restriction = {
@@ -37,4 +39,9 @@ const Restriction = {
 	BUY: "BUY",
 	WITHDRAW: "WITHDRAW",
 	LOGIN: "LOGIN",
+};
+
+const Role = {
+	ADMIN: "ADMIN",
+	USER: "USER",
 };

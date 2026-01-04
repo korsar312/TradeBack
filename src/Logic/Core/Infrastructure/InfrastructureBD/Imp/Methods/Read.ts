@@ -6,10 +6,12 @@ export class Read extends BDHelpers implements Interface.IRead {
 	User = this.mkReadEntity<UserInterface.IUser>(
 		"users",
 		(id) => {
-			const r = this.getOne(`SELECT id, nickname, login, created_at FROM users WHERE id = ?`, [id]);
-			return r ? ({ id: r.id, nickname: r.nickname, login: r.login, createdAt: r.created_at } as UserInterface.IUser) : null;
+			const r = this.getOne(`SELECT id, nickname, role, login, created_at FROM users WHERE id = ?`, [id]);
+			return r
+				? ({ id: r.id, nickname: r.nickname, role: r.role, login: r.login, createdAt: r.created_at } as UserInterface.IUser)
+				: null;
 		},
-		{ nickname: "nickname", login: "login", createdAt: "created_at" },
+		{ nickname: "nickname", role: "role", login: "login", createdAt: "created_at" },
 	);
 
 	UsersAuth = this.mkReadEntity<UserInterface.IUserAuth>(
@@ -217,6 +219,15 @@ export class Read extends BDHelpers implements Interface.IRead {
 	};
 
 	UsersAuthByLogin = (login: string): UserInterface.IUserAuth | null => {
-		return null;
+		const r = this.getOne(
+			`SELECT ua.id, ua.user_id, ua.token_hash
+       FROM users_auth ua
+       JOIN users u ON u.id = ua.user_id
+       WHERE u.login = ?
+       LIMIT 1`,
+			[login],
+		);
+
+		return r ? { id: r.id, userId: r.user_id, tokenHash: r.token_hash } : null;
 	};
 }

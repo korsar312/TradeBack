@@ -8,7 +8,7 @@ import { Consts } from "./Logic/Config/Consts.ts";
 const server = new Orchestrator();
 
 const restImp = new RestImp(Act);
-const rest = new RestCore(restImp, Links, LinksHttp, Consts.PORT);
+const rest = new RestCore(Act, restImp, Links, LinksHttp, Consts.PORT);
 
 server.use(rest);
 

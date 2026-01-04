@@ -1,11 +1,13 @@
 import { OrchestratorBase } from "../Orchestrator.base.ts";
 import { RestInterface, RestInterface as Interface } from "./Rest.interface.ts";
-import express, { Express, Request, Response } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 import { Utils } from "../../Logic/Core/Utils";
 import { RestSchema } from "./Imp/Rest.schema.ts";
+import { TModules } from "../../Logic";
 
 export class RestCore extends OrchestratorBase {
 	constructor(
+		private readonly module: TModules,
 		private readonly methods: RestInterface.IAdapter,
 		private readonly links: Interface.TLinks,
 		private readonly linksHttp: Interface.TLinksHttp,
@@ -25,10 +27,25 @@ export class RestCore extends OrchestratorBase {
 		this.start(app);
 	}
 
+	/* ======================= <REGISTER> ======================= */
+
 	private registerMiddlewares(app: Express): void {
 		// расширить: cors, logger, loginCheck
 		app.use(express.json());
+		app.use(this.rightChecker);
 	}
+
+	private rightChecker = async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const { login, token } = Utils.error.parseQuery(req.headers, RestSchema.LOGIN);
+			this.module.User.login(login, token);
+		} catch (e: any) {
+			const { message, httpCode } = Utils.error.getError("AUTH_INVALID");
+
+			if (res.headersSent) return;
+			res.status(httpCode).json({ error: message });
+		}
+	};
 
 	private registerRoutes(app: Express): void {
 		(Object.keys(this.links) as Interface.ELinks[]).forEach((el) => {
@@ -36,17 +53,13 @@ export class RestCore extends OrchestratorBase {
 		});
 	}
 
-	private start(app: Express): void {
-		app.listen(this.port, () => {
-			console.log(`Listening on http://localhost:${this.port}`);
-		});
-	}
+	/* ======================= <REGISTER/> ======================= */
 
 	private createLink(app: Express, linkName: Interface.ELinks, method: Interface.TMethod<any>, httpMethod: Interface.EHttpMethod): void {
 		const path = this.links[linkName];
 		const appMethod = app[httpMethod].bind(app);
 
-		appMethod(path, async (req: Request, res: Response) => {
+		const innerRequest = async (req: Request, res: Response) => {
 			try {
 				const allParams = { ...req.body, ...req.query, ...req.params };
 				Utils.error.parseQuery(allParams, RestSchema[linkName]);
@@ -61,11 +74,19 @@ export class RestCore extends OrchestratorBase {
 				if (res.headersSent) return;
 				res.status(httpCode).json({ error: message });
 			}
-		});
+		};
+
+		appMethod(path, innerRequest);
 	}
 
-	private async notFoundHandler(req: Request, res: Response) {
+	private async notFoundHandler(_req: Request, res: Response) {
 		const { message, httpCode } = Utils.error.getError("ROUTE_NOT_FOUND");
 		res.status(httpCode).json({ error: message });
+	}
+
+	private start(app: Express): void {
+		app.listen(this.port, () => {
+			console.log(`Listening on http://localhost:${this.port}`);
+		});
 	}
 }
