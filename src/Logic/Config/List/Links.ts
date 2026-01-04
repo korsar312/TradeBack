@@ -10,7 +10,7 @@ export const Links: RestInterface.TLinks = {
 } as const;
 
 export const LinksHttp: RestInterface.TLinksHttp = {
-	LOGIN: "get",
+	LOGIN: "post",
 	GET_GOODS: "get",
 	GET_ITEM: "get",
 	GET_ITEM_DETAIL: "get",

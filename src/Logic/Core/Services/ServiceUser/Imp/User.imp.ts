@@ -5,15 +5,15 @@ import { ErrorInterface } from "../../../Utils/Error/Error.interface.ts";
 
 class UserImp extends ServiceBase implements Interface.IAdapter {
 	private createUser(login: string): Interface.IUser {
-		const id = "user__" + self.crypto.randomUUID();
+		const id = "user__" + crypto.randomUUID();
 		const nickname = UserNames[Math.floor(Math.random() * UserNames.length)];
 
 		return { id, login, createdAt: new Date().valueOf(), nickname };
 	}
 
 	private createUserAuth(userId: string): Interface.IUserAuth {
-		const id = "userAuth__" + self.crypto.randomUUID();
-		const tokenHash = self.crypto.randomUUID();
+		const id = "userAuth__" + crypto.randomUUID();
+		const tokenHash = crypto.randomUUID();
 
 		return { id, userId, tokenHash };
 	}
@@ -23,6 +23,9 @@ class UserImp extends ServiceBase implements Interface.IAdapter {
 	}
 
 	public saveNewUser(login: string): string {
+		const authData = this.getAuthData(login);
+		if (authData) throw new Error("USER_ALREADY_EXIST" satisfies ErrorInterface.EErrorReason);
+
 		const user = this.createUser(login);
 		const auth = this.createUserAuth(user.id);
 
