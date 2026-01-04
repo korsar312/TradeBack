@@ -1,4 +1,3 @@
-import { Request, Response } from "express";
 import { TModules } from "../../Logic";
 
 export namespace RestInterface {
@@ -12,8 +11,7 @@ export namespace RestInterface {
 	export type ELinks = keyof typeof Links;
 	export type EHttpMethod = keyof typeof HttpMethod;
 
-	export type TRequest<TBody, TQuery> = Request<any, Partial<TBody>, any, Partial<TQuery>>;
-	export type TMethod = (req: TRequest<any, any>, res: Response) => Promise<{ code?: number; returned?: unknown } | void>;
+	export type TMethod = (req: any) => Promise<{ code?: number; returned?: unknown } | void>;
 
 	/*==================== HTTP REQUEST ============================*/
 

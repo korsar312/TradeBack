@@ -52,7 +52,8 @@ export class RestCore extends OrchestratorBase {
 
 		appMethod(path, async (req: Request, res: Response) => {
 			try {
-				const result = await method(req, res);
+				const allParams = { ...req.body, ...req.query, ...req.params };
+				const result = await method(allParams);
 
 				if (res.headersSent) return;
 				res.status(result?.code ?? 200).json(result?.returned ?? { ok: true });

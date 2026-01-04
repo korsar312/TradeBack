@@ -1,4 +1,5 @@
-import { ErrorInterface, ErrorInterface as Interface } from "./Error.interface.ts";
+import type { ErrorInterface, ErrorInterface as Interface } from "./Error.interface.ts";
+import type { z } from "zod";
 
 class ErrorImp implements Interface.IAdapter {
 	//==============================================================================================
@@ -19,6 +20,13 @@ class ErrorImp implements Interface.IAdapter {
 			httpCode,
 			message,
 		};
+	}
+
+	parseQuery<TSchema extends z.ZodType>(req: unknown, schema: TSchema): z.output<TSchema> {
+		const r = schema.safeParse(req);
+		if (!r.success) throw new Error("PARAMS_NOT_VALID" satisfies ErrorInterface.EErrorReason);
+
+		return r.data;
 	}
 }
 

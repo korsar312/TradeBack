@@ -1,6 +1,10 @@
+import type { Request } from "express";
+import type { z } from "zod";
+
 export namespace ErrorInterface {
 	export interface IAdapter {
 		getError(innerReason: EErrorReason): TError;
+		parseQuery<TSchema extends z.ZodType>(req: Request, schema: TSchema): z.output<TSchema>;
 	}
 
 	export type TError = {
