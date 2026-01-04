@@ -4,7 +4,7 @@ import type { z } from "zod";
 export namespace ErrorInterface {
 	export interface IAdapter {
 		getError(innerReason: EErrorReason): TError;
-		parseQuery<TSchema extends z.ZodType>(req: Request, schema: TSchema): z.output<TSchema>;
+		parseQuery<TSchema extends z.ZodType>(req: Request, schema: TSchema, userError?: EErrorReason): z.output<TSchema>;
 	}
 
 	export type TError = {
@@ -17,6 +17,8 @@ export namespace ErrorInterface {
 }
 
 export const ErrorReason = {
+	NOT_RIGHT: "NOT_RIGHT",
+	UNAUTHORIZE: "UNAUTHORIZE",
 	AUTH_INVALID: "AUTH_INVALID",
 	USER_NOT_FOUND: "USER_NOT_FOUND",
 	ROUTE_NOT_FOUND: "ROUTE_NOT_FOUND",

@@ -25,4 +25,12 @@ export const Errors: ErrorInterface.TErrorMap = {
 		httpCode: 400,
 		message: "Параметры запроса неверны",
 	},
+	NOT_RIGHT: {
+		httpCode: 403,
+		message: "Нет прав для данного АПИ",
+	},
+	UNAUTHORIZE: {
+		httpCode: 401,
+		message: "Не авторизован",
+	},
 } as const;

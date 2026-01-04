@@ -22,9 +22,9 @@ class ErrorImp implements Interface.IAdapter {
 		};
 	}
 
-	parseQuery<TSchema extends z.ZodType>(params: unknown, schema: TSchema): z.output<TSchema> {
+	parseQuery<TSchema extends z.ZodType>(params: unknown, schema: TSchema, userError?: Interface.EErrorReason): z.output<TSchema> {
 		const r = schema.safeParse(params);
-		if (!r.success) throw new Error("PARAMS_NOT_VALID" satisfies ErrorInterface.EErrorReason);
+		if (!r.success) throw new Error(userError ?? ("PARAMS_NOT_VALID" satisfies ErrorInterface.EErrorReason));
 
 		return r.data;
 	}

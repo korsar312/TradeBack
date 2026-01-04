@@ -1,7 +1,7 @@
 export namespace UserInterface {
 	export interface IAdapter {
 		saveNewUser(login: string): string;
-		getUser(id: string): IUser | null;
+		getUser(id: string): IUser;
 		login(login: string, token: string): string;
 	}
 
