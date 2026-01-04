@@ -7,7 +7,7 @@ export const RestSchema: RestInterface.TSchemaMap = {
 	LOGIN: z.object({
 		login: z.string().min(1),
 		token: z.string().min(1),
-	} satisfies TZod<RestInterface.TLoginReq>),
+	}),
 
 	GET_GOODS: z.object({}),
 
@@ -18,4 +18,4 @@ export const RestSchema: RestInterface.TSchemaMap = {
 	GET_ORDERS: z.object({}),
 
 	GET_ORDER_DETAIL: z.object({}),
-};
+} as const;

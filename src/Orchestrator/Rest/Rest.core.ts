@@ -1,22 +1,17 @@
 import { OrchestratorBase } from "../Orchestrator.base.ts";
 import { RestInterface, RestInterface as Interface } from "./Rest.interface.ts";
-import type { TModules } from "../../Logic";
 import express, { Express, Request, Response } from "express";
 import { Utils } from "../../Logic/Core/Utils";
 import { RestSchema } from "./Imp/Rest.schema.ts";
 
 export class RestCore extends OrchestratorBase {
-	private readonly methods: RestInterface.IAdapter;
-
 	constructor(
-		module: TModules,
-		Methods: RestInterface.TAdapterCtor,
+		private readonly methods: RestInterface.IAdapter,
 		private readonly links: Interface.TLinks,
 		private readonly linksHttp: Interface.TLinksHttp,
 		private readonly port: number,
 	) {
-		super(module);
-		this.methods = new Methods(module);
+		super();
 	}
 
 	public override invoke(): void {
