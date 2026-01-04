@@ -9,7 +9,6 @@ import { Create } from "./Methods/Create.ts";
 
 export type Row = Record<string, any>;
 
-/** CommonJS: schema.sql рядом со скомпилированным BD.imp.js */
 const SCHEMA_SQL: string = readFileSync(join(__dirname, "schema.sql"), "utf8");
 
 class BDImp implements Interface.IAdapter {
@@ -31,7 +30,6 @@ class BDImp implements Interface.IAdapter {
 		this.initSchema();
 	}
 
-	/** Создание таблиц/индексов/триггеров из schema.sql */
 	initSchema(): void {
 		this.db.exec("PRAGMA foreign_keys = ON;");
 		this.db.exec(SCHEMA_SQL);

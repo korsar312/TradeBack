@@ -12,11 +12,11 @@ export class Read extends BDHelpers implements Interface.IRead {
 		{ nickname: "nickname", login: "login", createdAt: "created_at" },
 	);
 
-	UsersAuth = this.mkReadEntity<UserInterface.IUsersAuth>(
+	UsersAuth = this.mkReadEntity<UserInterface.IUserAuth>(
 		"users_auth",
 		(id) => {
 			const r = this.getOne(`SELECT id, user_id, token_hash FROM users_auth WHERE id = ?`, [id]);
-			return r ? ({ id: r.id, userId: r.user_id, tokenHash: r.token_hash } as UserInterface.IUsersAuth) : null;
+			return r ? ({ id: r.id, userId: r.user_id, tokenHash: r.token_hash } as UserInterface.IUserAuth) : null;
 		},
 		{ userId: "user_id", tokenHash: "token_hash" },
 	);
@@ -216,7 +216,7 @@ export class Read extends BDHelpers implements Interface.IRead {
 		);
 	};
 
-	UsersAuthByLogin = (login: string): UserInterface.IUsersAuth | null => {
+	UsersAuthByLogin = (login: string): UserInterface.IUserAuth | null => {
 		return null;
 	};
 }

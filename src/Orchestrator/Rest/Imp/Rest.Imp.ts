@@ -6,7 +6,10 @@ export class RestImp implements Interface.IAdapter {
 	constructor(private readonly module: TModules) {}
 
 	public async LOGIN(req: Request, res: Response) {
-		res.status(200).json({ ok: true });
+		const log = "asd";
+		const token = "xcvxvx";
+
+		this.module.User.login(log, token);
 	}
 	public async GET_GOODS(req: Request, res: Response) {
 		res.status(200).json({ ok: true });

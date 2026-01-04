@@ -1,7 +1,7 @@
 export namespace UserInterface {
 	export interface IAdapter {
 		saveNewUser(login: string): string;
-		getUser(id: string): IUser;
+		getUser(id: string): IUser | null;
 		login(login: string, token: string): string;
 	}
 
@@ -12,7 +12,7 @@ export namespace UserInterface {
 		createdAt: number; // timestamp (INTEGER)
 	}
 
-	export interface IUsersAuth {
+	export interface IUserAuth {
 		id: string; // id записи аутентификации
 		userId: string; // FK users.id (unique => 1↔1)
 		tokenHash: string; // хеш токена/пароля

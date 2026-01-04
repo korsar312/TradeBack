@@ -2,6 +2,7 @@ import type { InfrastructureLinks } from "../Infrastructure/InfrastructureLinks"
 import type { ServiceCatalogue } from "../Services/ServiceCatalogue";
 import type { ServiceMessage } from "../Services/ServiceMessage";
 import type { InfrastructureBD } from "../Infrastructure/InfrastructureBD";
+import type { ServiceUser } from "../Services/ServiceUser";
 
 export namespace ProjectInterface {
 	export type TModuleInf = {
@@ -12,6 +13,7 @@ export namespace ProjectInterface {
 	export type TModuleService = {
 		Catalogue: ServiceCatalogue;
 		Message: ServiceMessage;
+		User: ServiceUser;
 	};
 
 	type TDI<M> = <T extends keyof M>(key: T) => M[T];

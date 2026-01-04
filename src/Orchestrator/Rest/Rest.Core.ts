@@ -2,6 +2,7 @@ import { OrchestratorBase } from "../Orchestrator.base.ts";
 import { RestInterface, RestInterface as Interface } from "./Rest.interface.ts";
 import type { TModules } from "../../Logic";
 import express, { Express, Request, Response } from "express";
+import { Utils } from "../../Logic/Core/Utils";
 
 export class RestCore extends OrchestratorBase {
 	private readonly methods: RestInterface.IAdapter;
@@ -35,7 +36,7 @@ export class RestCore extends OrchestratorBase {
 
 	private registerRoutes(app: Express): void {
 		(Object.keys(this.links) as Interface.ELinks[]).forEach((el) => {
-			this.createLink(app, el, this.methods[el], this.linksHttp[el]);
+			this.createLink(app, el, this.methods[el].bind(this.methods), this.linksHttp[el]);
 		});
 	}
 
@@ -56,13 +57,16 @@ export class RestCore extends OrchestratorBase {
 				if (res.headersSent) return;
 				res.status(200).json(result ?? { ok: true });
 			} catch (e: any) {
+				const { message, httpCode } = Utils.error.getError(e.message);
+
 				if (res.headersSent) return;
-				res.status(500).json({ error: e?.message ?? "Internal Server Error" });
+				res.status(httpCode).json({ error: message });
 			}
 		});
 	}
 
 	private async notFoundHandler(req: Request, res: Response) {
-		res.status(404).json({ error: "Not Found" });
+		const { message, httpCode } = Utils.error.getError("ROUTE_NOT_FOUND");
+		res.status(httpCode).json({ error: message });
 	}
 }

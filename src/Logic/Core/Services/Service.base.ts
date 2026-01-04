@@ -5,14 +5,10 @@ export interface IServiceProps {
 }
 
 class ServiceBase {
-	private readonly _infrastructure: ProjectInterface.TInfrastructure;
-
-	constructor(params: IServiceProps) {
-		this._infrastructure = params.infrastructure;
-	}
+	constructor(private readonly params: IServiceProps) {}
 
 	public API = new Proxy({} as ProjectInterface.ActType<ProjectInterface.TModuleInf>, {
-		get: (_, prop: keyof ProjectInterface.TModuleInf) => this._infrastructure(prop).invoke,
+		get: (_, prop: keyof ProjectInterface.TModuleInf) => this.params.infrastructure(prop).invoke,
 	});
 }
 

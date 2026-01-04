@@ -94,7 +94,7 @@ export namespace BDInterface {
 	/* ===================== CREATE INPUTS (id optional) ===================== */
 
 	export type CreateUser = Omit<UserInterface.IUser, "id"> & { id?: string };
-	export type CreateUsersAuth = Omit<UserInterface.IUsersAuth, "id"> & { id?: string };
+	export type CreateUsersAuth = Omit<UserInterface.IUserAuth, "id"> & { id?: string };
 	export type CreateUserRestriction = Omit<UserInterface.IUserRestriction, "id"> & { id?: string };
 	export type CreateListing = Omit<Listing, "id"> & { id?: string };
 	export type CreateItemCard = Omit<ItemCard, "id"> & { id?: string };
@@ -147,7 +147,7 @@ export namespace BDInterface {
 
 	export interface IRead {
 		User: ReadEntity<UserInterface.IUser>;
-		UsersAuth: ReadEntity<UserInterface.IUsersAuth>;
+		UsersAuth: ReadEntity<UserInterface.IUserAuth>;
 		UserRestriction: ReadEntity<UserInterface.IUserRestriction>;
 		Listing: ReadEntity<Listing>;
 		ItemCard: ReadEntity<ItemCard>;
@@ -161,12 +161,12 @@ export namespace BDInterface {
 		/* связи */
 		ListMessagesByChat: (chatId: string) => Message[];
 		ListDealsByUser: (userId: string) => Deal[];
-		UsersAuthByLogin: (login: string) => UserInterface.IUsersAuth | null; // поиск users_auth по users.login
+		UsersAuthByLogin: (login: string) => UserInterface.IUserAuth | null; // поиск users_auth по users.login
 	}
 
 	export interface IUpdate {
 		User: UpdateEntity<UserInterface.IUser>;
-		UsersAuth: UpdateEntity<UserInterface.IUsersAuth>;
+		UsersAuth: UpdateEntity<UserInterface.IUserAuth>;
 		UserRestriction: UpdateEntity<UserInterface.IUserRestriction>;
 		Listing: UpdateEntity<Listing>;
 		ItemCard: UpdateEntity<ItemCard>;

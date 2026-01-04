@@ -10,7 +10,7 @@ export class Update extends BDHelpers implements Interface.IUpdate {
 		{ nickname: "nickname", login: "login", createdAt: "created_at" },
 	);
 
-	UsersAuth = this.mkUpdateEntity<UserInterface.IUsersAuth>(
+	UsersAuth = this.mkUpdateEntity<UserInterface.IUserAuth>(
 		"users_auth",
 		["user_id", "token_hash"],
 		(a) => ({ user_id: a.userId, token_hash: a.tokenHash }),
