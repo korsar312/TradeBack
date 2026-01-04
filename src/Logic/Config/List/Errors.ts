@@ -11,10 +11,14 @@ export const Errors: ErrorInterface.TErrorMap = {
 	},
 	INTERNAL_SERVER_ERROR: {
 		httpCode: 500,
-		message: "Ошибка ",
+		message: "Ошибка сервера",
 	},
 	ROUTE_NOT_FOUND: {
 		httpCode: 404,
 		message: "Маршрут не найден ",
+	},
+	PARAMS_NOT_VALID: {
+		httpCode: 400,
+		message: "Параметры запроса неверны",
 	},
 };

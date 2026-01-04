@@ -6,15 +6,23 @@ export namespace RestInterface {
 		[K in ELinks]: TMethod;
 	};
 
-	export type IChecker = {};
-
 	export type TAdapterCtor = new (module: TModules) => IAdapter;
 	export type TLinks = Record<ELinks, string>;
 	export type TLinksHttp = Record<ELinks, EHttpMethod>;
 	export type ELinks = keyof typeof Links;
 	export type EHttpMethod = keyof typeof HttpMethod;
 
-	export type TMethod = (req: Request, res: Response) => Promise<unknown>;
+	export type TRequest<TBody, TQuery> = Request<any, Partial<TBody>, any, Partial<TQuery>>;
+	export type TMethod = (req: TRequest<any, any>, res: Response) => Promise<{ code?: number; returned?: unknown } | void>;
+
+	/*==================== HTTP REQUEST ============================*/
+
+	export type TLoginReq = {
+		login: string;
+		token: string;
+	};
+
+	/*==================== HTTP RESPONSE ============================*/
 }
 
 const Links = {

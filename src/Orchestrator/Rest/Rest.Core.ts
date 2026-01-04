@@ -55,7 +55,7 @@ export class RestCore extends OrchestratorBase {
 				const result = await method(req, res);
 
 				if (res.headersSent) return;
-				res.status(200).json(result ?? { ok: true });
+				res.status(result?.code ?? 200).json(result?.returned ?? { ok: true });
 			} catch (e: any) {
 				const { message, httpCode } = Utils.error.getError(e.message);
 
