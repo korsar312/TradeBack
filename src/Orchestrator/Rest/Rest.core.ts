@@ -54,9 +54,6 @@ export class RestCore extends OrchestratorBase {
 
 			const routeNoCheckPath = routeNoCheck.map((el) => this.links[el]);
 			const isNoCheck = routeNoCheckPath.includes(route);
-
-			console.log(routeNoCheckPath);
-			console.log(route);
 			if (isNoCheck) return next();
 
 			const { login, token } = Utils.error.parseQuery(req.headers, RestSchema.LOGIN, "UNAUTHORIZE");
