@@ -1,15 +1,18 @@
 import { RestInterface as Interface } from "../Rest.interface.ts";
 import { TModules } from "../../../Logic";
-import { RestSchema } from "./Rest.schema.ts";
-import { Utils } from "../../../Logic/Core/Utils";
 
 export class RestImp implements Interface.IAdapter {
 	constructor(private readonly module: TModules) {}
 
-	public async LOGIN(params: Interface.TLoginReq) {
-		const { login, token } = Utils.error.parseQuery(params, RestSchema.login);
+	private createReturn(returned: unknown, code?: number): Interface.TReturn {
+		return { code, returned };
+	}
 
-		return { returned: this.module.User.login(login, token) };
+	public async LOGIN(params: Interface.TLoginReq) {
+		const { login, token } = params;
+		const userId = this.module.User.login(login, token);
+
+		return this.createReturn(userId);
 	}
 	public async GET_GOODS(params: {}) {}
 	public async GET_ITEM(params: {}) {}

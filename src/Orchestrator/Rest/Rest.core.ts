@@ -3,6 +3,7 @@ import { RestInterface, RestInterface as Interface } from "./Rest.interface.ts";
 import type { TModules } from "../../Logic";
 import express, { Express, Request, Response } from "express";
 import { Utils } from "../../Logic/Core/Utils";
+import { RestSchema } from "./Imp/Rest.schema.ts";
 
 export class RestCore extends OrchestratorBase {
 	private readonly methods: RestInterface.IAdapter;
@@ -53,6 +54,8 @@ export class RestCore extends OrchestratorBase {
 		appMethod(path, async (req: Request, res: Response) => {
 			try {
 				const allParams = { ...req.body, ...req.query, ...req.params };
+				Utils.error.parseQuery(allParams, RestSchema[linkName]);
+
 				const result = await method(allParams);
 
 				if (res.headersSent) return;

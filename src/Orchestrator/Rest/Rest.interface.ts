@@ -11,7 +11,10 @@ export namespace RestInterface {
 	export type ELinks = keyof typeof Links;
 	export type EHttpMethod = keyof typeof HttpMethod;
 
-	export type TMethod = (req: any) => Promise<{ code?: number; returned?: unknown } | void>;
+	export type TSchemaMap = Record<ELinks, any>;
+
+	export type TReturn = { code?: number; returned?: unknown };
+	export type TMethod = (req: any) => Promise<TReturn | void>;
 
 	/*==================== HTTP REQUEST ============================*/
 
