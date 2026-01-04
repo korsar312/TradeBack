@@ -42,7 +42,7 @@ export class RestCore extends OrchestratorBase {
 		});
 	}
 
-	private createLink(app: Express, linkName: Interface.ELinks, method: Interface.TMethod, httpMethod: Interface.EHttpMethod): void {
+	private createLink(app: Express, linkName: Interface.ELinks, method: Interface.TMethod<any>, httpMethod: Interface.EHttpMethod): void {
 		const path = this.links[linkName];
 		const appMethod = app[httpMethod].bind(app);
 

@@ -7,7 +7,7 @@ export const Links: RestInterface.TLinks = {
 	GET_ITEM_DETAIL: "/getItemDetail",
 	GET_ORDERS: "/getOrders",
 	GET_ORDER_DETAIL: "/getOrderDetail",
-};
+} as const;
 
 export const LinksHttp: RestInterface.TLinksHttp = {
 	LOGIN: "get",
@@ -16,4 +16,4 @@ export const LinksHttp: RestInterface.TLinksHttp = {
 	GET_ITEM_DETAIL: "get",
 	GET_ORDERS: "get",
 	GET_ORDER_DETAIL: "get",
-};
+} as const;

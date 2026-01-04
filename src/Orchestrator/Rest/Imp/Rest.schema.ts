@@ -1,7 +1,5 @@
 import { RestInterface } from "../Rest.interface.ts";
-import { z, ZodString } from "zod";
-
-type TZod<T> = { [key in keyof T]: ZodString };
+import { z } from "zod";
 
 export const RestSchema: RestInterface.TSchemaMap = {
 	LOGIN: z.object({

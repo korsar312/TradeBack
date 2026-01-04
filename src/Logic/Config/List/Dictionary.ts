@@ -4,6 +4,6 @@ const Dictionary: MessageInterface.TDictionary = {
 	BUY: {
 		RU: "Купить",
 	},
-};
+} as const;
 
 export default Dictionary;

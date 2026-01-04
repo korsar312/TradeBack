@@ -21,4 +21,4 @@ export const Errors: ErrorInterface.TErrorMap = {
 		httpCode: 400,
 		message: "Параметры запроса неверны",
 	},
-};
+} as const;
