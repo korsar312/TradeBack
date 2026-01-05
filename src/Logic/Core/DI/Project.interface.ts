@@ -1,4 +1,3 @@
-import type { InfrastructureLinks } from "../Infrastructure/InfrastructureLinks";
 import type { ServiceMessage } from "../Services/ServiceMessage";
 import type { InfrastructureBD } from "../Infrastructure/InfrastructureBD";
 import type { ServiceUser } from "../Services/ServiceUser";
@@ -12,7 +11,6 @@ import type { ServicePayment } from "../Services/ServicePayment";
 
 export namespace ProjectInterface {
 	export type TModuleInf = {
-		Links: InfrastructureLinks;
 		BD: InfrastructureBD;
 	};
 

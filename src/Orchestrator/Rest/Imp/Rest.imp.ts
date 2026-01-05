@@ -8,12 +8,15 @@ export class RestImp implements Interface.IAdapter {
 		return { code, returned };
 	}
 
-	public async LOGIN(params: Interface.TLoginReq) {
+	public async LOGIN(params: Interface.ILoginReq) {
 		const { login, token } = params;
 		const userId = this.module.user.login(login, token);
 
 		return this.createReturn(userId);
 	}
+
+	public async CREATE_LISTING(params: Interface.TSellsItemReq) {}
+
 	public async GET_GOODS(params: {}) {}
 	public async GET_ITEM(params: {}) {}
 	public async GET_ITEM_DETAIL(params: {}) {}

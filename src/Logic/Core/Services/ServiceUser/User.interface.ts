@@ -38,7 +38,6 @@ const Restriction = {
 	SELL: "SELL",
 	BUY: "BUY",
 	WITHDRAW: "WITHDRAW",
-	LOGIN: "LOGIN",
 };
 
 const Role = {

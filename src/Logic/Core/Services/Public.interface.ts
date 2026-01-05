@@ -11,17 +11,16 @@ export namespace PublicInterface {
 		desc: string;
 	}
 
-	export type TRating = 1 | 2 | 3 | 4 | 5;
 	export type EBank = keyof typeof Bank;
 	export type ETypeItem = keyof typeof TypeItem;
 }
 
-const Bank = {
+export const Bank = {
 	ALFA: "ALFA",
 	SBER: "SBER",
 	TINK: "TINK",
 } as const;
 
-const TypeItem = {
+export const TypeItem = {
 	CARD: "CARD",
 } as const;
