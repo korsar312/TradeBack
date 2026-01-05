@@ -57,8 +57,8 @@ export class RestCore extends OrchestratorBase {
 			if (isNoCheck) return next();
 
 			const { login, token } = Utils.error.parseQuery(req.headers, RestSchema.LOGIN, "UNAUTHORIZE");
-			const userId = this.module.User.login(login, token);
-			const user = this.module.User.getUser(userId);
+			const userId = this.module.user.login(login, token);
+			const user = this.module.user.getUser(userId);
 
 			let rightRoute: Interface.ELinks[] = [];
 			switch (user.role) {

@@ -1,8 +1,14 @@
 import type { InfrastructureLinks } from "../Infrastructure/InfrastructureLinks";
-import type { ServiceCatalogue } from "../Services/ServiceCatalogue";
 import type { ServiceMessage } from "../Services/ServiceMessage";
 import type { InfrastructureBD } from "../Infrastructure/InfrastructureBD";
 import type { ServiceUser } from "../Services/ServiceUser";
+import type { ServiceEvaluation } from "../Services/ServiceEvaluation";
+import type { ServiceDelivery } from "../Services/ServiceDelivery";
+import type { ServiceChat } from "../Services/ServiceChat";
+import type { ServiceDeal } from "../Services/ServiceDeal";
+import type { ServiceItem } from "../Services/ServiceItem";
+import type { ServiceListing } from "../Services/ServiceListing";
+import type { ServicePayment } from "../Services/ServicePayment";
 
 export namespace ProjectInterface {
 	export type TModuleInf = {
@@ -11,9 +17,15 @@ export namespace ProjectInterface {
 	};
 
 	export type TModuleService = {
-		Catalogue: ServiceCatalogue;
-		Message: ServiceMessage;
-		User: ServiceUser;
+		user: ServiceUser;
+		chat: ServiceChat;
+		deal: ServiceDeal;
+		item: ServiceItem;
+		listing: ServiceListing;
+		payment: ServicePayment;
+		message: ServiceMessage;
+		delivery: ServiceDelivery;
+		evaluation: ServiceEvaluation;
 	};
 
 	type TDI<M> = <T extends keyof M>(key: T) => M[T];

@@ -10,7 +10,7 @@ export class RestImp implements Interface.IAdapter {
 
 	public async LOGIN(params: Interface.TLoginReq) {
 		const { login, token } = params;
-		const userId = this.module.User.login(login, token);
+		const userId = this.module.user.login(login, token);
 
 		return this.createReturn(userId);
 	}
