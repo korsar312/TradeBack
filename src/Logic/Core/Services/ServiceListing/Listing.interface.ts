@@ -1,8 +1,8 @@
 export namespace ListingInterface {
 	export interface IAdapter {
-		createListing(data: TListingUser): void;
-		updateListing(id: string, data: TListingPatch): void;
-		getListing(id: string): TListing;
+		createListing(data: IListing): void;
+		updateListing(id: string, data: IListing): void;
+		getListing(id: string): IListing;
 	}
 
 	export interface IListing {
@@ -17,10 +17,6 @@ export namespace ListingInterface {
 
 	export type EListingType = keyof typeof ListingType;
 	export type EListingStatus = keyof typeof ListingStatus;
-
-	export type TListing = {};
-	export type TListingPatch = Partial<TListing>;
-	export type TListingUser = {};
 }
 
 const ListingType = {
