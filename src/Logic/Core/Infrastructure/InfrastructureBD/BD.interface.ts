@@ -1,16 +1,36 @@
-import { UserInterface } from "../../Services/ServiceUser/User.interface";
-import { ListingInterface } from "../../Services/ServiceListing/Listing.interface.ts";
-import { ItemInterface } from "../../Services/ServiceItem/Item.interface.ts";
-import { DealInterface } from "../../Services/ServiceDeal/Deal.interface.ts";
-import { PaymentInterface } from "../../Services/ServicePayment/Payment.interface.ts";
-import { DeliveryInterface } from "../../Services/ServiceDelivery/Delivery.interface.ts";
-import { EvaluationInterface } from "../../Services/ServiceEvaluation/Evaluation.interface.ts";
-import { ChatInterface } from "../../Services/ServiceChat/Chat.interface.ts";
-import { MessageInterface } from "../../Services/ServiceMessage/Message.interface.ts";
+import type { UserInterface } from "../../Services/ServiceUser/User.interface";
+import type { ListingInterface } from "../../Services/ServiceListing/Listing.interface.ts";
+import type { ItemInterface } from "../../Services/ServiceItem/Item.interface.ts";
+import type { DealInterface } from "../../Services/ServiceDeal/Deal.interface.ts";
+import type { PaymentInterface } from "../../Services/ServicePayment/Payment.interface.ts";
+import type { DeliveryInterface } from "../../Services/ServiceDelivery/Delivery.interface.ts";
+import type { EvaluationInterface } from "../../Services/ServiceEvaluation/Evaluation.interface.ts";
+import type { ChatInterface } from "../../Services/ServiceChat/Chat.interface.ts";
+import type { MessageInterface } from "../../Services/ServiceMessage/Message.interface.ts";
 
 export namespace BDInterface {
-	export type Listing = ListingInterface.IListing;
+	export interface IAdapter {
+		create: ICreate;
+		read: IRead;
+		update: IUpdate;
+		delete: IDelete;
+	}
 
+	export type TTable = {
+		users: Record<keyof User, unknown>;
+		usersAuth: Record<keyof UserAuth, unknown>;
+		userRestrictions: Record<keyof UserRestriction, unknown>;
+		listings: Record<keyof Listing, unknown>;
+		itemCards: Record<keyof ItemCard, unknown>;
+		deals: Record<keyof Deal, unknown>;
+		payments: Record<keyof Payment, unknown>;
+		deliveries: Record<keyof Delivery, unknown>;
+		evaluations: Record<keyof Evaluation, unknown>;
+		chats: Record<keyof Chat, unknown>;
+		messages: Record<keyof Message, unknown>;
+	};
+
+	export type Listing = ListingInterface.IListing;
 	export type ItemCard = ItemInterface.TItemCard;
 	export type Deal = DealInterface.IDeal;
 	export type Payment = PaymentInterface.IPayment;
@@ -21,20 +41,6 @@ export namespace BDInterface {
 	export type User = UserInterface.IUser;
 	export type UserAuth = UserInterface.IUserAuth;
 	export type UserRestriction = UserInterface.IUserRestriction;
-
-	/* ===================== CREATE INPUTS (id optional) ===================== */
-
-	export type CreateUser = Omit<User, "id"> & { id?: string };
-	export type CreateUsersAuth = Omit<UserAuth, "id"> & { id?: string };
-	export type CreateUserRestriction = Omit<UserRestriction, "id"> & { id?: string };
-	export type CreateListing = Omit<ListingInterface.IListing, "id"> & { id?: string };
-	export type CreateItemCard = Omit<ItemCard, "id"> & { id?: string };
-	export type CreateDeal = Omit<Deal, "id"> & { id?: string };
-	export type CreatePayment = Omit<Payment, "id"> & { id?: string };
-	export type CreateDelivery = Omit<Delivery, "id"> & { id?: string };
-	export type CreateEvaluation = Omit<Evaluation, "id"> & { id?: string };
-	export type CreateChat = Omit<Chat, "id" | "lastMessageId" | "lastMessageAt"> & { id?: string };
-	export type CreateMessage = Omit<Message, "id"> & { id?: string };
 
 	/* ===================== CRUD API SHAPES ===================== */
 
@@ -53,27 +59,18 @@ export namespace BDInterface {
 
 	/* ===================== ADAPTER (только 5 членов) ===================== */
 
-	export interface IAdapter {
-		initSchema(): void;
-
-		create: ICreate;
-		read: IRead;
-		update: IUpdate;
-		delete: IDelete;
-	}
-
 	export interface ICreate {
-		User: CreateEntity<CreateUser>;
-		UsersAuth: CreateEntity<CreateUsersAuth>;
-		UserRestriction: CreateEntity<CreateUserRestriction>;
-		Listing: CreateEntity<CreateListing>;
-		ItemCard: CreateEntity<CreateItemCard>;
-		Deal: CreateEntity<CreateDeal>;
-		Payment: CreateEntity<CreatePayment>;
-		Delivery: CreateEntity<CreateDelivery>;
-		Evaluation: CreateEntity<CreateEvaluation>;
-		Chat: CreateEntity<CreateChat>;
-		Message: CreateEntity<CreateMessage>;
+		User: CreateEntity<User>;
+		UsersAuth: CreateEntity<UserAuth>;
+		UserRestriction: CreateEntity<UserRestriction>;
+		Listing: CreateEntity<Listing>;
+		ItemCard: CreateEntity<ItemCard>;
+		Deal: CreateEntity<Deal>;
+		Payment: CreateEntity<Payment>;
+		Delivery: CreateEntity<Delivery>;
+		Evaluation: CreateEntity<Evaluation>;
+		Chat: CreateEntity<Chat>;
+		Message: CreateEntity<Message>;
 	}
 
 	export interface IRead {
@@ -88,7 +85,6 @@ export namespace BDInterface {
 		Evaluation: ReadEntity<Evaluation>;
 		Chat: ReadEntity<Chat>;
 		Message: ReadEntity<Message>;
-
 		/* связи */
 		ListMessagesByChat: (chatId: string) => Message[];
 		ListDealsByUser: (userId: string) => Deal[];

@@ -21,6 +21,8 @@ import DeliveryImp from "../Services/ServiceDelivery/Imp/Delivery.imp.ts";
 import { ServiceDelivery } from "../Services/ServiceDelivery";
 import EvaluationImp from "../Services/ServiceEvaluation/Imp/Evaluation.imp.ts";
 import { ServiceEvaluation } from "../Services/ServiceEvaluation";
+import LanguageImp from "../Services/ServiceLanguage/Imp/Language.imp.ts";
+import { ServiceLanguage } from "../Services/ServiceLanguage";
 
 const inf: IServiceProps = { infrastructure: Infrastructure };
 
@@ -42,7 +44,7 @@ const listing = new ServiceListing(listingImp);
 const paymentImp = new PaymentImp(inf);
 const payment = new ServicePayment(paymentImp);
 
-const messageImp = new MessageImp(inf, dictionary);
+const messageImp = new MessageImp(inf);
 const message = new ServiceMessage(messageImp);
 
 const deliveryImp = new DeliveryImp(inf);
@@ -50,6 +52,9 @@ const delivery = new ServiceDelivery(deliveryImp);
 
 const evaluationImp = new EvaluationImp(inf);
 const evaluation = new ServiceEvaluation(evaluationImp);
+
+const languageImp = new LanguageImp(inf, dictionary);
+const language = new ServiceLanguage(languageImp);
 
 const service = new DI<ProjectInterface.TModuleService>();
 
@@ -61,6 +66,7 @@ service.use("listing", listing);
 service.use("payment", payment);
 service.use("message", message);
 service.use("delivery", delivery);
+service.use("language", language);
 service.use("evaluation", evaluation);
 
 export default service.get;

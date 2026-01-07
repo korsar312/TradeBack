@@ -1,9 +1,14 @@
 import type { UserInterface as Interface } from "../User.interface.ts";
 import ServiceBase from "../../Service.base.ts";
 import { UserNames } from "./User.names.ts";
-import { ErrorInterface } from "../../../Utils/Error/Error.interface.ts";
+import { ErrorInterface } from "../../../../../Utils/Error/Error.interface.ts";
 
 class UserImp extends ServiceBase implements Interface.IAdapter {
+	private Require<T>(value: T | null | undefined, reason: ErrorInterface.EErrorReason): T {
+		if (value == null) throw new Error(reason satisfies ErrorInterface.EErrorReason);
+		return value;
+	}
+
 	private CreateUser(login: string): Interface.IUser {
 		const id = "user__" + crypto.randomUUID();
 		const nickname = UserNames[Math.floor(Math.random() * UserNames.length)];
@@ -18,23 +23,14 @@ class UserImp extends ServiceBase implements Interface.IAdapter {
 		return { id, userId, tokenHash };
 	}
 
-	private GetAuthData(login: string): Interface.IUserAuth {
-		const authData = this.API.BD.read.UsersAuthByLogin(login);
-		if (!authData) throw new Error("AUTH_INVALID" satisfies ErrorInterface.EErrorReason);
+	private GetUserAuth = (login: string): Interface.IUserAuth => this.Require(this.API.BD.read.UsersAuthByLogin(login), "USER_NOT_FOUND");
+	private IsExistUserAuth = (login: string): boolean => Boolean(this.API.BD.read.UsersAuthByLogin(login));
 
-		return authData;
-	}
-
-	private GetUser(id: string): Interface.IUser {
-		const user = this.API.BD.read.User(id);
-		if (!user) throw new Error("USER_NOT_FOUND" satisfies ErrorInterface.EErrorReason);
-
-		return user;
-	}
+	private GetUser = (id: string): Interface.IUser => this.Require(this.API.BD.read.User(id), "USER_NOT_FOUND");
+	private IsExistUser = (id: string): boolean => Boolean(this.API.BD.read.User(id));
 
 	public saveNewUser(login: string): string {
-		const authData = this.GetAuthData(login);
-		if (authData) throw new Error("USER_ALREADY_EXIST" satisfies ErrorInterface.EErrorReason);
+		if (this.IsExistUserAuth(login)) throw new Error("USER_ALREADY_EXIST" satisfies ErrorInterface.EErrorReason);
 
 		const user = this.CreateUser(login);
 		const auth = this.CreateUserAuth(user.id);
@@ -50,7 +46,7 @@ class UserImp extends ServiceBase implements Interface.IAdapter {
 	}
 
 	public login(login: string, token: string): string {
-		const authData = this.GetAuthData(login);
+		const authData = this.GetUserAuth(login);
 		if (authData.tokenHash !== token) throw new Error("AUTH_INVALID" satisfies ErrorInterface.EErrorReason);
 
 		const user = this.GetUser(authData.userId);

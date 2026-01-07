@@ -12,14 +12,11 @@ class ErrorImp implements Interface.IAdapter {
 		let reason: ErrorInterface.EErrorReason;
 
 		if (innerReason in this.errorMap) reason = innerReason as ErrorInterface.EErrorReason;
-		else reason = "INTERNAL_SERVER_ERROR" satisfies ErrorInterface.EErrorReason;
+		else reason = "INTERNAL_SERVER_ERROR";
 
 		const { httpCode, message } = this.errorMap[reason];
 
-		return {
-			httpCode,
-			message,
-		};
+		return { httpCode, message };
 	}
 
 	parseQuery<TSchema extends z.ZodType>(params?: unknown, schema?: TSchema, userError?: Interface.EErrorReason): z.output<TSchema> {

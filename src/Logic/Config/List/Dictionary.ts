@@ -1,6 +1,6 @@
-import type { MessageInterface } from "../../Core/Services/ServiceMessage/Message.interface.ts";
+import type { LanguageInterface } from "../../Core/Services/ServiceLanguage/Language.interface.ts";
 
-const Dictionary: MessageInterface.TDictionary = {
+const Dictionary: LanguageInterface.TDictionary = {
 	BUY: {
 		RU: "Купить",
 	},

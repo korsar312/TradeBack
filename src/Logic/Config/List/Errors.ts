@@ -1,4 +1,4 @@
-import { ErrorInterface } from "../../Core/Utils/Error/Error.interface.ts";
+import { ErrorInterface } from "./../../../Utils/Error/Error.interface.ts";
 
 export const Errors: ErrorInterface.TErrorMap = {
 	AUTH_INVALID: {
@@ -23,7 +23,7 @@ export const Errors: ErrorInterface.TErrorMap = {
 	},
 	USER_ALREADY_EXIST: {
 		httpCode: 400,
-		message: "Параметры запроса неверны",
+		message: "Пользователь уже существует",
 	},
 	NOT_RIGHT: {
 		httpCode: 403,

@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { BDInterface } from "../../Logic/Core/Infrastructure/InfrastructureBD/BD.interface.ts";
 import { PublicInterface } from "../../Logic/Core/Services/Public.interface.ts";
+import { ListingInterface } from "../../Logic/Core/Services/ServiceListing/Listing.interface.ts";
 
 export namespace RestInterface {
 	export type IAdapter = {
@@ -45,7 +45,7 @@ export namespace RestInterface {
 		name: string;
 		desc: string;
 		price: number;
-		type: BDInterface.ListingType;
+		type: ListingInterface.EListingType;
 		info: unknown;
 	}
 

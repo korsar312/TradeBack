@@ -8,6 +8,7 @@ import type { ServiceDeal } from "../Services/ServiceDeal";
 import type { ServiceItem } from "../Services/ServiceItem";
 import type { ServiceListing } from "../Services/ServiceListing";
 import type { ServicePayment } from "../Services/ServicePayment";
+import { ServiceLanguage } from "../Services/ServiceLanguage";
 
 export namespace ProjectInterface {
 	export type TModuleInf = {
@@ -23,6 +24,7 @@ export namespace ProjectInterface {
 		payment: ServicePayment;
 		message: ServiceMessage;
 		delivery: ServiceDelivery;
+		language: ServiceLanguage;
 		evaluation: ServiceEvaluation;
 	};
 

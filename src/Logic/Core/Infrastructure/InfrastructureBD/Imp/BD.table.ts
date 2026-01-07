@@ -1,0 +1,110 @@
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { BDInterface } from "../BD.interface.ts";
+
+const table = {
+	users: {
+		id: text("id").primaryKey(),
+		nickname: text("nickname").notNull(),
+		role: text("role").notNull(),
+		login: text("login").notNull(),
+		createdAt: integer("created_at").notNull(),
+	},
+	usersAuth: {
+		id: text("id").primaryKey(),
+		userId: text("user_id").notNull(),
+		tokenHash: text("token_hash").notNull(),
+	},
+	userRestrictions: {
+		id: text("id").primaryKey(),
+		userId: text("user_id").notNull(),
+		type: text("type").notNull(),
+		untilTs: integer("until_ts").notNull(),
+		reason: text("reason").notNull(),
+		byId: text("by_id"), // may be NULL
+		createdAt: integer("created_at").notNull(),
+	},
+	listings: {
+		id: text("id").primaryKey(),
+		sellerId: text("seller_id").notNull(),
+		type: text("type").notNull(),
+		createdAt: integer("created_at").notNull(),
+		status: text("status").notNull(),
+		name: text("name").notNull(),
+		desc: text("description").notNull(),
+	},
+	itemCards: {
+		id: text("id").primaryKey(),
+		listingId: text("listing_id").notNull(),
+		bank: text("bank").notNull(),
+		name: text("name").notNull(),
+	},
+	deals: {
+		id: text("id").primaryKey(),
+		listingId: text("listing_id").notNull(),
+		sellerId: text("seller_id").notNull(),
+		buyerId: text("buyer_id").notNull(),
+		status: text("status").notNull(),
+	},
+	payments: {
+		id: text("id").primaryKey(),
+		dealId: text("deal_id").notNull(),
+		status: text("status").notNull(),
+		price: integer("price").notNull(),
+	},
+	deliveries: {
+		id: text("id").primaryKey(),
+		dealId: text("deal_id").notNull(),
+		status: text("status").notNull(),
+		trackNumber: integer("track_number"),
+		departurePlace: text("departure_place").notNull(),
+		deliveryPlace: text("delivery_place"),
+	},
+	evaluations: {
+		id: text("id").primaryKey(),
+		dealId: text("deal_id").notNull(),
+		type: text("type").notNull(),
+		comment: text("comment").notNull(),
+		createdAt: integer("created_at").notNull(),
+	},
+	chats: {
+		id: text("id").primaryKey(),
+		dealId: text("deal_id").notNull(),
+		buyerSeeTime: integer("buyer_see_time").notNull(),
+		sellerSeeTime: integer("seller_see_time").notNull(),
+		lastMessageId: text("last_message_id"),
+		lastMessageAt: integer("last_message_at"),
+	},
+	messages: {
+		id: text("id").primaryKey(),
+		chatId: text("chat_id").notNull(),
+		userId: text("user_id").notNull(),
+		createdAt: integer("created_at").notNull(),
+		text: text("text").notNull(),
+	},
+} satisfies BDInterface.TTable;
+
+export const __users = sqliteTable("users", table.users);
+export const __usersAuth = sqliteTable("usersAuth", table.usersAuth);
+export const __userRestrictions = sqliteTable("userRestrictions", table.userRestrictions);
+export const __listings = sqliteTable("listings", table.listings);
+export const __itemCards = sqliteTable("itemCards", table.itemCards);
+export const __deals = sqliteTable("deals", table.deals);
+export const __payments = sqliteTable("payments", table.payments);
+export const __deliveries = sqliteTable("deliveries", table.deliveries);
+export const __evaluations = sqliteTable("evaluations", table.evaluations);
+export const __chats = sqliteTable("chats", table.chats);
+export const __messages = sqliteTable("messages", table.messages);
+
+export const Table = {
+	users: __users,
+	usersAuth: __usersAuth,
+	userRestrictions: __userRestrictions,
+	listings: __listings,
+	itemCards: __itemCards,
+	deals: __deals,
+	payments: __payments,
+	deliveries: __deliveries,
+	evaluations: __evaluations,
+	chats: __chats,
+	messages: __messages,
+} satisfies BDInterface.TTable;

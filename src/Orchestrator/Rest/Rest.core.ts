@@ -1,10 +1,10 @@
 import { OrchestratorBase } from "../Orchestrator.base.ts";
 import { RestInterface as Interface } from "./Rest.interface.ts";
 import express, { Express, NextFunction, Request, Response } from "express";
-import { Utils } from "../../Logic/Core/Utils";
 import { RestSchema } from "./Imp/Rest.schema.ts";
 import { TModules } from "../../Logic";
-import type { ErrorInterface } from "../../Logic/Core/Utils/Error/Error.interface.ts";
+import { Utils } from "../../Utils";
+import { ErrorInterface } from "../../Utils/Error/Error.interface.ts";
 
 const routeNoCheck: Interface.ELinks[] = ["LOGIN"];
 const routeUser: Interface.ELinks[] = [

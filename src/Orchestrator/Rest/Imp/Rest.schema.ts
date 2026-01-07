@@ -12,7 +12,6 @@ export const RestSchema: RestInterface.TSchemaMap = {
 		login: z.string().min(1),
 		token: z.string().min(1),
 	}),
-
 	CREATE_LISTING: z.object({
 		name: z.string().min(1),
 		desc: z.string().min(1),
@@ -23,14 +22,9 @@ export const RestSchema: RestInterface.TSchemaMap = {
 			bank: BankSchema,
 		}),
 	}),
-
 	GET_GOODS: z.object({}),
-
 	GET_ITEM: z.object({}),
-
 	GET_ITEM_DETAIL: z.object({}),
-
 	GET_ORDERS: z.object({}),
-
 	GET_ORDER_DETAIL: z.object({}),
 } as const;
