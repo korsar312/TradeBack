@@ -1,102 +1,33 @@
 import { UserInterface } from "../../Services/ServiceUser/User.interface";
+import { ListingInterface } from "../../Services/ServiceListing/Listing.interface.ts";
+import { ItemInterface } from "../../Services/ServiceItem/Item.interface.ts";
+import { DealInterface } from "../../Services/ServiceDeal/Deal.interface.ts";
+import { PaymentInterface } from "../../Services/ServicePayment/Payment.interface.ts";
+import { DeliveryInterface } from "../../Services/ServiceDelivery/Delivery.interface.ts";
+import { EvaluationInterface } from "../../Services/ServiceEvaluation/Evaluation.interface.ts";
+import { ChatInterface } from "../../Services/ServiceChat/Chat.interface.ts";
+import { MessageInterface } from "../../Services/ServiceMessage/Message.interface.ts";
 
 export namespace BDInterface {
-	/* ===================== ENUM TYPES ===================== */
+	export type Listing = ListingInterface.IListing;
 
-	/** Deal.status */
-	export type DealStatus = "PENDING_PAYMENT" | "IN_ESCROW" | "FULFILLED" | "COMPLETE" | "CANCELLED" | "DISPUTED";
-
-	/** Payment.status */
-	export type PaymentStatus = "INIT" | "AUTHORIZED" | "IN_ESCROW" | "RELEASED" | "REFUNDED" | "FAILED";
-
-	/** Delivery.status */
-	export type DeliveryStatus = "PENDING" | "IN_TRANSIT" | "COMPLETE";
-
-	/** Listing.status */
-	export type ListingStatus = "DRAFT" | "ACTIVE" | "RESERVED" | "SOLD" | "ARCHIVED";
-
-	/** Listing.type */
-	export type ListingType = "CARD";
-
-	/** Restriction.type */
-
-	/** Evaluation.type */
-	export type EvaluationType = "like" | "dislike";
-
-	/* ===================== ENTITIES ===================== */
-
-	export interface Listing {
-		id: string; // id объявления
-		sellerId: string; // FK users.id
-		type: ListingType; // тип объявления
-		createdAt: number; // время создания
-		status: ListingStatus; // статус
-		name: string; // заголовок
-		desc: string; // описание
-	}
-
-	export interface ItemCard {
-		id: string; // id записи деталей товара
-		listingId: string; // FK listings.id (unique => 1↔1)
-		bank: string; // банк
-		name: string; // имя на карте
-	}
-
-	export interface Deal {
-		id: string; // id сделки
-		listingId: string; // FK listings.id (unique)
-		sellerId: string; // FK users.id
-		buyerId: string; // FK users.id
-		status: DealStatus; // статус
-	}
-
-	export interface Payment {
-		id: string; // id платежа
-		dealId: string; // FK deals.id (unique => 1↔1)
-		status: PaymentStatus; // статус платежа
-		price: number; // сумма (INTEGER)
-	}
-
-	export interface Delivery {
-		id: string; // id доставки
-		dealId: string; // FK deals.id (unique => 1↔1)
-		status: DeliveryStatus; // статус
-		trackNumber: number | null; // трек (NULL если нет)
-		departurePlace: string; // место отправления
-		deliveryPlace: string | null; // место поступления (NULL если нет)
-	}
-
-	export interface Evaluation {
-		id: string; // id отзыва
-		dealId: string; // FK deals.id (unique => 1↔1)
-		type: EvaluationType; // like/dislike
-		comment: string; // комментарий
-		createdAt: number; // время создания
-	}
-
-	export interface Chat {
-		id: string; // id чата
-		dealId: string; // FK deals.id (unique => 1↔1)
-		buyerSeeTime: number; // просмотр покупателя
-		sellerSeeTime: number; // просмотр продавца
-		lastMessageId: string | null; // денормализация
-		lastMessageAt: number | null; // денормализация
-	}
-
-	export interface Message {
-		id: string; // id сообщения
-		chatId: string; // FK chats.id
-		userId: string; // FK users.id
-		createdAt: number; // время сообщения
-		text: string; // текст
-	}
+	export type ItemCard = ItemInterface.TItemCard;
+	export type Deal = DealInterface.IDeal;
+	export type Payment = PaymentInterface.IPayment;
+	export type Delivery = DeliveryInterface.IDelivery;
+	export type Evaluation = EvaluationInterface.IEvaluation;
+	export type Chat = ChatInterface.IChat;
+	export type Message = MessageInterface.IMessage;
+	export type User = UserInterface.IUser;
+	export type UserAuth = UserInterface.IUserAuth;
+	export type UserRestriction = UserInterface.IUserRestriction;
 
 	/* ===================== CREATE INPUTS (id optional) ===================== */
 
-	export type CreateUser = Omit<UserInterface.IUser, "id"> & { id?: string };
-	export type CreateUsersAuth = Omit<UserInterface.IUserAuth, "id"> & { id?: string };
-	export type CreateUserRestriction = Omit<UserInterface.IUserRestriction, "id"> & { id?: string };
-	export type CreateListing = Omit<Listing, "id"> & { id?: string };
+	export type CreateUser = Omit<User, "id"> & { id?: string };
+	export type CreateUsersAuth = Omit<UserAuth, "id"> & { id?: string };
+	export type CreateUserRestriction = Omit<UserRestriction, "id"> & { id?: string };
+	export type CreateListing = Omit<ListingInterface.IListing, "id"> & { id?: string };
 	export type CreateItemCard = Omit<ItemCard, "id"> & { id?: string };
 	export type CreateDeal = Omit<Deal, "id"> & { id?: string };
 	export type CreatePayment = Omit<Payment, "id"> & { id?: string };
@@ -146,10 +77,10 @@ export namespace BDInterface {
 	}
 
 	export interface IRead {
-		User: ReadEntity<UserInterface.IUser>;
-		UsersAuth: ReadEntity<UserInterface.IUserAuth>;
-		UserRestriction: ReadEntity<UserInterface.IUserRestriction>;
-		Listing: ReadEntity<Listing>;
+		User: ReadEntity<User>;
+		UsersAuth: ReadEntity<UserAuth>;
+		UserRestriction: ReadEntity<UserRestriction>;
+		Listing: ReadEntity<ListingInterface.IListing>;
 		ItemCard: ReadEntity<ItemCard>;
 		Deal: ReadEntity<Deal>;
 		Payment: ReadEntity<Payment>;
@@ -161,14 +92,14 @@ export namespace BDInterface {
 		/* связи */
 		ListMessagesByChat: (chatId: string) => Message[];
 		ListDealsByUser: (userId: string) => Deal[];
-		UsersAuthByLogin: (login: string) => UserInterface.IUserAuth | null; // поиск users_auth по users.login
+		UsersAuthByLogin: (login: string) => UserAuth | null; // поиск users_auth по users.login
 	}
 
 	export interface IUpdate {
-		User: UpdateEntity<UserInterface.IUser>;
-		UsersAuth: UpdateEntity<UserInterface.IUserAuth>;
-		UserRestriction: UpdateEntity<UserInterface.IUserRestriction>;
-		Listing: UpdateEntity<Listing>;
+		User: UpdateEntity<User>;
+		UsersAuth: UpdateEntity<UserAuth>;
+		UserRestriction: UpdateEntity<UserRestriction>;
+		Listing: UpdateEntity<ListingInterface.IListing>;
 		ItemCard: UpdateEntity<ItemCard>;
 		Deal: UpdateEntity<Deal>;
 		Payment: UpdateEntity<Payment>;

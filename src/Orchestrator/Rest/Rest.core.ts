@@ -7,7 +7,15 @@ import { TModules } from "../../Logic";
 import type { ErrorInterface } from "../../Logic/Core/Utils/Error/Error.interface.ts";
 
 const routeNoCheck: Interface.ELinks[] = ["LOGIN"];
-const routeUser: Interface.ELinks[] = ["LOGIN", "GET_GOODS", "GET_ITEM", "GET_ITEM_DETAIL", "GET_ORDERS", "GET_ORDER_DETAIL"];
+const routeUser: Interface.ELinks[] = [
+	"LOGIN",
+	"CREATE_LISTING",
+	"GET_GOODS",
+	"GET_ITEM",
+	"GET_ITEM_DETAIL",
+	"GET_ORDERS",
+	"GET_ORDER_DETAIL",
+];
 const routeAdmin: Interface.ELinks[] = [...routeUser];
 
 export class RestCore extends OrchestratorBase {
@@ -72,8 +80,10 @@ export class RestCore extends OrchestratorBase {
 			const routeRightPath = rightRoute.map((el) => this.links[el]);
 			const isAccess = routeRightPath.includes(route);
 
-			if (isAccess) return next();
-			else throw new Error("NOT_RIGHT" satisfies ErrorInterface.EErrorReason);
+			if (!isAccess) throw new Error("NOT_RIGHT" satisfies ErrorInterface.EErrorReason);
+			res.locals.userId = userId;
+
+			return next();
 		} catch (e: any) {
 			const { message, httpCode } = Utils.error.getError(e.message);
 
@@ -98,7 +108,7 @@ export class RestCore extends OrchestratorBase {
 				const allParams = { ...req.body, ...req.query, ...req.params };
 				Utils.error.parseQuery(allParams, RestSchema[linkName]);
 
-				const result = await method(allParams);
+				const result = await method(allParams, res.locals.userId);
 
 				if (res.headersSent) return;
 				res.status(result?.code ?? 200).json(result?.returned ?? { ok: true });

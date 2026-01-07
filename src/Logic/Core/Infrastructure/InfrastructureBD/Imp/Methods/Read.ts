@@ -1,29 +1,26 @@
 import { BDHelpers } from "./BD.Helpers.ts";
-import { UserInterface } from "../../../../Services/ServiceUser/User.interface.ts";
 import type { BDInterface as Interface } from "../../BD.interface.ts";
 
 export class Read extends BDHelpers implements Interface.IRead {
-	User = this.mkReadEntity<UserInterface.IUser>(
+	User = this.mkReadEntity<Interface.User>(
 		"users",
 		(id) => {
 			const r = this.getOne(`SELECT id, nickname, role, login, created_at FROM users WHERE id = ?`, [id]);
-			return r
-				? ({ id: r.id, nickname: r.nickname, role: r.role, login: r.login, createdAt: r.created_at } as UserInterface.IUser)
-				: null;
+			return r ? ({ id: r.id, nickname: r.nickname, role: r.role, login: r.login, createdAt: r.created_at } as Interface.User) : null;
 		},
 		{ nickname: "nickname", role: "role", login: "login", createdAt: "created_at" },
 	);
 
-	UsersAuth = this.mkReadEntity<UserInterface.IUserAuth>(
+	UsersAuth = this.mkReadEntity<Interface.UserAuth>(
 		"users_auth",
 		(id) => {
 			const r = this.getOne(`SELECT id, user_id, token_hash FROM users_auth WHERE id = ?`, [id]);
-			return r ? ({ id: r.id, userId: r.user_id, tokenHash: r.token_hash } as UserInterface.IUserAuth) : null;
+			return r ? ({ id: r.id, userId: r.user_id, tokenHash: r.token_hash } as Interface.UserAuth) : null;
 		},
 		{ userId: "user_id", tokenHash: "token_hash" },
 	);
 
-	UserRestriction = this.mkReadEntity<UserInterface.IUserRestriction>(
+	UserRestriction = this.mkReadEntity<Interface.UserRestriction>(
 		"user_restrictions",
 		(id) => {
 			const r = this.getOne(
@@ -40,7 +37,7 @@ export class Read extends BDHelpers implements Interface.IRead {
 						reason: r.reason,
 						byId: r.by_id,
 						createdAt: r.created_at,
-					} as UserInterface.IUserRestriction)
+					} as Interface.UserRestriction)
 				: null;
 		},
 		{ userId: "user_id", type: "type", untilTs: "until_ts", reason: "reason", byId: "by_id", createdAt: "created_at" },
@@ -218,7 +215,7 @@ export class Read extends BDHelpers implements Interface.IRead {
 		);
 	};
 
-	UsersAuthByLogin = (login: string): UserInterface.IUserAuth | null => {
+	UsersAuthByLogin = (login: string): Interface.UserAuth | null => {
 		const r = this.getOne(
 			`SELECT ua.id, ua.user_id, ua.token_hash
        FROM users_auth ua

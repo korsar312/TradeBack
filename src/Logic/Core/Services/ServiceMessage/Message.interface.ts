@@ -1,29 +1,13 @@
 export namespace MessageInterface {
 	export interface IAdapter {
-		getWord(text: EWordAll, lang: ELang, param?: TWordParam): string;
+		createMessage(data: IMessage): void;
 	}
 
-	export type EWord = keyof typeof Word;
-	export type ELang = keyof typeof Lang;
-	export type ECase = keyof typeof Case;
-
-	type TMapWord = Record<ELang, string>;
-
-	export type TDictionary = Record<EWord, TMapWord>;
-	export type EWordAll = EWord | string | number | undefined;
-
-	export type TWordParam = { arrReplace?: EWordAll[]; case?: ECase };
+	export interface IMessage {
+		id: string; // id сообщения
+		chatId: string; // FK chats.id
+		userId: string; // FK users.id
+		createdAt: number; // время сообщения
+		text: string; // текст
+	}
 }
-
-const Word = {
-	BUY: "BUY",
-} as const;
-
-const Lang = {
-	RU: "RU",
-} as const;
-
-const Case = {
-	CAPITAL: "CAPITAL",
-	SMALL: "SMALL",
-} as const;

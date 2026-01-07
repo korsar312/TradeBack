@@ -1,23 +1,22 @@
 import { BDHelpers } from "./BD.Helpers.ts";
-import { UserInterface } from "../../../../Services/ServiceUser/User.interface.ts";
 import type { BDInterface as Interface } from "../../BD.interface.ts";
 
 export class Update extends BDHelpers implements Interface.IUpdate {
-	User = this.mkUpdateEntity<UserInterface.IUser>(
+	User = this.mkUpdateEntity<Interface.User>(
 		"users",
 		["nickname", "role", "login", "created_at"],
 		(u) => ({ nickname: u.nickname, role: u.role, login: u.login, created_at: u.createdAt }),
 		{ nickname: "nickname", role: "role", login: "login", createdAt: "created_at" },
 	);
 
-	UsersAuth = this.mkUpdateEntity<UserInterface.IUserAuth>(
+	UsersAuth = this.mkUpdateEntity<Interface.UserAuth>(
 		"users_auth",
 		["user_id", "token_hash"],
 		(a) => ({ user_id: a.userId, token_hash: a.tokenHash }),
 		{ userId: "user_id", tokenHash: "token_hash" },
 	);
 
-	UserRestriction = this.mkUpdateEntity<UserInterface.IUserRestriction>(
+	UserRestriction = this.mkUpdateEntity<Interface.UserRestriction>(
 		"user_restrictions",
 		["user_id", "type", "until_ts", "reason", "by_id", "created_at"],
 		(r) => ({

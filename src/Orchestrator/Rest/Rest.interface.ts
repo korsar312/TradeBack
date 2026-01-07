@@ -18,7 +18,7 @@ export namespace RestInterface {
 
 	export type TReturn = { code?: number; returned?: unknown };
 	export type TReq<L extends ELinks> = TInputByLink[L];
-	export type TMethod<L extends ELinks> = (req: TReq<L>) => Promise<TReturn | void>;
+	export type TMethod<L extends ELinks> = (req: TReq<L>, userId: string) => Promise<TReturn | void>;
 
 	const inputByLink = {
 		LOGIN: null as unknown as ILoginReq,

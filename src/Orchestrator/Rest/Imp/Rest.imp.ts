@@ -15,7 +15,9 @@ export class RestImp implements Interface.IAdapter {
 		return this.createReturn(userId);
 	}
 
-	public async CREATE_LISTING(params: Interface.TSellsItemReq) {}
+	public async CREATE_LISTING(params: Interface.TSellsItemReq, userId: string) {
+		console.log(userId);
+	}
 
 	public async GET_GOODS(params: {}) {}
 	public async GET_ITEM(params: {}) {}
