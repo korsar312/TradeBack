@@ -1,4 +1,4 @@
-import { ErrorInterface } from "./../../../Utils/Error/Error.interface.ts";
+import type { ErrorInterface } from "../../../Utils/Error/Error.interface";
 
 export const Errors: ErrorInterface.TErrorMap = {
 	AUTH_INVALID: {
@@ -32,5 +32,9 @@ export const Errors: ErrorInterface.TErrorMap = {
 	UNAUTHORIZE: {
 		httpCode: 401,
 		message: "Не авторизован",
+	},
+	ITEM_TYPE_NOT_FOUND: {
+		httpCode: 404,
+		message: "Неизвестный тип товара",
 	},
 } as const;

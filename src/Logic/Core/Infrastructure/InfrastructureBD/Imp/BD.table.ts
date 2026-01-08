@@ -42,7 +42,7 @@ const table = {
 		id: text("id").primaryKey(),
 		listingId: text("listing_id").notNull(),
 		sellerId: text("seller_id").notNull(),
-		buyerId: text("buyer_id").notNull(),
+		buyerId: text("buyer_id"),
 		status: text("status").notNull(),
 	},
 	payments: {
@@ -56,7 +56,7 @@ const table = {
 		dealId: text("deal_id").notNull(),
 		status: text("status").notNull(),
 		trackNumber: integer("track_number"),
-		departurePlace: text("departure_place").notNull(),
+		departurePlace: text("departure_place"),
 		deliveryPlace: text("delivery_place"),
 	},
 	evaluations: {

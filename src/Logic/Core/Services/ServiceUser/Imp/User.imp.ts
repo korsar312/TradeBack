@@ -1,7 +1,7 @@
 import type { UserInterface as Interface } from "../User.interface.ts";
 import ServiceBase from "../../Service.base.ts";
 import { UserNames } from "./User.names.ts";
-import { ErrorInterface } from "../../../../../Utils/Error/Error.interface.ts";
+import type { ErrorInterface } from "../../../../../Utils/Error/Error.interface.ts";
 
 class UserImp extends ServiceBase implements Interface.IAdapter {
 	private Require<T>(value: T | null | undefined, reason: ErrorInterface.EErrorReason): T {
@@ -13,7 +13,7 @@ class UserImp extends ServiceBase implements Interface.IAdapter {
 		const id = "user__" + crypto.randomUUID();
 		const nickname = UserNames[Math.floor(Math.random() * UserNames.length)];
 
-		return { id, login, createdAt: new Date().valueOf(), nickname, role: "USER" };
+		return { id, login, createdAt: new Date().getTime(), nickname, role: "USER" };
 	}
 
 	private CreateUserAuth(userId: string): Interface.IUserAuth {

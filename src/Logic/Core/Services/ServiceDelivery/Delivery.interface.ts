@@ -1,6 +1,6 @@
 export namespace DeliveryInterface {
 	export interface IAdapter {
-		createDelivery(data: IDelivery): void;
+		saveNewDelivery(data: IDeliveryMin): string;
 	}
 
 	export interface IDelivery {
@@ -8,9 +8,11 @@ export namespace DeliveryInterface {
 		dealId: string; // FK deals.id (unique => 1↔1)
 		status: DeliveryStatus; // статус
 		trackNumber: number | null; // трек (NULL если нет)
-		departurePlace: string; // место отправления
+		departurePlace: string | null; // место отправления
 		deliveryPlace: string | null; // место поступления (NULL если нет)
 	}
+
+	export type IDeliveryMin = Omit<IDelivery, "id" | "status">;
 
 	export type DeliveryStatus = keyof typeof DeliveryStatus;
 }

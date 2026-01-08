@@ -2,7 +2,7 @@ import { PublicInterface } from "../Public.interface.ts";
 
 export namespace ItemInterface {
 	export interface IAdapter {
-		createItem(data: TItem): void;
+		saveNewItem(data: TItemMin): string;
 	}
 
 	interface IItemId {
@@ -27,4 +27,7 @@ export namespace ItemInterface {
 	export type TItemCard = IItemCard["info"];
 
 	export type TItem = IItemCard;
+
+	type TItemChange<T extends keyof TItem, B extends keyof TItem[T]> = Omit<TItem, T> & { info: Omit<TItem[T], B> };
+	export type TItemMin = TItemChange<"info", "id">;
 }

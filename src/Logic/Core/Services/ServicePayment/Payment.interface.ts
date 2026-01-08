@@ -1,6 +1,6 @@
 export namespace PaymentInterface {
 	export interface IAdapter {
-		createPayment(data: IPayment): void;
+		saveNewPayment(data: TPaymentMin): string;
 	}
 
 	export interface IPayment {
@@ -9,6 +9,8 @@ export namespace PaymentInterface {
 		status: EPaymentStatus; // статус платежа
 		price: number; // сумма (INTEGER)
 	}
+
+	export type TPaymentMin = Omit<IPayment, "id" | "status">;
 
 	export type EPaymentStatus = keyof typeof PaymentStatus;
 }

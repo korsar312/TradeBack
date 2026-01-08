@@ -1,16 +1,17 @@
 export namespace DealInterface {
 	export interface IAdapter {
-		createDeal(data: IDeal): void;
+		saveNewDeal(data: IDealMin): string;
 	}
 
 	export interface IDeal {
 		id: string; // id сделки
 		listingId: string; // FK listings.id (unique)
 		sellerId: string; // FK users.id
-		buyerId: string; // FK users.id
+		buyerId: string | null; // FK users.id
 		status: EDealStatus; // статус
 	}
 
+	export type IDealMin = Omit<IDeal, "id" | "status" | "buyerId">;
 	export type EDealStatus = keyof typeof DealStatus;
 }
 

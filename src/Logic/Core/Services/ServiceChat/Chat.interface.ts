@@ -1,6 +1,6 @@
 export namespace ChatInterface {
 	export interface IAdapter {
-		createChat(data: IChat): void;
+		saveNewChat(data: IChatMin): string;
 	}
 
 	export interface IChat {
@@ -11,4 +11,6 @@ export namespace ChatInterface {
 		lastMessageId: string | null; // денормализация
 		lastMessageAt: number | null; // денормализация
 	}
+
+	export type IChatMin = Omit<IChat, "id" | "lastMessageId" | "lastMessageAt" | "buyerSeeTime" | "sellerSeeTime">;
 }

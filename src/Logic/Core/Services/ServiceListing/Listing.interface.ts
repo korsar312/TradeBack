@@ -1,8 +1,8 @@
 export namespace ListingInterface {
 	export interface IAdapter {
-		createListing(data: IListing): void;
+		saveNewListing(data: TListingMin): string;
 		updateListing(id: string, data: IListing): void;
-		getListing(id: string): IListing;
+		getListing(id: string): string;
 	}
 
 	export interface IListing {
@@ -14,6 +14,8 @@ export namespace ListingInterface {
 		name: string; // заголовок
 		desc: string; // описание
 	}
+
+	export type TListingMin = Omit<IListing, "id" | "createdAt" | "status">;
 
 	export type EListingType = keyof typeof ListingType;
 	export type EListingStatus = keyof typeof ListingStatus;
