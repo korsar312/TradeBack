@@ -23,7 +23,6 @@ export class RestCore extends OrchestratorBase {
 		private readonly module: TModules,
 		private readonly methods: Interface.IAdapter,
 		private readonly links: Interface.TLinks,
-		private readonly linksHttp: Interface.TLinksHttp,
 		private readonly port: number,
 	) {
 		super();
@@ -50,7 +49,7 @@ export class RestCore extends OrchestratorBase {
 
 	private registerRoutes(app: Express): void {
 		(Object.keys(this.links) as Interface.ELinks[]).forEach((el) => {
-			this.createLink(app, el, this.methods[el].bind(this.methods), this.linksHttp[el]);
+			this.createLink(app, el, this.methods[el].bind(this.methods), this.links[el].http);
 		});
 	}
 
@@ -60,7 +59,7 @@ export class RestCore extends OrchestratorBase {
 		try {
 			const route = req.path as Interface.ELinks;
 
-			const routeNoCheckPath = routeNoCheck.map((el) => this.links[el]);
+			const routeNoCheckPath = routeNoCheck.map((el) => this.links[el].link);
 			const isNoCheck = routeNoCheckPath.includes(route);
 			if (isNoCheck) return next();
 
@@ -77,7 +76,7 @@ export class RestCore extends OrchestratorBase {
 					rightRoute = routeUser;
 					break;
 			}
-			const routeRightPath = rightRoute.map((el) => this.links[el]);
+			const routeRightPath = rightRoute.map((el) => this.links[el].link);
 			const isAccess = routeRightPath.includes(route);
 
 			if (!isAccess) throw new Error("NOT_RIGHT" satisfies ErrorInterface.EErrorReason);
@@ -100,7 +99,7 @@ export class RestCore extends OrchestratorBase {
 	/* ======================= MAIN ======================= */
 
 	private createLink(app: Express, linkName: Interface.ELinks, method: Interface.TMethod<any>, httpMethod: Interface.EHttpMethod): void {
-		const path = this.links[linkName];
+		const path = this.links[linkName].link;
 		const appMethod = app[httpMethod].bind(app);
 
 		const innerRequest = async (req: Request, res: Response) => {

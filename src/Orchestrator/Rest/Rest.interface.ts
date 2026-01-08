@@ -11,8 +11,12 @@ export namespace RestInterface {
 		[K in ELinks]: z.ZodType<TReq<K>>;
 	};
 
-	export type TLinks = Record<ELinks, string>;
-	export type TLinksHttp = Record<ELinks, EHttpMethod>;
+	type TLinksParam = {
+		http: EHttpMethod;
+		link: string;
+	};
+
+	export type TLinks = Record<ELinks, TLinksParam>;
 	export type ELinks = keyof typeof Links;
 	export type EHttpMethod = keyof typeof HttpMethod;
 

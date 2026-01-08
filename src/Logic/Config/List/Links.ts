@@ -1,21 +1,32 @@
 import type { RestInterface } from "../../../Orchestrator/Rest/Rest.interface.ts";
 
 export const Links: RestInterface.TLinks = {
-	LOGIN: "/login",
-	CREATE_LISTING: "/createLot",
-	GET_GOODS: "/getGoods",
-	GET_ITEM: "/getItem",
-	GET_ITEM_DETAIL: "/getItemDetail",
-	GET_ORDERS: "/getOrders",
-	GET_ORDER_DETAIL: "/getOrderDetail",
-} as const;
-
-export const LinksHttp: RestInterface.TLinksHttp = {
-	LOGIN: "post",
-	CREATE_LISTING: "post",
-	GET_GOODS: "get",
-	GET_ITEM: "get",
-	GET_ITEM_DETAIL: "get",
-	GET_ORDERS: "get",
-	GET_ORDER_DETAIL: "get",
+	LOGIN: {
+		link: "/login",
+		http: "post",
+	},
+	CREATE_LISTING: {
+		link: "/createLot",
+		http: "post",
+	},
+	GET_GOODS: {
+		link: "/getGoods",
+		http: "get",
+	},
+	GET_ITEM: {
+		link: "/getItem",
+		http: "get",
+	},
+	GET_ITEM_DETAIL: {
+		link: "/getItemDetail",
+		http: "get",
+	},
+	GET_ORDERS: {
+		link: "/getOrders",
+		http: "get",
+	},
+	GET_ORDER_DETAIL: {
+		link: "/getOrderDetail",
+		http: "get",
+	},
 } as const;
