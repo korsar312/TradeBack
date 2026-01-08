@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { PublicInterface } from "../../Logic/Core/Services/Public.interface.ts";
 import { ListingInterface } from "../../Logic/Core/Services/ServiceListing/Listing.interface.ts";
+import { UserInterface } from "../../Logic/Core/Services/ServiceUser/User.interface.ts";
 
 export namespace RestInterface {
 	export type IAdapter = {
@@ -14,10 +15,12 @@ export namespace RestInterface {
 	type TLinksParam = {
 		http: EHttpMethod;
 		link: string;
+		role: UserInterface.ERole[];
 	};
 
 	export type TLinks = Record<ELinks, TLinksParam>;
 	export type ELinks = keyof typeof Links;
+	export type TRouteRole = Record<UserInterface.ERole, string[]>;
 	export type EHttpMethod = keyof typeof HttpMethod;
 
 	export type TReturn = { code?: number; returned?: unknown };

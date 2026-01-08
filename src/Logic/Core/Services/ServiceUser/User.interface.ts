@@ -40,7 +40,7 @@ const Restriction = {
 	WITHDRAW: "WITHDRAW",
 };
 
-const Role = {
+export const Role = {
 	ADMIN: "ADMIN",
 	USER: "USER",
 };

@@ -5,20 +5,19 @@ import { RestSchema } from "./Imp/Rest.schema.ts";
 import { TModules } from "../../Logic";
 import { Utils } from "../../Utils";
 import { ErrorInterface } from "../../Utils/Error/Error.interface.ts";
+import { Role, UserInterface } from "../../Logic/Core/Services/ServiceUser/User.interface.ts";
 
 const routeNoCheck: Interface.ELinks[] = ["LOGIN"];
-const routeUser: Interface.ELinks[] = [
-	"LOGIN",
-	"CREATE_LISTING",
-	"GET_GOODS",
-	"GET_ITEM",
-	"GET_ITEM_DETAIL",
-	"GET_ORDERS",
-	"GET_ORDER_DETAIL",
-];
-const routeAdmin: Interface.ELinks[] = [...routeUser];
+
+function pickRoleLink(links: Interface.TLinks, role: UserInterface.ERole): string[] {
+	return Object.entries(links)
+		.filter(([_key, value]) => value.role.includes(role))
+		.map(([_key, value]) => value.link);
+}
 
 export class RestCore extends OrchestratorBase {
+	private readonly role: Interface.TRouteRole;
+
 	constructor(
 		private readonly module: TModules,
 		private readonly methods: Interface.IAdapter,
@@ -26,6 +25,10 @@ export class RestCore extends OrchestratorBase {
 		private readonly port: number,
 	) {
 		super();
+
+		this.role = (Object.keys(Role) as UserInterface.ERole[]).reduce((prev, cur) => {
+			return { ...prev, [cur]: pickRoleLink(links, cur) };
+		}, {} as Interface.TRouteRole);
 	}
 
 	public override invoke(): void {
@@ -67,19 +70,10 @@ export class RestCore extends OrchestratorBase {
 			const userId = this.module.user.login(login, token);
 			const user = this.module.user.getUser(userId);
 
-			let rightRoute: Interface.ELinks[] = [];
-			switch (user.role) {
-				case "ADMIN":
-					rightRoute = routeAdmin;
-					break;
-				case "USER":
-					rightRoute = routeUser;
-					break;
-			}
-			const routeRightPath = rightRoute.map((el) => this.links[el].link);
-			const isAccess = routeRightPath.includes(route);
-
+			const routeRight = this.role[user.role] || [];
+			const isAccess = routeRight.includes(route);
 			if (!isAccess) throw new Error("NOT_RIGHT" satisfies ErrorInterface.EErrorReason);
+
 			res.locals.userId = userId;
 
 			return next();
