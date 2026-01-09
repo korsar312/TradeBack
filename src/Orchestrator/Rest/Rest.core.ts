@@ -1,11 +1,11 @@
 import { OrchestratorBase } from "../Orchestrator.base.ts";
 import { RestInterface as Interface } from "./Rest.interface.ts";
 import express, { Express, NextFunction, Request, Response } from "express";
-import { RestSchema } from "./Imp/Rest.schema.ts";
 import { TModules } from "../../Logic";
 import { Utils } from "../../Utils";
-import { Role, UserInterface } from "../../Logic/Core/Services/ServiceUser/User.interface.ts";
+import { UserInterface, UserRole } from "../../Logic/Core/Services/ServiceUser/User.interface.ts";
 import { ErrorSys } from "../../Utils/Error/Error.imp.ts";
+import { RestSchema } from "./Schema/Rest.schema.ts";
 
 const routeNoCheck: Interface.ELinks[] = ["LOGIN"];
 
@@ -26,7 +26,7 @@ export class RestCore extends OrchestratorBase {
 	) {
 		super();
 
-		this.role = (Object.keys(Role) as UserInterface.ERole[]).reduce((prev, cur) => {
+		this.role = (Object.keys(UserRole) as UserInterface.ERole[]).reduce((prev, cur) => {
 			return { ...prev, [cur]: pickRoleLink(links, cur) };
 		}, {} as Interface.TRouteRole);
 	}

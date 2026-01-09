@@ -27,26 +27,26 @@ export namespace RestInterface {
 	export type TMethod<L extends ELinks> = (req: TReq<L>, userId: string) => Promise<TReturn | void>;
 
 	const inputByLink = {
-		LOGIN: null as unknown as ILoginReq,
-		CREATE_LISTING: null as unknown as TSellsItemReq,
-		GET_ITEMS: null as unknown as {},
-		GET_ITEM_DETAIL: null as unknown as {},
-		GET_ORDERS: null as unknown as {},
-		GET_ORDER_DETAIL: null as unknown as {},
+		LOGIN: {} as ILoginReq,
+		CREATE_LISTING: {} as TCreateListingReq,
+		GET_ITEMS: {} as TGetItemsReq,
+		GET_ITEM_DETAIL: {} as {},
+		GET_ORDERS: {} as {},
+		GET_ORDER_DETAIL: {} as {},
 	} as const satisfies Record<ELinks, unknown>;
 
 	type TInputByLink = {
 		[K in keyof typeof inputByLink]: (typeof inputByLink)[K];
 	};
 
-	/*==================== HTTP REQUEST ============================*/
-
+	/*==================== LOGIN REQ ============================*/
 	export interface ILoginReq {
 		login: string;
 		token: string;
 	}
 
-	interface ISellsItem {
+	/*==================== CREATE LOT REQ ============================*/
+	interface ICreateListing {
 		name: string;
 		desc: string;
 		price: number;
@@ -54,41 +54,40 @@ export namespace RestInterface {
 		info: unknown;
 	}
 
-	interface ISellsItemCardInfo {
+	interface ICreateListingCardInfo {
 		name: string;
 		bank: PublicInterface.EBank;
 	}
 
-	interface ISellsItemCard extends ISellsItem {
+	interface ICreateListingCard extends ICreateListing {
 		type: "CARD";
-		info: ISellsItemCardInfo;
+		info: ICreateListingCardInfo;
 	}
 
-	export type TSellsItemReq = ISellsItemCard;
+	export type TCreateListingReq = ICreateListingCard;
 
-	type TGetItems = {
+	/*==================== GET LOT REQ ============================*/
+	type TGetItemsCore = {
 		limit: number; // сколько отдавать
-		cursorId?: string; // id лота с которого начинать отсчет
+		cursorId?: string; // id лота с которого начинать отсчет limit
 		sort?: PublicInterface.ESort; // сортировка
 		sellerId?: string; // фильтр по продавцу
 		price?: number; // фильтр по цене
-	} & TItem;
+		findStr?: string; // фильтр по имени
+	};
 
-	interface IItem {
-		type: PublicInterface.ETypeItem; // фильтр по типу товара
-	}
+	type TGetItemsType<T extends PublicInterface.ETypeItem, B> = { type: T } & B;
 
-	interface IItemCard extends IItem {
-		type: "CARD";
-		bank: PublicInterface.EBank;
-	}
+	type TGetItemsItemCard = TGetItemsType<"CARD", TGetItemsItemFilterCard>;
+	type TGetItemsItemFilterCard = { bank: PublicInterface.EBank };
 
-	type TItem = IItemCard;
+	type TGetItemsItem = TGetItemsItemCard;
+	export type TGetItemsReq = TGetItemsCore & TGetItemsItem;
 
-	const asdf: TGetItems = {
+	const asdf: TGetItemsReq = {
 		limit: 11,
 		cursorId: "jh",
-		sort: "TO_UPPER",
+		sort: "TO_LOWER",
 		type: "CARD",
 		bank: "SBER",
 	};

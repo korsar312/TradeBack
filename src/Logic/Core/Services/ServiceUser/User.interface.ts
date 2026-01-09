@@ -29,18 +29,18 @@ export namespace UserInterface {
 		createdAt: number; // когда выдано
 	}
 
-	export type ERestriction = keyof typeof Restriction;
-	export type ERole = keyof typeof Role;
+	export type ERestriction = keyof typeof UserRestriction;
+	export type ERole = keyof typeof UserRole;
 }
 
-const Restriction = {
+const UserRestriction = {
 	CHAT: "CHAT",
 	SELL: "SELL",
 	BUY: "BUY",
 	WITHDRAW: "WITHDRAW",
 };
 
-export const Role = {
+export const UserRole = {
 	ADMIN: "ADMIN",
 	USER: "USER",
 };

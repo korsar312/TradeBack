@@ -1,32 +1,20 @@
 export namespace PublicInterface {
-	export type TInfoItem = TInfoVar;
-	type TItemType = { type: ETypeItem };
-
-	type TInfoVar = TItemTypeCard | TDetailItemTypeCard;
-	interface TItemTypeCard extends TItemType {
-		type: "CARD";
-		bank: EBank;
-	}
-	export interface TDetailItemTypeCard extends TItemTypeCard {
-		desc: string;
-	}
-
-	export type EBank = keyof typeof Bank;
-	export type ESort = keyof typeof Sort;
-	export type ETypeItem = keyof typeof TypeItem;
+	export type EBank = keyof typeof PublicBank;
+	export type ESort = keyof typeof PublicSort;
+	export type ETypeItem = keyof typeof PublicTypeItem;
 }
 
-export const Bank = {
+export const PublicBank = {
 	ALFA: "ALFA",
 	SBER: "SBER",
 	TINK: "TINK",
 } as const;
 
-export const TypeItem = {
+export const PublicTypeItem = {
 	CARD: "CARD",
 } as const;
 
-const Sort = {
+export const PublicSort = {
 	TO_UPPER: "TO_UPPER",
 	TO_LOWER: "TO_LOWER",
 } as const;

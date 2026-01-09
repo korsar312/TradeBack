@@ -1,4 +1,4 @@
-import type { RestInterface as Interface } from "../Rest.interface.ts";
+import { RestInterface as Interface } from "../Rest.interface.ts";
 import { TModules } from "../../../Logic";
 
 export class RestImp implements Interface.IAdapter {
@@ -15,7 +15,7 @@ export class RestImp implements Interface.IAdapter {
 		return this.createReturn(userId);
 	}
 
-	public async CREATE_LISTING(params: Interface.TSellsItemReq, userId: string) {
+	public async CREATE_LISTING(params: Interface.TCreateListingReq, userId: string) {
 		const { desc, name, info, price, type } = params;
 
 		const listingId = this.module.listing.saveNewListing({ name, desc, sellerId: userId, type });
@@ -26,7 +26,7 @@ export class RestImp implements Interface.IAdapter {
 		this.module.chat.saveNewChat({ dealId });
 	}
 
-	public async GET_ITEMS(params: {}) {}
+	public async GET_ITEMS(params: Interface.TGetItemsReq) {}
 	public async GET_ITEM_DETAIL(params: {}) {}
 	public async GET_ORDERS(params: {}) {}
 	public async GET_ORDER_DETAIL(params: {}) {}
