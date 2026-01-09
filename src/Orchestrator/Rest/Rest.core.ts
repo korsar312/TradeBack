@@ -4,8 +4,8 @@ import express, { Express, NextFunction, Request, Response } from "express";
 import { RestSchema } from "./Imp/Rest.schema.ts";
 import { TModules } from "../../Logic";
 import { Utils } from "../../Utils";
-import { ErrorInterface } from "../../Utils/Error/Error.interface.ts";
 import { Role, UserInterface } from "../../Logic/Core/Services/ServiceUser/User.interface.ts";
+import { ErrorSys } from "../../Utils/Error/Error.imp.ts";
 
 const routeNoCheck: Interface.ELinks[] = ["LOGIN"];
 
@@ -60,7 +60,7 @@ export class RestCore extends OrchestratorBase {
 
 	private rightChecker = async (req: Request, res: Response, next: NextFunction) => {
 		try {
-			const route = req.path as Interface.ELinks;
+			const route = req.path;
 
 			const routeNoCheckPath = routeNoCheck.map((el) => this.links[el].link);
 			const isNoCheck = routeNoCheckPath.includes(route);
@@ -72,21 +72,18 @@ export class RestCore extends OrchestratorBase {
 
 			const routeRight = this.role[user.role] || [];
 			const isAccess = routeRight.includes(route);
-			if (!isAccess) throw new Error("NOT_RIGHT" satisfies ErrorInterface.EErrorReason);
+			if (!isAccess) throw Utils.error.createError({ reason: "NOT_RIGHT", data: `${route} !== ${routeRight}` });
 
 			res.locals.userId = userId;
 
 			return next();
-		} catch (e: any) {
-			const { message, httpCode } = Utils.error.getError(e.message);
-
-			if (res.headersSent) return;
-			res.status(httpCode).json({ error: message });
+		} catch (e: unknown) {
+			this.errorHandler(res, e);
 		}
 	};
 
-	private async notFoundHandler(_req: Request, res: Response) {
-		const { message, httpCode } = Utils.error.getError("ROUTE_NOT_FOUND");
+	private async notFoundHandler(req: Request, res: Response) {
+		const { message, httpCode } = Utils.error.getError({ reason: "ROUTE_NOT_FOUND", data: req.path });
 		res.status(httpCode).json({ error: message });
 	}
 
@@ -105,11 +102,8 @@ export class RestCore extends OrchestratorBase {
 
 				if (res.headersSent) return;
 				res.status(result?.code ?? 200).json(result?.returned ?? { ok: true });
-			} catch (e: any) {
-				const { message, httpCode } = Utils.error.getError(e.message);
-
-				if (res.headersSent) return;
-				res.status(httpCode).json({ error: message });
+			} catch (e: unknown) {
+				this.errorHandler(res, e);
 			}
 		};
 
@@ -120,5 +114,12 @@ export class RestCore extends OrchestratorBase {
 		app.listen(this.port, () => {
 			console.log(`Listening on http://localhost:${this.port}`);
 		});
+	}
+
+	private errorHandler(res: Response, e: unknown): void {
+		const { message, httpCode, data } = e instanceof ErrorSys ? e : Utils.error.unknownError;
+
+		if (res.headersSent) return;
+		res.status(httpCode).json({ error: message, detail: data });
 	}
 }

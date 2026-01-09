@@ -1,3 +1,5 @@
+import { PublicInterface } from "../Public.interface.ts";
+
 export namespace ListingInterface {
 	export interface IAdapter {
 		saveNewListing(data: TListingMin): string;
@@ -8,7 +10,7 @@ export namespace ListingInterface {
 	export interface IListing {
 		id: string; // id объявления
 		sellerId: string; // FK users.id
-		type: EListingType; // тип объявления
+		type: PublicInterface.ETypeItem; // тип объявления
 		createdAt: number; // время создания
 		status: EListingStatus; // статус
 		name: string; // заголовок
@@ -17,13 +19,8 @@ export namespace ListingInterface {
 
 	export type TListingMin = Omit<IListing, "id" | "createdAt" | "status">;
 
-	export type EListingType = keyof typeof ListingType;
 	export type EListingStatus = keyof typeof ListingStatus;
 }
-
-const ListingType = {
-	CARD: "CARD",
-};
 
 const ListingStatus = {
 	DRAFT: "DRAFT",

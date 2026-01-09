@@ -1,3 +1,5 @@
+import { Utils } from "../../../Utils";
+
 class DI<Modules extends Record<string, any>> {
 	private registry: { [K in keyof Modules]?: Modules[K] } = {};
 
@@ -12,7 +14,7 @@ class DI<Modules extends Record<string, any>> {
 
 	public get<K extends keyof Modules>(command: K): Modules[K] {
 		const svc = this.registry[command];
-		if (!svc) throw new Error(`Незарегистрированный сервис ${String(command)}`);
+		if (!svc) throw Utils.error.createError({ reason: "INTERNAL_SERVER_ERROR", data: `${String(command)} не найден` });
 
 		return svc;
 	}

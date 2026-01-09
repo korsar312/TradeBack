@@ -28,6 +28,6 @@ export namespace ItemInterface {
 
 	export type TItem = IItemCard;
 
-	type TItemChange<T extends keyof TItem, B extends keyof TItem[T]> = Omit<TItem, T> & { info: Omit<TItem[T], B> };
+	export type TItemChange<T extends keyof TItem, B extends keyof TItem[T]> = Omit<TItem, T> & { info: Omit<TItem[T], B> };
 	export type TItemMin = TItemChange<"info", "id">;
 }

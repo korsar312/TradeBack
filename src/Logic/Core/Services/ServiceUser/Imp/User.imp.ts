@@ -2,10 +2,11 @@ import type { UserInterface as Interface } from "../User.interface.ts";
 import ServiceBase from "../../Service.base.ts";
 import { UserNames } from "./User.names.ts";
 import type { ErrorInterface } from "../../../../../Utils/Error/Error.interface.ts";
+import { Utils } from "../../../../../Utils";
 
 class UserImp extends ServiceBase implements Interface.IAdapter {
 	private Require<T>(value: T | null | undefined, reason: ErrorInterface.EErrorReason): T {
-		if (value == null) throw new Error(reason satisfies ErrorInterface.EErrorReason);
+		if (value == null) throw Utils.error.createError({ reason });
 		return value;
 	}
 
@@ -30,7 +31,7 @@ class UserImp extends ServiceBase implements Interface.IAdapter {
 	private IsExistUser = (id: string): boolean => Boolean(this.API.BD.read.User(id));
 
 	public saveNewUser(login: string): string {
-		if (this.IsExistUserAuth(login)) throw new Error("USER_ALREADY_EXIST" satisfies ErrorInterface.EErrorReason);
+		if (this.IsExistUserAuth(login)) throw Utils.error.createError({ reason: "USER_ALREADY_EXIST" });
 
 		const user = this.CreateUser(login);
 		const auth = this.CreateUserAuth(user.id);
@@ -47,7 +48,7 @@ class UserImp extends ServiceBase implements Interface.IAdapter {
 
 	public login(login: string, token: string): string {
 		const authData = this.GetUserAuth(login);
-		if (authData.tokenHash !== token) throw new Error("AUTH_INVALID" satisfies ErrorInterface.EErrorReason);
+		if (authData.tokenHash !== token) throw Utils.error.createError({ reason: "AUTH_INVALID" });
 
 		const user = this.GetUser(authData.userId);
 

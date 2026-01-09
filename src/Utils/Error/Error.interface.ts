@@ -3,17 +3,24 @@ import type { z } from "zod";
 
 export namespace ErrorInterface {
 	export interface IAdapter {
-		getError(innerReason: EErrorReason): TError;
+		unknownError: TError;
+		getError(params: TErrorReason): TError;
+		createError(param: TErrorReason): TError;
 		parseQuery<TSchema extends z.ZodType>(req: Request, schema: TSchema, userError?: EErrorReason): z.output<TSchema>;
 	}
 
 	export type TError = {
 		message: string;
 		httpCode: number;
+		data?: unknown;
 	};
 
+	export type TErrorReason = {
+		reason: string | keyof typeof ErrorReason;
+		data?: string;
+	};
 	export type EErrorReason = keyof typeof ErrorReason;
-	export type TErrorMap = Record<EErrorReason, TError>;
+	export type TErrorMap = Record<EErrorReason, Omit<TError, "data">>;
 }
 
 export const ErrorReason = {

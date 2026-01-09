@@ -20,24 +20,13 @@ export class RestImp implements Interface.IAdapter {
 
 		const listingId = this.module.listing.saveNewListing({ name, desc, sellerId: userId, type });
 		const dealId = this.module.deal.saveNewDeal({ listingId, sellerId: userId });
-		const paymentId = this.module.payment.saveNewPayment({ dealId, price });
-		const itemId = this.module.item.saveNewItem({ info: { ...info, listingId }, type });
-		const deliveryId = this.module.delivery.saveNewDelivery({ dealId, deliveryPlace: null, departurePlace: null, trackNumber: null });
-		const chatId = this.module.chat.saveNewChat({ dealId });
-
-		console.log(`
-			Созданы:
-			listingId - ${listingId}
-			dealId - ${dealId}
-			paymentId - ${paymentId}
-			itemId - ${itemId}
-			deliveryId - ${deliveryId}
-			chatId - ${chatId}
-		`);
+		this.module.payment.saveNewPayment({ dealId, price });
+		this.module.item.saveNewItem({ info: { ...info, listingId }, type });
+		this.module.delivery.saveNewDelivery({ dealId, deliveryPlace: null, departurePlace: null, trackNumber: null });
+		this.module.chat.saveNewChat({ dealId });
 	}
 
-	public async GET_GOODS(params: {}) {}
-	public async GET_ITEM(params: {}) {}
+	public async GET_ITEMS(params: {}) {}
 	public async GET_ITEM_DETAIL(params: {}) {}
 	public async GET_ORDERS(params: {}) {}
 	public async GET_ORDER_DETAIL(params: {}) {}

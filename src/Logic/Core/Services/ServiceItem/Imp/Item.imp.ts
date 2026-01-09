@@ -1,6 +1,6 @@
 import { ItemInterface as Interface } from "../Item.interface.ts";
 import ServiceBase from "../../Service.base.ts";
-import { ErrorInterface } from "../../../../../Utils/Error/Error.interface.ts";
+import { Utils } from "../../../../../Utils";
 
 class ItemImp extends ServiceBase implements Interface.IAdapter {
 	private createItemCard(data: Interface.TItemMin): Interface.TItemCard {
@@ -16,7 +16,7 @@ class ItemImp extends ServiceBase implements Interface.IAdapter {
 
 				return card.id;
 			default:
-				throw new Error("ITEM_TYPE_NOT_FOUND" satisfies ErrorInterface.EErrorReason);
+				throw Utils.error.createError({ reason: "ITEM_TYPE_NOT_FOUND" });
 		}
 	}
 }

@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { PublicInterface } from "../../Logic/Core/Services/Public.interface.ts";
-import { ListingInterface } from "../../Logic/Core/Services/ServiceListing/Listing.interface.ts";
 import { UserInterface } from "../../Logic/Core/Services/ServiceUser/User.interface.ts";
 
 export namespace RestInterface {
@@ -30,8 +29,7 @@ export namespace RestInterface {
 	const inputByLink = {
 		LOGIN: null as unknown as ILoginReq,
 		CREATE_LISTING: null as unknown as TSellsItemReq,
-		GET_GOODS: null as unknown as {},
-		GET_ITEM: null as unknown as {},
+		GET_ITEMS: null as unknown as {},
 		GET_ITEM_DETAIL: null as unknown as {},
 		GET_ORDERS: null as unknown as {},
 		GET_ORDER_DETAIL: null as unknown as {},
@@ -52,7 +50,7 @@ export namespace RestInterface {
 		name: string;
 		desc: string;
 		price: number;
-		type: ListingInterface.EListingType;
+		type: PublicInterface.ETypeItem;
 		info: unknown;
 	}
 
@@ -68,14 +66,40 @@ export namespace RestInterface {
 
 	export type TSellsItemReq = ISellsItemCard;
 
+	type TGetItems = {
+		limit: number; // сколько отдавать
+		cursorId?: string; // id лота с которого начинать отсчет
+		sort?: PublicInterface.ESort; // сортировка
+		sellerId?: string; // фильтр по продавцу
+		price?: number; // фильтр по цене
+	} & TItem;
+
+	interface IItem {
+		type: PublicInterface.ETypeItem; // фильтр по типу товара
+	}
+
+	interface IItemCard extends IItem {
+		type: "CARD";
+		bank: PublicInterface.EBank;
+	}
+
+	type TItem = IItemCard;
+
+	const asdf: TGetItems = {
+		limit: 11,
+		cursorId: "jh",
+		sort: "TO_UPPER",
+		type: "CARD",
+		bank: "SBER",
+	};
+
 	/*==================== HTTP RESPONSE ============================*/
 }
 
 const Links = {
 	LOGIN: "LOGIN",
-	GET_GOODS: "GET_GOODS",
-	GET_ITEM: "GET_ITEM",
 	CREATE_LISTING: "CREATE_LISTING",
+	GET_ITEMS: "GET_ITEMS",
 	GET_ITEM_DETAIL: "GET_ITEM_DETAIL",
 	GET_ORDERS: "GET_ORDERS",
 	GET_ORDER_DETAIL: "GET_ORDER_DETAIL",

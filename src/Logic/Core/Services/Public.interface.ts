@@ -12,6 +12,7 @@ export namespace PublicInterface {
 	}
 
 	export type EBank = keyof typeof Bank;
+	export type ESort = keyof typeof Sort;
 	export type ETypeItem = keyof typeof TypeItem;
 }
 
@@ -23,4 +24,9 @@ export const Bank = {
 
 export const TypeItem = {
 	CARD: "CARD",
+} as const;
+
+const Sort = {
+	TO_UPPER: "TO_UPPER",
+	TO_LOWER: "TO_LOWER",
 } as const;

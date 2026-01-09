@@ -11,12 +11,7 @@ export const Links: RestInterface.TLinks = {
 		http: "post",
 		role: ["USER", "ADMIN"],
 	},
-	GET_GOODS: {
-		link: "/getGoods",
-		http: "get",
-		role: ["USER", "ADMIN"],
-	},
-	GET_ITEM: {
+	GET_ITEMS: {
 		link: "/getItem",
 		http: "get",
 		role: ["USER", "ADMIN"],

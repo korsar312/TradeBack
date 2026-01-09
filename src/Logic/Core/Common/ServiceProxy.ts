@@ -1,3 +1,5 @@
+import { Utils } from "../../../Utils";
+
 class ServiceProxy<T extends object> {
 	public readonly invoke: T;
 
@@ -12,7 +14,7 @@ class ServiceProxy<T extends object> {
 					const value = target[prop as keyof T];
 					return typeof value === "function" ? value.bind(target) : value;
 				}
-				throw new Error(`${String(prop)} вариант API не существует`);
+				throw Utils.error.createError({ reason: "INTERNAL_SERVER_ERROR", data: `${String(prop)} вариант API не существует` });
 			},
 		});
 	}
