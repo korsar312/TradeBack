@@ -1,6 +1,8 @@
 export namespace MessageInterface {
 	export interface IAdapter {
 		createMessage(data: IMessage): void;
+		getMessage(id: string): IMessage;
+		getMessagesForChatId(chatId: string): IMessage[];
 	}
 
 	export interface IMessage {

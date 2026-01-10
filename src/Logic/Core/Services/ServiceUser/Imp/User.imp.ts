@@ -1,15 +1,9 @@
 import type { UserInterface as Interface } from "../User.interface.ts";
 import ServiceBase from "../../Service.base.ts";
 import { UserNames } from "./User.names.ts";
-import type { ErrorInterface } from "../../../../../Utils/Error/Error.interface.ts";
 import { Utils } from "../../../../../Utils";
 
 class UserImp extends ServiceBase implements Interface.IAdapter {
-	private Require<T>(value: T | null | undefined, reason: ErrorInterface.EErrorReason): T {
-		if (value == null) throw Utils.error.createError({ reason });
-		return value;
-	}
-
 	private CreateUser(login: string): Interface.IUser {
 		const id = "user__" + crypto.randomUUID();
 		const nickname = UserNames[Math.floor(Math.random() * UserNames.length)];
@@ -24,10 +18,10 @@ class UserImp extends ServiceBase implements Interface.IAdapter {
 		return { id, userId, tokenHash };
 	}
 
-	private GetUserAuth = (login: string): Interface.IUserAuth => this.Require(this.API.BD.read.UsersAuthByLogin(login), "USER_NOT_FOUND");
+	private GetUserAuth = (login: string): Interface.IUserAuth => Utils.error.require(this.API.BD.read.UsersAuthByLogin(login), "USER_NOT_FOUND");
 	private IsExistUserAuth = (login: string): boolean => Boolean(this.API.BD.read.UsersAuthByLogin(login));
 
-	private GetUser = (id: string): Interface.IUser => this.Require(this.API.BD.read.User(id), "USER_NOT_FOUND");
+	private GetUser = (id: string): Interface.IUser => Utils.error.require(this.API.BD.read.User(id), "USER_NOT_FOUND");
 	private IsExistUser = (id: string): boolean => Boolean(this.API.BD.read.User(id));
 
 	public saveNewUser(login: string): string {

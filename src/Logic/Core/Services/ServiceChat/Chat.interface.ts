@@ -1,6 +1,7 @@
 export namespace ChatInterface {
 	export interface IAdapter {
 		saveNewChat(data: IChatMin): string;
+		getChat(id: string): IChat;
 	}
 
 	export interface IChat {

@@ -9,6 +9,30 @@ export const Errors: ErrorInterface.TErrorMap = {
 		httpCode: 404,
 		message: "Пользователь не найден",
 	},
+	DEAL_NOT_FOUND: {
+		httpCode: 404,
+		message: "Сделка не найдена",
+	},
+	CHAT_NOT_FOUND: {
+		httpCode: 404,
+		message: "Чат не найдена",
+	},
+	MESSAGE_NOT_FOUND: {
+		httpCode: 404,
+		message: "Сообщение не найдено",
+	},
+	DELIVERY_NOT_FOUND: {
+		httpCode: 404,
+		message: "Доставка не найдена",
+	},
+	EVALUATION_NOT_FOUND: {
+		httpCode: 404,
+		message: "Отзыв не найден",
+	},
+	ITEM_NOT_FOUND: {
+		httpCode: 404,
+		message: "Товар не найден",
+	},
 	INTERNAL_SERVER_ERROR: {
 		httpCode: 500,
 		message: "Ошибка сервера",

@@ -15,8 +15,8 @@ class ListingImp extends ServiceBase implements Interface.IAdapter {
 	}
 
 	public updateListing() {}
-	public getListing() {
-		return "";
+	public getQtyListing() {
+		return [];
 	}
 }
 

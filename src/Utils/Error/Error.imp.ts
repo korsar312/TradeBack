@@ -1,5 +1,6 @@
-import { ErrorInterface as Interface } from "./Error.interface.ts";
+import { type ErrorInterface, ErrorInterface as Interface } from "./Error.interface.ts";
 import type { z } from "zod";
+import { Utils } from "../index.ts";
 
 export class ErrorSys extends Error implements Interface.TError {
 	private errorObj: Interface.TError;
@@ -47,6 +48,11 @@ class ErrorImp implements Interface.IAdapter {
 
 	public get unknownError(): Interface.TError {
 		return this.errorMap.INTERNAL_SERVER_ERROR;
+	}
+
+	public require<T>(value: T | null | undefined, reason: ErrorInterface.EErrorReason): T {
+		if (value == null) throw Utils.error.createError({ reason });
+		return value;
 	}
 
 	public parseQuery<TSchema extends z.ZodType>(

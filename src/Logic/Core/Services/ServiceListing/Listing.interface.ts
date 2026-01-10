@@ -4,7 +4,7 @@ export namespace ListingInterface {
 	export interface IAdapter {
 		saveNewListing(data: TListingMin): string;
 		updateListing(id: string, data: IListing): void;
-		getListing(id: string): string;
+		getQtyListing(qty: number, status: EListingStatus, onId?: string, filter?: TGetParams): IListing[];
 	}
 
 	export interface IListing {
@@ -18,6 +18,13 @@ export namespace ListingInterface {
 	}
 
 	export type TListingMin = Omit<IListing, "id" | "createdAt" | "status">;
+
+	export type TGetParams = Partial<{
+		type: PublicInterface.ETypeItem;
+		sort: PublicInterface.ESort;
+		sellerId: string;
+		findStr: string;
+	}>;
 
 	export type EListingStatus = keyof typeof ListingStatus;
 }

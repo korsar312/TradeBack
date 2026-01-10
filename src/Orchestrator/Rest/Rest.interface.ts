@@ -79,18 +79,12 @@ export namespace RestInterface {
 	type TGetItemsType<T extends PublicInterface.ETypeItem, B> = { type: T } & B;
 
 	type TGetItemsItemCard = TGetItemsType<"CARD", TGetItemsItemFilterCard>;
-	type TGetItemsItemFilterCard = { bank: PublicInterface.EBank };
+	type TGetItemsItemFilterCard = {
+		bank: PublicInterface.EBank; // фильтр по банку
+	};
 
 	type TGetItemsItem = TGetItemsItemCard;
 	export type TGetItemsReq = TGetItemsCore & TGetItemsItem;
-
-	const asdf: TGetItemsReq = {
-		limit: 11,
-		cursorId: "jh",
-		sort: "TO_LOWER",
-		type: "CARD",
-		bank: "SBER",
-	};
 
 	/*==================== HTTP RESPONSE ============================*/
 }

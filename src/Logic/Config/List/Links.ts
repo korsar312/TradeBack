@@ -7,7 +7,7 @@ export const Links: RestInterface.TLinks = {
 		role: ["USER", "ADMIN"],
 	},
 	CREATE_LISTING: {
-		link: "/createLot",
+		link: "/createListing",
 		http: "post",
 		role: ["USER", "ADMIN"],
 	},
