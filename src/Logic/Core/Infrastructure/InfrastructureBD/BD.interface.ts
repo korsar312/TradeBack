@@ -1,12 +1,13 @@
 import type { UserInterface } from "../../Services/ServiceUser/User.interface";
 import type { ListingInterface } from "../../Services/ServiceListing/Listing.interface.ts";
-import type { ItemInterface } from "../../Services/ServiceItem/Item.interface.ts";
+import { ItemInterface } from "../../Services/ServiceItem/Item.interface.ts";
 import type { DealInterface } from "../../Services/ServiceDeal/Deal.interface.ts";
 import type { PaymentInterface } from "../../Services/ServicePayment/Payment.interface.ts";
 import type { DeliveryInterface } from "../../Services/ServiceDelivery/Delivery.interface.ts";
 import type { EvaluationInterface } from "../../Services/ServiceEvaluation/Evaluation.interface.ts";
 import type { ChatInterface } from "../../Services/ServiceChat/Chat.interface.ts";
 import type { MessageInterface } from "../../Services/ServiceMessage/Message.interface.ts";
+import { PublicInterface } from "../../Services/Public.interface.ts";
 
 export namespace BDInterface {
 	export interface IAdapter {
@@ -31,7 +32,7 @@ export namespace BDInterface {
 	};
 
 	export type Listing = ListingInterface.IListing;
-	export type ItemCard = ItemInterface.TItemCard;
+	export type ItemCard = ItemInterface.TItemInfoVar;
 	export type Deal = DealInterface.IDeal;
 	export type Payment = PaymentInterface.IPayment;
 	export type Delivery = DeliveryInterface.IDelivery;
@@ -85,10 +86,25 @@ export namespace BDInterface {
 		Evaluation: ReadEntity<Evaluation>;
 		Chat: ReadEntity<Chat>;
 		Message: ReadEntity<Message>;
+
 		/* связи */
 		ListMessagesByChat: (chatId: string) => Message[];
 		ListDealsByUser: (userId: string) => Deal[];
 		UsersAuthByLogin: (login: string) => UserAuth | null; // поиск users_auth по users.login
+		ItemCardByListingId: (listingId: string) => ItemCard | null; // item_cards.listing_id unique
+		DealByListingId: (listingId: string) => Deal | null; // deals.listing_id unique
+		PaymentByDealId: (dealId: string) => Payment | null; // payments.deal_id unique
+
+		/* прочее */
+		ListListings: (p: {
+			limit: number;
+			cursorId?: string;
+			status: ListingInterface.EListingStatus;
+			type: PublicInterface.ETypeItem;
+			sort?: PublicInterface.ESort;
+			sellerId?: string;
+			findStr?: string;
+		}) => Listing[];
 	}
 
 	export interface IUpdate {

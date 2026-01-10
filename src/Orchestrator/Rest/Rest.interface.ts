@@ -28,6 +28,7 @@ export namespace RestInterface {
 
 	const inputByLink = {
 		LOGIN: {} as ILoginReq,
+		REGISTER: {} as IRegisterReq,
 		CREATE_LISTING: {} as TCreateListingReq,
 		GET_ITEMS: {} as TGetItemsReq,
 		GET_ITEM_DETAIL: {} as {},
@@ -43,6 +44,11 @@ export namespace RestInterface {
 	export interface ILoginReq {
 		login: string;
 		token: string;
+	}
+
+	/*==================== REGISTER REQ ============================*/
+	export interface IRegisterReq {
+		login: string;
 	}
 
 	/*==================== CREATE LOT REQ ============================*/
@@ -72,7 +78,8 @@ export namespace RestInterface {
 		cursorId?: string; // id лота с которого начинать отсчет limit
 		sort?: PublicInterface.ESort; // сортировка
 		sellerId?: string; // фильтр по продавцу
-		price?: number; // фильтр по цене
+		priceUp?: number; // фильтр по верхней цене
+		priceDown?: number; // фильтр по нижней цене
 		findStr?: string; // фильтр по имени
 	};
 
@@ -80,7 +87,7 @@ export namespace RestInterface {
 
 	type TGetItemsItemCard = TGetItemsType<"CARD", TGetItemsItemFilterCard>;
 	type TGetItemsItemFilterCard = {
-		bank: PublicInterface.EBank; // фильтр по банку
+		bank?: PublicInterface.EBank; // фильтр по банку
 	};
 
 	type TGetItemsItem = TGetItemsItemCard;
@@ -91,6 +98,7 @@ export namespace RestInterface {
 
 const Links = {
 	LOGIN: "LOGIN",
+	REGISTER: "REGISTER",
 	CREATE_LISTING: "CREATE_LISTING",
 	GET_ITEMS: "GET_ITEMS",
 	GET_ITEM_DETAIL: "GET_ITEM_DETAIL",

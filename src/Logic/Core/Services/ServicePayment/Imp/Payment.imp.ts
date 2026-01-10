@@ -8,8 +8,8 @@ class PaymentImp extends ServiceBase implements Interface.IAdapter {
 		return { ...data, id, status: "INIT" };
 	}
 
-	private GetPayment = (id: string): Interface.IPayment => Utils.error.require(this.API.BD.read.Payment(id), "MESSAGE_NOT_FOUND");
-	private IsExistPayment = (id: string): boolean => Boolean(this.API.BD.read.Payment(id));
+	private GetPayment = (id: string): Interface.IPayment => Utils.error.require(this.API.BD.read.Payment(id), "PAYMENT_NOT_FOUND");
+	private GetPaymentByDealId = (dealId: string): Interface.IPayment => Utils.error.require(this.API.BD.read.PaymentByDealId(dealId), "PAYMENT_NOT_FOUND");
 
 	public saveNewPayment(data: Interface.TPaymentMin) {
 		const payment = this.createPayment(data);
@@ -18,12 +18,12 @@ class PaymentImp extends ServiceBase implements Interface.IAdapter {
 		return payment.id;
 	}
 
-	public getPaymentsByDealIds(dealIds: string[]) {
-		return [];
-	}
-
 	public getPayment(id: string) {
 		return this.GetPayment(id);
+	}
+
+	public getPaymentByDealId(dealId: string) {
+		return this.GetPaymentByDealId(dealId);
 	}
 }
 

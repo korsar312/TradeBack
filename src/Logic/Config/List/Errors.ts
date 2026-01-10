@@ -33,6 +33,10 @@ export const Errors: ErrorInterface.TErrorMap = {
 		httpCode: 404,
 		message: "Товар не найден",
 	},
+	PAYMENT_NOT_FOUND: {
+		httpCode: 404,
+		message: "Информация об оплате не найден",
+	},
 	INTERNAL_SERVER_ERROR: {
 		httpCode: 500,
 		message: "Ошибка сервера",

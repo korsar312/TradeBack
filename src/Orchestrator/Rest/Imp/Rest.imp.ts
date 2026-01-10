@@ -1,5 +1,6 @@
 import { RestInterface as Interface } from "../Rest.interface.ts";
 import { TModules } from "../../../Logic";
+import { ItemInterface } from "../../../Logic/Core/Services/ServiceItem/Item.interface.ts";
 
 export class RestImp implements Interface.IAdapter {
 	constructor(private readonly module: TModules) {}
@@ -15,6 +16,13 @@ export class RestImp implements Interface.IAdapter {
 		return this.createReturn(userId);
 	}
 
+	public async REGISTER(params: Interface.IRegisterReq) {
+		const { login } = params;
+		const user = this.module.user.saveNewUser(login);
+
+		return this.createReturn(user);
+	}
+
 	public async CREATE_LISTING(params: Interface.TCreateListingReq, userId: string) {
 		const { desc, name, info, price, type } = params;
 
@@ -27,51 +35,57 @@ export class RestImp implements Interface.IAdapter {
 	}
 
 	public async GET_ITEMS(params: Interface.TGetItemsReq) {
-		let listings = this.module.listing.getQtyListing(params.limit, "ACTIVE", params.cursorId, {
-			type: params.type,
-			sort: params.sort,
-			sellerId: params.sellerId,
-			findStr: params.findStr,
-		});
+		const itemRes: unknown[] = [];
+		let lastListingId: string | undefined;
 
-		if (listings.length === 0) return this.createReturn([]);
+		while (itemRes.length < params.limit) {
+			const reqQty = params.limit - itemRes.length;
 
-		const items = this.module.item.getItemsByListingIds(
-			listings.map((el) => el.id),
-			params.type,
-		);
-		const cardByListingId = new Map(items.map((el) => [el.info.listingId, el]));
-
-		if (params.type === "CARD") {
-			if (params.bank) {
-				listings = listings.filter((l) => {
-					const card = cardByListingId.get(l.id);
-					return !!card && card.info.bank === params.bank;
-				});
-			}
-
-			if (listings.length === 0) return this.createReturn([]);
-		}
-
-		if (typeof params.price === "number") {
-			const deals = this.module.deal.getDealsByListingIds(listings.map((el) => el.id));
-			const dealIdByListingId = new Map(deals.map((d) => [d.listingId, d.id]));
-
-			const payments = this.module.payment.getPaymentsByDealIds(deals.map((el) => el.id));
-			const priceByDealId = new Map(payments.map((p) => [p.dealId, p.price]));
-
-			listings = listings.filter((l) => {
-				const dealId = dealIdByListingId.get(l.id);
-				if (!dealId) return false;
-				const price = priceByDealId.get(dealId);
-
-				return typeof price === "number" && price === params.price;
+			const listings = this.module.listing.getQtyListing(reqQty, "ACTIVE", params.type, lastListingId || params.cursorId, {
+				sort: params.sort,
+				sellerId: params.sellerId,
+				findStr: params.findStr,
 			});
 
-			if (listings.length === 0) return this.createReturn([]);
+			if (listings.length === 0) break;
+			lastListingId = listings.at(-1)?.id;
+
+			listings.forEach((el) => {
+				const item = this.module.item.getItemByListingId(el.id, el.type);
+				const deal = this.module.deal.getDealByListingId(el.id);
+				const seller = this.module.user.getUser(el.sellerId);
+				const payment = this.module.payment.getPaymentByDealId(deal.id);
+
+				const itemPick: ItemInterface.TItemInfoVar = {} as ItemInterface.TItemInfoVar;
+
+				switch (params.type) {
+					case "CARD":
+						if (params.bank && item.bank !== params.bank) return;
+						itemPick.bank = item.bank;
+				}
+
+				if (params.priceUp != null || params.priceDown != null) {
+					const priceUp = params.priceUp ?? Infinity;
+					const priceDown = params.priceDown ?? 0;
+
+					if (payment.price < priceDown || payment.price > priceUp) return;
+				}
+
+				itemRes.push({
+					name: el.name,
+					price: payment.price,
+
+					sellerName: seller.nickname,
+					sellerId: seller.id,
+					sellerLike: 0,
+					sellerDislike: 0,
+
+					info: itemPick,
+				});
+			});
 		}
 
-		return this.createReturn(listings);
+		return this.createReturn(itemRes);
 	}
 
 	public async GET_ITEM_DETAIL(params: {}) {}

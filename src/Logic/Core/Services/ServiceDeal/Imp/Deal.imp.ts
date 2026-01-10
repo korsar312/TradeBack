@@ -9,7 +9,7 @@ class DealImp extends ServiceBase implements Interface.IAdapter {
 	}
 
 	private GetDeal = (id: string): Interface.IDeal => Utils.error.require(this.API.BD.read.Deal(id), "DEAL_NOT_FOUND");
-	private IsExistDeal = (id: string): boolean => Boolean(this.API.BD.read.Deal(id));
+	private GetDealByListingId = (listingId: string): Interface.IDeal => Utils.error.require(this.API.BD.read.DealByListingId(listingId), "DEAL_NOT_FOUND");
 
 	public saveNewDeal(data: Interface.IDealMin) {
 		const deal = this.CreateDeal(data);
@@ -22,8 +22,8 @@ class DealImp extends ServiceBase implements Interface.IAdapter {
 		return this.GetDeal(id);
 	}
 
-	public getDealsByListingIds(listingIds: string[]) {
-		return [];
+	public getDealByListingId(listingId: string) {
+		return this.GetDealByListingId(listingId);
 	}
 }
 

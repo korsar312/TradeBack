@@ -3,8 +3,8 @@ import { PublicInterface } from "../Public.interface.ts";
 export namespace ItemInterface {
 	export interface IAdapter {
 		saveNewItem(data: TItemMin): string;
-		getItem(id: string, type: PublicInterface.ETypeItem): TItem;
-		getItemsByListingIds(listingIds: string[], type: PublicInterface.ETypeItem): TItem[];
+		getItem(id: string, type: PublicInterface.ETypeItem): TItemInfoVar;
+		getItemByListingId(listingId: string, type: PublicInterface.ETypeItem): TItemInfoVar;
 	}
 
 	interface IItemId {
@@ -27,6 +27,7 @@ export namespace ItemInterface {
 	}
 
 	export type TItemCard = IItemCard["info"];
+	export type TItemInfoVar = TItemCard;
 
 	export type TItem = IItemCard;
 

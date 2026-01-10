@@ -7,7 +7,7 @@ import { UserInterface, UserRole } from "../../Logic/Core/Services/ServiceUser/U
 import { ErrorSys } from "../../Utils/Error/Error.imp.ts";
 import { RestSchema } from "./Schema/Rest.schema.ts";
 
-const routeNoCheck: Interface.ELinks[] = ["LOGIN"];
+const routeNoCheck: Interface.ELinks[] = ["LOGIN", "REGISTER"];
 
 function pickRoleLink(links: Interface.TLinks, role: UserInterface.ERole): string[] {
 	return Object.entries(links)

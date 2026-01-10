@@ -20,11 +20,9 @@ class UserImp extends ServiceBase implements Interface.IAdapter {
 
 	private GetUserAuth = (login: string): Interface.IUserAuth => Utils.error.require(this.API.BD.read.UsersAuthByLogin(login), "USER_NOT_FOUND");
 	private IsExistUserAuth = (login: string): boolean => Boolean(this.API.BD.read.UsersAuthByLogin(login));
-
 	private GetUser = (id: string): Interface.IUser => Utils.error.require(this.API.BD.read.User(id), "USER_NOT_FOUND");
-	private IsExistUser = (id: string): boolean => Boolean(this.API.BD.read.User(id));
 
-	public saveNewUser(login: string): string {
+	public saveNewUser(login: string) {
 		if (this.IsExistUserAuth(login)) throw Utils.error.createError({ reason: "USER_ALREADY_EXIST" });
 
 		const user = this.CreateUser(login);
@@ -33,7 +31,7 @@ class UserImp extends ServiceBase implements Interface.IAdapter {
 		this.API.BD.create.User(user);
 		this.API.BD.create.UsersAuth(auth);
 
-		return user.id;
+		return { user, auth };
 	}
 
 	public getUser(id: string): Interface.IUser {

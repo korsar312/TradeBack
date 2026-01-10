@@ -6,14 +6,19 @@ export const Links: RestInterface.TLinks = {
 		http: "post",
 		role: ["USER", "ADMIN"],
 	},
+	REGISTER: {
+		link: "/register",
+		http: "post",
+		role: ["USER", "ADMIN"],
+	},
 	CREATE_LISTING: {
 		link: "/createListing",
 		http: "post",
 		role: ["USER", "ADMIN"],
 	},
 	GET_ITEMS: {
-		link: "/getItem",
-		http: "get",
+		link: "/getItems",
+		http: "post",
 		role: ["USER", "ADMIN"],
 	},
 	GET_ITEM_DETAIL: {

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { RestInterface } from "../Rest.interface.ts";
-import { SchemaBank, SchemaListingType, SchemaPriceKopeks } from "./Rest.schema.ts";
+import { SchemaBank, SchemaListingType, SchemaPriceKopeks } from "./Rest.schema.public.ts";
 
 const BaseListingSchema = z.object({
 	name: z.string().min(1),

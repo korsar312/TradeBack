@@ -1,5 +1,6 @@
 import { ListingInterface as Interface } from "../Listing.interface.ts";
 import ServiceBase from "../../Service.base.ts";
+import { PublicInterface } from "../../Public.interface.ts";
 
 class ListingImp extends ServiceBase implements Interface.IAdapter {
 	private createListing(data: Interface.TListingMin): Interface.IListing {
@@ -15,8 +16,17 @@ class ListingImp extends ServiceBase implements Interface.IAdapter {
 	}
 
 	public updateListing() {}
-	public getQtyListing() {
-		return [];
+
+	public getQtyListing(limit: number, status: Interface.EListingStatus, type: PublicInterface.ETypeItem, cursorId?: string, filter?: Interface.TGetParams) {
+		return this.API.BD.read.ListListings({
+			limit,
+			cursorId,
+			status,
+			type,
+			sort: filter?.sort,
+			sellerId: filter?.sellerId,
+			findStr: filter?.findStr,
+		});
 	}
 }
 

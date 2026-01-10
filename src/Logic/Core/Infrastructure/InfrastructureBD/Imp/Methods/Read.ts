@@ -1,6 +1,6 @@
 import { BDHelpers } from "./BD.Helpers.ts";
 import type { BDInterface as Interface } from "../../BD.interface.ts";
-import { asc, eq, or } from "drizzle-orm";
+import { and, asc, desc, eq, gt, like, lt, or } from "drizzle-orm";
 import { Table } from "../BD.table.ts";
 
 export class Read extends BDHelpers implements Interface.IRead {
@@ -60,12 +60,7 @@ export class Read extends BDHelpers implements Interface.IRead {
 	});
 
 	ListMessagesByChat = (chatId: string) => {
-		const rows = this.db
-			.select()
-			.from(Table.messages)
-			.where(eq(Table.messages.chatId, chatId))
-			.orderBy(asc(Table.messages.createdAt))
-			.all();
+		const rows = this.db.select().from(Table.messages).where(eq(Table.messages.chatId, chatId)).orderBy(asc(Table.messages.createdAt)).all();
 		return rows as Interface.Message[];
 	};
 
@@ -91,5 +86,52 @@ export class Read extends BDHelpers implements Interface.IRead {
 			.where(eq(Table.users.login, login))
 			.get();
 		return r ? (r as Interface.UserAuth) : null;
+	};
+
+	ItemCardByListingId = (listingId: string) => {
+		const r = this.db.select().from(Table.itemCards).where(eq(Table.itemCards.listingId, listingId)).get();
+		return r ? (r as Interface.ItemCard) : null;
+	};
+
+	DealByListingId = (listingId: string) => {
+		const r = this.db.select().from(Table.deals).where(eq(Table.deals.listingId, listingId)).get();
+		return r ? (r as Interface.Deal) : null;
+	};
+
+	PaymentByDealId = (dealId: string) => {
+		const r = this.db.select().from(Table.payments).where(eq(Table.payments.dealId, dealId)).get();
+		return r ? (r as Interface.Payment) : null;
+	};
+
+	ListListings = (p: {
+		limit: number;
+		cursorId?: string;
+		status: Interface.Listing["status"];
+		type: Interface.Listing["type"];
+		sort?: "TO_UPPER" | "TO_LOWER";
+		sellerId?: string;
+		findStr?: string;
+	}) => {
+		const where: any[] = [eq(Table.listings.status, p.status), eq(Table.listings.type, p.type)];
+
+		if (p.sellerId) where.push(eq(Table.listings.sellerId, p.sellerId));
+		if (p.findStr) where.push(like(Table.listings.name, `%${p.findStr}%`));
+
+		if (p.cursorId) {
+			if (p.sort === "TO_LOWER") where.push(lt(Table.listings.id, p.cursorId));
+			else where.push(gt(Table.listings.id, p.cursorId));
+		}
+
+		const orderBy = p.sort === "TO_LOWER" ? desc(Table.listings.id) : asc(Table.listings.id);
+
+		const rows = this.db
+			.select()
+			.from(Table.listings)
+			.where(and(...where))
+			.orderBy(orderBy)
+			.limit(p.limit)
+			.all();
+
+		return rows as Interface.Listing[];
 	};
 }

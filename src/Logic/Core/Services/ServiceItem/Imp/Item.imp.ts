@@ -9,18 +9,19 @@ class ItemImp extends ServiceBase implements Interface.IAdapter {
 		return { ...data.info, id };
 	}
 
-	private GetItemCard = (id: string, type: PublicInterface.ETypeItem): Interface.TItem => {
+	private GetItemCard = (id: string, type: PublicInterface.ETypeItem): Interface.TItemInfoVar => {
 		switch (type) {
 			case "CARD":
-				return Utils.error.require(this.API.BD.read.ItemCard(id), "ITEM_NOT_FOUND") as unknown as Interface.TItem;
+				return Utils.error.require(this.API.BD.read.ItemCard(id), "ITEM_NOT_FOUND") as unknown as Interface.TItemInfoVar;
 			default:
 				throw Utils.error.createError({ reason: "ITEM_TYPE_NOT_FOUND" });
 		}
 	};
-	private IsExistItemCard = (id: string, type: PublicInterface.ETypeItem): boolean => {
+
+	private GetItemCardByListingId = (listingId: string, type: PublicInterface.ETypeItem): Interface.TItemInfoVar => {
 		switch (type) {
 			case "CARD":
-				return Boolean(this.API.BD.read.ItemCard(id));
+				return Utils.error.require(this.API.BD.read.ItemCardByListingId(listingId), "ITEM_NOT_FOUND") as unknown as Interface.TItemInfoVar;
 			default:
 				throw Utils.error.createError({ reason: "ITEM_TYPE_NOT_FOUND" });
 		}
@@ -42,8 +43,8 @@ class ItemImp extends ServiceBase implements Interface.IAdapter {
 		return this.GetItemCard(id, type);
 	}
 
-	public getItemsByListingIds(listingIds: string[], type: PublicInterface.ETypeItem) {
-		return [];
+	public getItemByListingId(listingId: string, type: PublicInterface.ETypeItem) {
+		return this.GetItemCardByListingId(listingId, type);
 	}
 }
 

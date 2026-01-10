@@ -2,7 +2,7 @@ export namespace DealInterface {
 	export interface IAdapter {
 		saveNewDeal(data: IDealMin): string;
 		getDeal(id: string): IDeal;
-		getDealsByListingIds(listingIds: string[]): IDeal[];
+		getDealByListingId(listingId: string): IDeal;
 	}
 
 	export interface IDeal {

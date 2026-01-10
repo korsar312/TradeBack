@@ -1,6 +1,6 @@
 export namespace UserInterface {
 	export interface IAdapter {
-		saveNewUser(login: string): string;
+		saveNewUser(login: string): { user: IUser; auth: IUserAuth };
 		getUser(id: string): IUser;
 		login(login: string, token: string): string;
 	}
