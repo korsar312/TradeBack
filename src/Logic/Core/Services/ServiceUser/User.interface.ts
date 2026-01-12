@@ -1,6 +1,6 @@
 export namespace UserInterface {
 	export interface IAdapter {
-		saveNewUser(login: string): { user: IUser; auth: IUserAuth };
+		saveNewUser(login: string): IUserAll;
 		getUser(id: string): IUser;
 		login(login: string, token: string): string;
 	}
@@ -11,6 +11,11 @@ export namespace UserInterface {
 		role: ERole; // роль (ADMIN)
 		login: string; // логин (unique)
 		createdAt: number; // timestamp (INTEGER)
+	}
+
+	export interface IUserAll {
+		user: IUser;
+		auth: IUserAuth;
 	}
 
 	export interface IUserAuth {

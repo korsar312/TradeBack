@@ -6,7 +6,7 @@
 	"scripts": {
 		"db:generate": "drizzle-kit generate",
 		"dev": "npm run db:generate && nodemon --watch src --ext ts --exec \"node -r ts-node/register/transpile-only src/index.ts\"",
-		"build": "tsc",
+		"build": "tsc -p tsconfig.json",
 		"start": "npx cross-env IS_DEV=1 tsx src/index.ts"
 	},
 	"repository": {

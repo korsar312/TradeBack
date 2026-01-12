@@ -1,5 +1,5 @@
 import type { ChatInterface as Interface } from "../Chat.interface.ts";
-import ServiceBase from "../../Service.base.ts";
+import ServiceBase from "../../Service.base";
 import { Utils } from "../../../../../Utils";
 
 class ChatImp extends ServiceBase implements Interface.IAdapter {

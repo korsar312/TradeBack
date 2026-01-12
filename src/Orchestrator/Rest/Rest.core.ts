@@ -1,11 +1,11 @@
-import { OrchestratorBase } from "../Orchestrator.base.ts";
-import { RestInterface as Interface } from "./Rest.interface.ts";
+import { OrchestratorBase } from "../Orchestrator.base";
+import type { RestInterface as Interface } from "./Rest.interface.ts";
 import express, { Express, NextFunction, Request, Response } from "express";
 import { TModules } from "../../Logic";
 import { Utils } from "../../Utils";
-import { UserInterface, UserRole } from "../../Logic/Core/Services/ServiceUser/User.interface.ts";
-import { ErrorSys } from "../../Utils/Error/Error.imp.ts";
-import { RestSchema } from "./Schema/Rest.schema.ts";
+import { type UserInterface, UserRole } from "../../Logic/Core/Services/ServiceUser/User.interface";
+import { ErrorSys } from "../../Utils/Error/Error.imp";
+import { RestSchema } from "./Schema/Rest.schema";
 
 const routeNoCheck: Interface.ELinks[] = ["LOGIN", "REGISTER"];
 
@@ -95,7 +95,7 @@ export class RestCore extends OrchestratorBase {
 
 		const innerRequest = async (req: Request, res: Response) => {
 			try {
-				const allParams = { ...req.body, ...req.query, ...req.params };
+				const allParams = Array.isArray(req.body) ? req.body : { ...req.body, ...req.query, ...req.params };
 				Utils.error.parseQuery(allParams, RestSchema[linkName]);
 
 				const result = await method(allParams, res.locals.userId);

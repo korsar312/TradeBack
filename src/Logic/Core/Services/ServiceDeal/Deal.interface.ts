@@ -2,7 +2,7 @@ export namespace DealInterface {
 	export interface IAdapter {
 		saveNewDeal(data: IDealMin): string;
 		getDeal(id: string): IDeal;
-		getDealByListingId(listingId: string): IDeal;
+		getDealsByListingId(listingId: string): IDeal[];
 	}
 
 	export interface IDeal {
@@ -17,11 +17,11 @@ export namespace DealInterface {
 	export type EDealStatus = keyof typeof DealStatus;
 }
 
-const DealStatus = {
+export const DealStatus = {
 	PENDING_PAYMENT: "PENDING_PAYMENT",
 	IN_ESCROW: "IN_ESCROW",
 	FULFILLED: "FULFILLED",
 	COMPLETE: "COMPLETE",
 	CANCELLED: "CANCELLED",
 	DISPUTED: "DISPUTED",
-};
+} as const;

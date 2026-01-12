@@ -1,6 +1,6 @@
-import { type ErrorInterface, ErrorInterface as Interface } from "./Error.interface.ts";
+import type { ErrorInterface, ErrorInterface as Interface } from "./Error.interface.ts";
 import type { z } from "zod";
-import { Utils } from "../index.ts";
+import { Utils } from "../index";
 
 export class ErrorSys extends Error implements Interface.TError {
 	private errorObj: Interface.TError;
@@ -55,11 +55,7 @@ class ErrorImp implements Interface.IAdapter {
 		return value;
 	}
 
-	public parseQuery<TSchema extends z.ZodType>(
-		params?: unknown,
-		schema?: TSchema,
-		userError?: Interface.EErrorReason,
-	): z.output<TSchema> {
+	public parseQuery<TSchema extends z.ZodType>(params?: unknown, schema?: TSchema, userError?: Interface.EErrorReason): z.output<TSchema> {
 		const r = schema?.safeParse(params);
 		if (!r?.success) throw this.createError({ reason: userError ?? "PARAMS_NOT_VALID", data: JSON.parse(r?.error?.message || "") });
 

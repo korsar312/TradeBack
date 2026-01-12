@@ -1,7 +1,7 @@
-import { BDHelpers } from "./BD.Helpers.ts";
+import { BDHelpers } from "./BD.Helpers";
 import type { BDInterface as Interface } from "../../BD.interface.ts";
 import { and, asc, desc, eq, gt, like, lt, or } from "drizzle-orm";
-import { Table } from "../BD.table.ts";
+import { Table } from "../BD.table";
 
 export class Read extends BDHelpers implements Interface.IRead {
 	User = this.mkReadEntity<Interface.User>(Table.users, (id) => {
@@ -93,9 +93,8 @@ export class Read extends BDHelpers implements Interface.IRead {
 		return r ? (r as Interface.ItemCard) : null;
 	};
 
-	DealByListingId = (listingId: string) => {
-		const r = this.db.select().from(Table.deals).where(eq(Table.deals.listingId, listingId)).get();
-		return r ? (r as Interface.Deal) : null;
+	ListDealsByListingId = (listingId: string) => {
+		return this.db.select().from(Table.deals).where(eq(Table.deals.listingId, listingId)).orderBy(asc(Table.deals.id)).all();
 	};
 
 	PaymentByDealId = (dealId: string) => {
@@ -107,12 +106,12 @@ export class Read extends BDHelpers implements Interface.IRead {
 		limit: number;
 		cursorId?: string;
 		status: Interface.Listing["status"];
-		type: Interface.Listing["type"];
+		saleKind: Interface.Listing["saleKind"];
 		sort?: "TO_UPPER" | "TO_LOWER";
 		sellerId?: string;
 		findStr?: string;
 	}) => {
-		const where: any[] = [eq(Table.listings.status, p.status), eq(Table.listings.type, p.type)];
+		const where: any[] = [eq(Table.listings.status, p.status), eq(Table.listings.saleKind, p.saleKind)];
 
 		if (p.sellerId) where.push(eq(Table.listings.sellerId, p.sellerId));
 		if (p.findStr) where.push(like(Table.listings.name, `%${p.findStr}%`));

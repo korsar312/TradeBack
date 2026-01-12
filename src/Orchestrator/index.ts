@@ -1,4 +1,4 @@
-import { OrchestratorBase } from "./Orchestrator.base.ts";
+import type { OrchestratorBase } from "./Orchestrator.base.ts";
 
 export class Orchestrator {
 	private workers: OrchestratorBase[] = [];

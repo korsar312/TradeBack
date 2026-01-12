@@ -1,6 +1,6 @@
 import { GetArray } from "./GetArray/GetArray";
 import { ToArray } from "./ToArray/ToArray";
-import { ToMoney } from "./ToMoney/ToMoney.ts";
+import { ToMoney } from "./ToMoney/ToMoney";
 
 class Index {
 	/** Возвращает массив */

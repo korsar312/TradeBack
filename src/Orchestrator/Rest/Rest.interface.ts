@@ -1,6 +1,8 @@
 import { z } from "zod";
-import { PublicInterface } from "../../Logic/Core/Services/Public.interface.ts";
-import { UserInterface } from "../../Logic/Core/Services/ServiceUser/User.interface.ts";
+import type { PublicInterface } from "../../Logic/Core/Services/Public.interface.ts";
+import type { UserInterface } from "../../Logic/Core/Services/ServiceUser/User.interface.ts";
+import type { ItemInterface } from "../../Logic/Core/Services/ServiceItem/Item.interface.ts";
+import { ListingInterface } from "../../Logic/Core/Services/ServiceListing/Listing.interface";
 
 export namespace RestInterface {
 	export type IAdapter = {
@@ -22,15 +24,14 @@ export namespace RestInterface {
 	export type TRouteRole = Record<UserInterface.ERole, string[]>;
 	export type EHttpMethod = keyof typeof HttpMethod;
 
-	export type TReturn = { code?: number; returned?: unknown };
-	export type TReq<L extends ELinks> = TInputByLink[L];
-	export type TMethod<L extends ELinks> = (req: TReq<L>, userId: string) => Promise<TReturn | void>;
+	/* ===================== REQUEST MAP ===================== */
 
 	const inputByLink = {
 		LOGIN: {} as ILoginReq,
 		REGISTER: {} as IRegisterReq,
-		CREATE_LISTING: {} as TCreateListingReq,
-		GET_ITEMS: {} as TGetItemsReq,
+		CREATE_LISTING: {} as ICreateListingReq,
+		CREATE_LISTING_ARR: {} as ICreateListingReq[],
+		GET_ITEMS: {} as IGetItemsReq,
 		GET_ITEM_DETAIL: {} as {},
 		GET_ORDERS: {} as {},
 		GET_ORDER_DETAIL: {} as {},
@@ -40,66 +41,89 @@ export namespace RestInterface {
 		[K in keyof typeof inputByLink]: (typeof inputByLink)[K];
 	};
 
-	/*==================== LOGIN REQ ============================*/
+	export type TReq<L extends ELinks> = TInputByLink[L];
+
+	/* ===================== RESPONSE MAP ===================== */
+
+	const responseByLink = {
+		LOGIN: null as unknown as string,
+		REGISTER: null as unknown as UserInterface.IUserAll,
+		CREATE_LISTING: null as unknown as void,
+		CREATE_LISTING_ARR: null as unknown as void,
+		GET_ITEMS: null as unknown as IGetItemsRes[],
+		GET_ITEM_DETAIL: null as unknown as void,
+		GET_ORDERS: null as unknown as void,
+		GET_ORDER_DETAIL: null as unknown as void,
+	} as const satisfies Record<ELinks, unknown>;
+
+	type TResponseByLink = {
+		[K in keyof typeof responseByLink]: (typeof responseByLink)[K];
+	};
+
+	export type TRes<L extends ELinks> = TResponseByLink[L];
+
+	/* ===================== METHOD RETURN ===================== */
+
+	export type TReturn<L extends ELinks> = { code?: number; returned?: TRes<L> };
+	export type TMethod<L extends ELinks> = (req: TReq<L>, userId: string) => Promise<TReturn<L> | void>;
+
+	/*========================== HTTP REQUEST ==================================*/
+
+	/*==== LOGIN REQ ====*/
+
 	export interface ILoginReq {
 		login: string;
 		token: string;
 	}
 
-	/*==================== REGISTER REQ ============================*/
+	/*==== REGISTER REQ ====*/
+
 	export interface IRegisterReq {
 		login: string;
 	}
 
-	/*==================== CREATE LOT REQ ============================*/
-	interface ICreateListing {
+	/*==== CREATE LISTING REQ ====*/
+
+	export type ICreateListingReq = {
 		name: string;
 		desc: string;
 		price: number;
-		type: PublicInterface.ETypeItem;
-		info: unknown;
-	}
+		saleKind: ListingInterface.EListingSaleKind;
+	} & ItemInterface.TItemReq;
 
-	interface ICreateListingCardInfo {
+	/*==== GET ITEMS REQ ====*/
+
+	export type IGetItemsReq = {
+		limit: number;
+		saleKind: ListingInterface.EListingSaleKind;
+		cursorId?: string;
+		sort?: PublicInterface.ESort;
+		sellerId?: string;
+		priceUp?: number;
+		priceDown?: number;
+		findStr?: string;
+	} & ItemInterface.TItemReqPub;
+
+	/*========================== HTTP RESPONSE ==================================*/
+
+	/*==== GET ITEMS LISTING RES ====*/
+
+	export type IGetItemsRes = {
 		name: string;
-		bank: PublicInterface.EBank;
-	}
+		price: number;
 
-	interface ICreateListingCard extends ICreateListing {
-		type: "CARD";
-		info: ICreateListingCardInfo;
-	}
-
-	export type TCreateListingReq = ICreateListingCard;
-
-	/*==================== GET LOT REQ ============================*/
-	type TGetItemsCore = {
-		limit: number; // сколько отдавать
-		cursorId?: string; // id лота с которого начинать отсчет limit
-		sort?: PublicInterface.ESort; // сортировка
-		sellerId?: string; // фильтр по продавцу
-		priceUp?: number; // фильтр по верхней цене
-		priceDown?: number; // фильтр по нижней цене
-		findStr?: string; // фильтр по имени
-	};
-
-	type TGetItemsType<T extends PublicInterface.ETypeItem, B> = { type: T } & B;
-
-	type TGetItemsItemCard = TGetItemsType<"CARD", TGetItemsItemFilterCard>;
-	type TGetItemsItemFilterCard = {
-		bank?: PublicInterface.EBank; // фильтр по банку
-	};
-
-	type TGetItemsItem = TGetItemsItemCard;
-	export type TGetItemsReq = TGetItemsCore & TGetItemsItem;
-
-	/*==================== HTTP RESPONSE ============================*/
+		sellerName: string;
+		sellerId: string;
+		sellerLike: number;
+		sellerDislike: number;
+	} & ItemInterface.TItemResPub;
 }
 
 const Links = {
 	LOGIN: "LOGIN",
 	REGISTER: "REGISTER",
 	CREATE_LISTING: "CREATE_LISTING",
+	CREATE_LISTING_ARR: "CREATE_LISTING_ARR",
 	GET_ITEMS: "GET_ITEMS",
 	GET_ITEM_DETAIL: "GET_ITEM_DETAIL",
 	GET_ORDERS: "GET_ORDERS",

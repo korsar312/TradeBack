@@ -16,6 +16,11 @@ export const Links: RestInterface.TLinks = {
 		http: "post",
 		role: ["USER", "ADMIN"],
 	},
+	CREATE_LISTING_ARR: {
+		link: "/createListingArr",
+		http: "post",
+		role: ["USER", "ADMIN"],
+	},
 	GET_ITEMS: {
 		link: "/getItems",
 		http: "post",

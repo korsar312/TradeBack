@@ -1,36 +1,62 @@
-import { PublicInterface } from "../Public.interface.ts";
+import { typesUtils } from "../../../Libs/TypesUtils";
 
 export namespace ItemInterface {
 	export interface IAdapter {
 		saveNewItem(data: TItemMin): string;
-		getItem(id: string, type: PublicInterface.ETypeItem): TItemInfoVar;
-		getItemByListingId(listingId: string, type: PublicInterface.ETypeItem): TItemInfoVar;
+		getItem<T extends ETypeItem>(id: string, type: T): TPickItem<T>;
+		getItemByListingId<T extends ETypeItem>(listingId: string, type: T): TPickItem<T>;
 	}
 
-	interface IItemId {
-		id: string; // id записи деталей товара
-		listingId: string; // FK listings.id (unique => 1↔1)
+	interface IBaseInfo {
+		id: string;
+		listingId: string;
 	}
 
-	interface IItemVar<T> {
-		type: PublicInterface.ETypeItem;
-		info: T & IItemId;
+	interface ICardInfoAll extends IBaseInfo {
+		bank: EBank;
+		age: string;
+		name: string;
 	}
+	type ICardInfoPublic = Omit<ICardInfoAll, "name">;
 
-	interface IItemCard extends IItemVar<IItemCardInfo> {
-		type: "CARD";
+	interface IGuardInfoAll extends IBaseInfo {
+		zxc: number;
+		cvb: string;
 	}
+	type IGuardInfoPublic = Omit<IGuardInfoAll, "zxc">;
 
-	interface IItemCardInfo {
-		bank: string; // банк
-		name: string; // имя на карте
-	}
+	type TItemVar<T extends ETypeItem, B> = { type: T; info: B };
+	export type TPickItem<T extends ETypeItem> = Extract<ItemInterface.TItemAll, { type: T }>;
+	export type TPickItemInfo<T extends ETypeItem> = TPickItem<T>["info"];
 
-	export type TItemCard = IItemCard["info"];
-	export type TItemInfoVar = TItemCard;
+	export type TItemCard = TItemVar<"CARD", ICardInfoAll>;
+	export type TItemGuard = TItemVar<"GUARD", IGuardInfoAll>;
 
-	export type TItem = IItemCard;
+	type TItemCardPublic = TItemVar<"CARD", ICardInfoPublic>;
+	type TItemGuardPublic = TItemVar<"GUARD", IGuardInfoPublic>;
 
-	export type TItemChange<T extends keyof TItem, B extends keyof TItem[T]> = Omit<TItem, T> & { info: Omit<TItem[T], B> };
-	export type TItemMin = TItemChange<"info", "id">;
+	export type TItemAll = TItemCard | TItemGuard;
+	export type TItemPublic = TItemCardPublic | TItemGuardPublic;
+
+	export type TItemMinCard = typesUtils.TItemChange<TItemCard, "info", "id">;
+	export type TItemMin = typesUtils.TItemChange<TItemAll, "info", "id">;
+
+	export type TItemRes = typesUtils.TItemChange<TItemAll, "info", "id" | "listingId">;
+	export type TItemResPub = typesUtils.TItemChange<TItemPublic, "info", "id" | "listingId">;
+	export type TItemReq = typesUtils.TItemChange<TItemAll, "info", "id" | "listingId">;
+	export type TItemReqPub = typesUtils.TItemChange<typesUtils.PartialField<TItemPublic, "info">, "info", "id" | "listingId">;
+
+	export type ETypeItem = keyof typeof ItemTypeItem;
+	export type EBank = keyof typeof ItemBank;
 }
+
+export const ItemBank = {
+	ALFA: "ALFA",
+	SBER: "SBER",
+	TINK: "TINK",
+} as const;
+
+export const ItemTypeItem = {
+	CARD: "CARD",
+	GUARD: "GUARD",
+} as const;

@@ -1,5 +1,5 @@
-import { EvaluationInterface as Interface } from "../Evaluation.interface.ts";
-import ServiceBase from "../../Service.base.ts";
+import type { EvaluationInterface as Interface } from "../Evaluation.interface.ts";
+import ServiceBase from "../../Service.base";
 import { Utils } from "../../../../../Utils";
 
 class EvaluationImp extends ServiceBase implements Interface.IAdapter {

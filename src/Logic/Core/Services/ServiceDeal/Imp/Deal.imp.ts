@@ -1,5 +1,5 @@
-import { DealInterface as Interface } from "../Deal.interface.ts";
-import ServiceBase from "../../Service.base.ts";
+import type { DealInterface as Interface } from "../Deal.interface.ts";
+import ServiceBase from "../../Service.base";
 import { Utils } from "../../../../../Utils";
 
 class DealImp extends ServiceBase implements Interface.IAdapter {
@@ -9,7 +9,7 @@ class DealImp extends ServiceBase implements Interface.IAdapter {
 	}
 
 	private GetDeal = (id: string): Interface.IDeal => Utils.error.require(this.API.BD.read.Deal(id), "DEAL_NOT_FOUND");
-	private GetDealByListingId = (listingId: string): Interface.IDeal => Utils.error.require(this.API.BD.read.DealByListingId(listingId), "DEAL_NOT_FOUND");
+	private GetDealsByListingId = (listingId: string): Interface.IDeal[] => this.API.BD.read.ListDealsByListingId(listingId);
 
 	public saveNewDeal(data: Interface.IDealMin) {
 		const deal = this.CreateDeal(data);
@@ -22,8 +22,8 @@ class DealImp extends ServiceBase implements Interface.IAdapter {
 		return this.GetDeal(id);
 	}
 
-	public getDealByListingId(listingId: string) {
-		return this.GetDealByListingId(listingId);
+	public getDealsByListingId(listingId: string) {
+		return this.GetDealsByListingId(listingId);
 	}
 }
 

@@ -1,47 +1,46 @@
-import { RestInterface as Interface } from "../Rest.interface.ts";
+import type { RestInterface as Interface } from "../Rest.interface.ts";
 import { TModules } from "../../../Logic";
-import { ItemInterface } from "../../../Logic/Core/Services/ServiceItem/Item.interface.ts";
+import { ItemInterface } from "../../../Logic/Core/Services/ServiceItem/Item.interface";
 
 export class RestImp implements Interface.IAdapter {
 	constructor(private readonly module: TModules) {}
-
-	private createReturn(returned: unknown, code?: number): Interface.TReturn {
-		return { code, returned };
-	}
 
 	public async LOGIN(params: Interface.ILoginReq) {
 		const { login, token } = params;
 		const userId = this.module.user.login(login, token);
 
-		return this.createReturn(userId);
+		return { returned: userId };
 	}
 
 	public async REGISTER(params: Interface.IRegisterReq) {
 		const { login } = params;
 		const user = this.module.user.saveNewUser(login);
 
-		return this.createReturn(user);
+		return { returned: user };
 	}
 
-	public async CREATE_LISTING(params: Interface.TCreateListingReq, userId: string) {
-		const { desc, name, info, price, type } = params;
-
-		const listingId = this.module.listing.saveNewListing({ name, desc, sellerId: userId, type });
+	public async CREATE_LISTING(params: Interface.ICreateListingReq, userId: string) {
+		const { desc, name, info, price, saleKind, type } = params;
+		const listingId = this.module.listing.saveNewListing({ name, desc, sellerId: userId, saleKind, price });
 		const dealId = this.module.deal.saveNewDeal({ listingId, sellerId: userId });
 		this.module.payment.saveNewPayment({ dealId, price });
-		this.module.item.saveNewItem({ info: { ...info, listingId }, type });
+		this.module.item.saveNewItem({ info: { ...info, listingId } as any, type });
 		this.module.delivery.saveNewDelivery({ dealId, deliveryPlace: null, departurePlace: null, trackNumber: null });
 		this.module.chat.saveNewChat({ dealId });
 	}
 
-	public async GET_ITEMS(params: Interface.TGetItemsReq) {
-		const itemRes: unknown[] = [];
+	public async CREATE_LISTING_ARR(params: Interface.ICreateListingReq[], userId: string) {
+		params.forEach((el) => this.CREATE_LISTING(el, userId));
+	}
+
+	public async GET_ITEMS(params: Interface.IGetItemsReq) {
+		const itemRes: Interface.IGetItemsRes[] = [];
 		let lastListingId: string | undefined;
 
 		while (itemRes.length < params.limit) {
 			const reqQty = params.limit - itemRes.length;
 
-			const listings = this.module.listing.getQtyListing(reqQty, "ACTIVE", params.type, lastListingId || params.cursorId, {
+			const listings = this.module.listing.getQtyListing(reqQty, "ACTIVE", params.saleKind, lastListingId || params.cursorId, {
 				sort: params.sort,
 				sellerId: params.sellerId,
 				findStr: params.findStr,
@@ -51,44 +50,55 @@ export class RestImp implements Interface.IAdapter {
 			lastListingId = listings.at(-1)?.id;
 
 			listings.forEach((el) => {
-				const item = this.module.item.getItemByListingId(el.id, el.type);
-				const deal = this.module.deal.getDealByListingId(el.id);
+				const item = this.module.item.getItemByListingId(el.id, params.type);
 				const seller = this.module.user.getUser(el.sellerId);
-				const payment = this.module.payment.getPaymentByDealId(deal.id);
 
-				const itemPick: ItemInterface.TItemInfoVar = {} as ItemInterface.TItemInfoVar;
+				if (params.type !== item.type) return;
 
-				switch (params.type) {
-					case "CARD":
-						if (params.bank && item.bank !== params.bank) return;
-						itemPick.bank = item.bank;
+				if (item.type === "CARD" && params.type === "CARD") {
+					if (item.info.bank !== params.info.bank) return;
 				}
+
+				const itemPick = toItemRes(item);
 
 				if (params.priceUp != null || params.priceDown != null) {
 					const priceUp = params.priceUp ?? Infinity;
 					const priceDown = params.priceDown ?? 0;
 
-					if (payment.price < priceDown || payment.price > priceUp) return;
+					if (el.price < priceDown || el.price > priceUp) return;
 				}
 
 				itemRes.push({
 					name: el.name,
-					price: payment.price,
+					price: el.price,
 
 					sellerName: seller.nickname,
 					sellerId: seller.id,
 					sellerLike: 0,
 					sellerDislike: 0,
 
-					info: itemPick,
+					...itemPick,
 				});
 			});
 		}
 
-		return this.createReturn(itemRes);
+		return { returned: itemRes };
 	}
 
-	public async GET_ITEM_DETAIL(params: {}) {}
-	public async GET_ORDERS(params: {}) {}
-	public async GET_ORDER_DETAIL(params: {}) {}
+	public async GET_ITEM_DETAIL() {}
+	public async GET_ORDERS() {}
+	public async GET_ORDER_DETAIL() {}
+}
+
+function toItemRes(item: ItemInterface.TItemAll): ItemInterface.TItemRes {
+	switch (item.type) {
+		case "CARD": {
+			const { id, listingId, ...info } = item.info;
+			return { type: "CARD", info };
+		}
+		case "GUARD": {
+			const { id, listingId, ...info } = item.info;
+			return { type: "GUARD", info };
+		}
+	}
 }

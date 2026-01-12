@@ -1,13 +1,13 @@
 import type { UserInterface } from "../../Services/ServiceUser/User.interface";
 import type { ListingInterface } from "../../Services/ServiceListing/Listing.interface.ts";
-import { ItemInterface } from "../../Services/ServiceItem/Item.interface.ts";
+import type { ItemInterface } from "../../Services/ServiceItem/Item.interface.ts";
 import type { DealInterface } from "../../Services/ServiceDeal/Deal.interface.ts";
 import type { PaymentInterface } from "../../Services/ServicePayment/Payment.interface.ts";
 import type { DeliveryInterface } from "../../Services/ServiceDelivery/Delivery.interface.ts";
 import type { EvaluationInterface } from "../../Services/ServiceEvaluation/Evaluation.interface.ts";
 import type { ChatInterface } from "../../Services/ServiceChat/Chat.interface.ts";
 import type { MessageInterface } from "../../Services/ServiceMessage/Message.interface.ts";
-import { PublicInterface } from "../../Services/Public.interface.ts";
+import type { PublicInterface } from "../../Services/Public.interface.ts";
 
 export namespace BDInterface {
 	export interface IAdapter {
@@ -32,7 +32,7 @@ export namespace BDInterface {
 	};
 
 	export type Listing = ListingInterface.IListing;
-	export type ItemCard = ItemInterface.TItemInfoVar;
+	export type ItemCard = ItemInterface.TPickItemInfo<"CARD">;
 	export type Deal = DealInterface.IDeal;
 	export type Payment = PaymentInterface.IPayment;
 	export type Delivery = DeliveryInterface.IDelivery;
@@ -92,7 +92,7 @@ export namespace BDInterface {
 		ListDealsByUser: (userId: string) => Deal[];
 		UsersAuthByLogin: (login: string) => UserAuth | null; // поиск users_auth по users.login
 		ItemCardByListingId: (listingId: string) => ItemCard | null; // item_cards.listing_id unique
-		DealByListingId: (listingId: string) => Deal | null; // deals.listing_id unique
+		ListDealsByListingId: (listingId: string) => Deal[]; // deals.listing_id
 		PaymentByDealId: (dealId: string) => Payment | null; // payments.deal_id unique
 
 		/* прочее */
@@ -100,7 +100,7 @@ export namespace BDInterface {
 			limit: number;
 			cursorId?: string;
 			status: ListingInterface.EListingStatus;
-			type: PublicInterface.ETypeItem;
+			saleKind: ListingInterface.EListingSaleKind;
 			sort?: PublicInterface.ESort;
 			sellerId?: string;
 			findStr?: string;

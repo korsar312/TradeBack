@@ -1,7 +1,7 @@
-import { BDHelpers } from "./BD.Helpers.ts";
+import { BDHelpers } from "./BD.Helpers";
 import type { BDInterface as Interface } from "../../BD.interface.ts";
 import { eq } from "drizzle-orm";
-import { Table } from "../BD.table.ts";
+import { Table } from "../BD.table";
 
 export class Delete extends BDHelpers implements Interface.IDelete {
 	User = (id: string) => {

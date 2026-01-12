@@ -100,4 +100,74 @@ export namespace typesUtils {
 	export type OptionsUnion<Map extends Record<string, any>, Extra extends object = {}> = {
 		[K in keyof Map]: { type: K; options: Map[K] } & Extra;
 	}[keyof Map];
+
+	/**
+	 * TItemChange удаляет вложенный ключ K из объекта-поля T у типа A,
+	 * сохраняя остальные поля без изменений.
+	 *
+	 * Работает “структурно”:
+	 * - выбирается ключ T только среди тех полей A, которые являются object
+	 * - выбирается ключ K только среди ключей вложенного объекта A[T]
+	 * - в результате поле T становится объектом без ключа K
+	 *
+	 * На выходе получается структура вида:
+	 * Omit<A, T> & { [T]: Omit<A[T], K> }
+	 *
+	 * Параметры:
+	 * - A — исходный тип (в том числе может быть union)
+	 * - T — ключ поля в A, значение которого является object
+	 * - K — ключ вложенного объекта A[T], который нужно удалить
+	 *
+	 * Пример:
+	 * type A = {
+	 *   id: string;
+	 *   meta: { a: number; b: string; c: boolean };
+	 *   title: string;
+	 * };
+	 *
+	 * type R = TItemChange<A, "meta", "b">;
+	 * // Результат:
+	 * // {
+	 * // id: string;
+	 * // title: string;
+	 * // meta: { a: number; c: boolean };
+	 * // }
+	 *
+	 * Особенности:
+	 * - Если A — union, преобразование применяется к каждому варианту union.
+	 * - Если T/К не подходят ограничениям, тип не собирается (ошибка на уровне generic constraints).
+	 */
+	type ObjKeys<A> = { [P in keyof A]-?: A[P] extends object ? P : never }[keyof A];
+	type Nested<A, T extends PropertyKey> = A extends unknown ? (T extends keyof A ? (A[T] extends object ? keyof A[T] : never) : never) : never;
+	type OmitKeys<T, K extends PropertyKey> = Omit<T, Extract<K, keyof T>>;
+	export type TItemChange<A, T extends ObjKeys<A>, K extends Nested<A, T>> = A extends unknown
+		? Omit<A, T> & { [P in T]-?: A[P] extends object ? OmitKeys<A[P], K> : A[P] }
+		: never;
+
+	/**
+	 * PartialField — делает ОДНО поле P "мягким" (partial),
+	 *
+	 * Важное:
+	 * - если A = A1 | A2 | ...,
+	 *   то результат будет (A1 с partial P) | (A2 с partial P) | ...
+	 * - если A[P] — объект, применяется DistributivePartial к A[P]
+	 *
+	 * Пример:
+	 * type Item =
+	 *   | { type: "CARD"; info: { bank: string; age: string } }
+	 *   | { type: "GUARD"; info: { cvb: string } };
+	 *
+	 * type ItemFilter = PartialField<Item, "info">;
+	 * // { type:"CARD"; info:{ bank?:string; age?:string } } ✅
+	 * // { type:"GUARD"; info:{ cvb?:string } } ✅
+	 *
+	 * Это позволяет писать:
+	 * if (item.type === "CARD" && params.type === "CARD") {
+	 *   params.info.bank // ✅ есть (но optional)
+	 * }
+	 */
+	type DistributivePartial<T> = T extends object ? { [K in keyof T]?: T[K] } : T;
+	export type PartialField<A, P extends keyof A> = A extends unknown
+		? Omit<A, P> & { [K in P]: A[K] extends object ? DistributivePartial<A[K]> : A[K] }
+		: never;
 }

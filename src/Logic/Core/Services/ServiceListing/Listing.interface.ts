@@ -1,23 +1,22 @@
-import { PublicInterface } from "../Public.interface.ts";
+import type { PublicInterface } from "../Public.interface.ts";
 
 export namespace ListingInterface {
 	export interface IAdapter {
 		saveNewListing(data: TListingMin): string;
 		updateListing(id: string, data: IListing): void;
-		getQtyListing(qty: number, status: EListingStatus, type: PublicInterface.ETypeItem, cursorId?: string, filter?: TGetParams): IListing[];
+		getQtyListing(limit: number, status: EListingStatus, saleKind: EListingSaleKind, cursorId?: string, filter?: TGetParams): IListing[];
 	}
 
-	export interface IListing {
-		id: string; // id объявления
-		sellerId: string; // FK users.id
-		type: PublicInterface.ETypeItem; // тип объявления
-		createdAt: number; // время создания
-		status: EListingStatus; // статус
-		name: string; // заголовок
-		desc: string; // описание
+	export interface IListingBase<T extends EListingSaleKind = EListingSaleKind> {
+		id: string;
+		sellerId: string;
+		saleKind: T;
+		createdAt: number;
+		status: EListingStatus;
+		name: string;
+		desc: string;
+		price: number;
 	}
-
-	export type TListingMin = Omit<IListing, "id" | "createdAt" | "status">;
 
 	export type TGetParams = Partial<{
 		sort: PublicInterface.ESort;
@@ -25,7 +24,15 @@ export namespace ListingInterface {
 		findStr: string;
 	}>;
 
+	type UnionOf<M extends Record<PropertyKey, any>> = M[keyof M];
+	type MapOmit<M extends Record<PropertyKey, any>, K extends PropertyKey> = { [P in keyof M]: Omit<M[P], K> };
+	type ListingMap = { [K in EListingSaleKind]: IListingBase<K> };
+
+	export type IListing = UnionOf<ListingMap>;
+	export type TListingMin = UnionOf<MapOmit<ListingMap, "id" | "createdAt" | "status">>;
+
 	export type EListingStatus = keyof typeof ListingStatus;
+	export type EListingSaleKind = keyof typeof ListingSaleKind;
 }
 
 const ListingStatus = {
@@ -34,4 +41,9 @@ const ListingStatus = {
 	RESERVED: "RESERVED",
 	SOLD: "SOLD",
 	ARCHIVED: "ARCHIVED",
-};
+} as const;
+
+const ListingSaleKind = {
+	GOODS: "GOODS",
+	SERVICE: "SERVICE",
+} as const;

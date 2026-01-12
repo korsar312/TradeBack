@@ -1,11 +1,11 @@
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { BDInterface } from "../BD.interface.ts";
+import type { BDInterface } from "../BD.interface.ts";
 
 const table = {
 	users: {
 		id: text("id").primaryKey(),
 		nickname: text("nickname").notNull(),
-		role: text("role").notNull(),
+		role: text("role").$type<BDInterface.User["role"]>().notNull(),
 		login: text("login").notNull(),
 		createdAt: integer("created_at").notNull(),
 	},
@@ -17,25 +17,27 @@ const table = {
 	userRestrictions: {
 		id: text("id").primaryKey(),
 		userId: text("user_id").notNull(),
-		type: text("type").notNull(),
+		type: text("type").$type<BDInterface.UserRestriction["type"]>().notNull(),
 		untilTs: integer("until_ts").notNull(),
 		reason: text("reason").notNull(),
-		byId: text("by_id"), // may be NULL
+		byId: text("by_id"),
 		createdAt: integer("created_at").notNull(),
 	},
 	listings: {
 		id: text("id").primaryKey(),
 		sellerId: text("seller_id").notNull(),
-		type: text("type").notNull(),
+		saleKind: text("sale_kind").$type<BDInterface.Listing["saleKind"]>().notNull(),
 		createdAt: integer("created_at").notNull(),
-		status: text("status").notNull(),
+		status: text("status").$type<BDInterface.Listing["status"]>().notNull(),
 		name: text("name").notNull(),
 		desc: text("description").notNull(),
+		price: integer("price").notNull(),
 	},
 	itemCards: {
 		id: text("id").primaryKey(),
 		listingId: text("listing_id").notNull(),
-		bank: text("bank").notNull(),
+		bank: text("bank").$type<BDInterface.ItemCard["bank"]>().notNull(),
+		age: text("age").notNull(),
 		name: text("name").notNull(),
 	},
 	deals: {
@@ -43,18 +45,18 @@ const table = {
 		listingId: text("listing_id").notNull(),
 		sellerId: text("seller_id").notNull(),
 		buyerId: text("buyer_id"),
-		status: text("status").notNull(),
+		status: text("status").$type<BDInterface.Deal["status"]>().notNull(),
 	},
 	payments: {
 		id: text("id").primaryKey(),
 		dealId: text("deal_id").notNull(),
-		status: text("status").notNull(),
+		status: text("status").$type<BDInterface.Payment["status"]>().notNull(),
 		price: integer("price").notNull(),
 	},
 	deliveries: {
 		id: text("id").primaryKey(),
 		dealId: text("deal_id").notNull(),
-		status: text("status").notNull(),
+		status: text("status").$type<BDInterface.Delivery["status"]>().notNull(),
 		trackNumber: integer("track_number"),
 		departurePlace: text("departure_place"),
 		deliveryPlace: text("delivery_place"),
@@ -62,7 +64,7 @@ const table = {
 	evaluations: {
 		id: text("id").primaryKey(),
 		dealId: text("deal_id").notNull(),
-		type: text("type").notNull(),
+		type: text("type").$type<BDInterface.Evaluation["type"]>().notNull(),
 		comment: text("comment").notNull(),
 		createdAt: integer("created_at").notNull(),
 	},

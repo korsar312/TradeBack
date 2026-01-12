@@ -1,6 +1,6 @@
-import { BDInterface as Interface } from "../../BD.interface.ts";
-import { BDHelpers } from "./BD.Helpers.ts";
-import { Table } from "../BD.table.ts";
+import type { BDInterface as Interface } from "../../BD.interface.ts";
+import { BDHelpers } from "./BD.Helpers";
+import { Table } from "../BD.table";
 
 export class Create extends BDHelpers implements Interface.ICreate {
 	User = (d: Interface.User) => (this.db.insert(Table.users).values(d).run(), d.id);

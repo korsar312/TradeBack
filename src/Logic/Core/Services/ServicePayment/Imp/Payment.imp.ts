@@ -1,5 +1,5 @@
-import { PaymentInterface as Interface } from "../Payment.interface.ts";
-import ServiceBase from "../../Service.base.ts";
+import type { PaymentInterface as Interface } from "../Payment.interface.ts";
+import ServiceBase from "../../Service.base";
 import { Utils } from "../../../../../Utils";
 
 class PaymentImp extends ServiceBase implements Interface.IAdapter {

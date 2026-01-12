@@ -1,6 +1,6 @@
 import type { UserInterface as Interface } from "../User.interface.ts";
-import ServiceBase from "../../Service.base.ts";
-import { UserNames } from "./User.names.ts";
+import ServiceBase from "../../Service.base";
+import { UserNames } from "./User.names";
 import { Utils } from "../../../../../Utils";
 
 class UserImp extends ServiceBase implements Interface.IAdapter {

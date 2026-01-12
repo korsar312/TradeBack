@@ -3,10 +3,10 @@ import Database from "better-sqlite3";
 import { BetterSQLite3Database, drizzle } from "drizzle-orm/better-sqlite3";
 import { migrate } from "drizzle-orm/better-sqlite3/migrator";
 import path from "node:path";
-import { Read } from "./Methods/Read.ts";
-import { Update } from "./Methods/Update.ts";
-import { Delete } from "./Methods/Delete.ts";
-import { Create } from "./Methods/Create.ts";
+import { Read } from "./Methods/Read";
+import { Update } from "./Methods/Update";
+import { Delete } from "./Methods/Delete";
+import { Create } from "./Methods/Create";
 
 class BDImp implements Interface.IAdapter {
 	private readonly sqlite: Database.Database;

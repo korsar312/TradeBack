@@ -1,5 +1,5 @@
 import type { DeliveryInterface as Interface } from "../Delivery.interface.ts";
-import ServiceBase from "../../Service.base.ts";
+import ServiceBase from "../../Service.base";
 import { Utils } from "../../../../../Utils";
 
 class DeliveryImp extends ServiceBase implements Interface.IAdapter {

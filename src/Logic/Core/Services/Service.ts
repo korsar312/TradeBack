@@ -1,6 +1,5 @@
-import ServiceProxy from "../Common/ServiceProxy.ts";
+import ServiceProxy from "../Common/ServiceProxy";
 
-class Service<Implement extends object> extends ServiceProxy<Implement> {
-}
+class Service<Implement extends object> extends ServiceProxy<Implement> {}
 
 export default Service;

@@ -1,9 +1,9 @@
 import { Orchestrator } from "./Orchestrator";
-import { RestCore } from "./Orchestrator/Rest/Rest.core.ts";
+import { RestCore } from "./Orchestrator/Rest/Rest.core";
 import { Act } from "./Logic";
-import { Links } from "./Logic/Config/List/Links.ts";
-import { RestImp } from "./Orchestrator/Rest/Imp/Rest.imp.ts";
-import { Consts } from "./Logic/Config/Consts.ts";
+import { Links } from "./Logic/Config/List/Links";
+import { RestImp } from "./Orchestrator/Rest/Imp/Rest.imp";
+import { Consts } from "./Logic/Config/Consts";
 
 const server = new Orchestrator();
 

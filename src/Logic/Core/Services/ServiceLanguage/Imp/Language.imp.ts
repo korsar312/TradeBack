@@ -1,5 +1,5 @@
 import type { LanguageInterface as Interface } from "../Language.interface.ts";
-import ServiceBase, { type IServiceProps } from "../../Service.base.ts";
+import ServiceBase, { type IServiceProps } from "../../Service.base";
 
 class LanguageImp extends ServiceBase implements Interface.IAdapter {
 	private getStoreWord(dictionary: Interface.TDictionary, word: Interface.EWordAll, lang: Interface.ELang): string {
