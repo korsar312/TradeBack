@@ -32,9 +32,7 @@ export namespace RestInterface {
 		CREATE_LISTING: {} as ICreateListingReq,
 		CREATE_LISTING_ARR: {} as ICreateListingReq[],
 		GET_ITEMS: {} as IGetItemsReq,
-		GET_ITEM_DETAIL: {} as {},
-		GET_ORDERS: {} as {},
-		GET_ORDER_DETAIL: {} as {},
+		GET_ITEM: {} as IGetItemReq,
 	} as const satisfies Record<ELinks, unknown>;
 
 	type TInputByLink = {
@@ -51,9 +49,7 @@ export namespace RestInterface {
 		CREATE_LISTING: null as unknown as void,
 		CREATE_LISTING_ARR: null as unknown as void,
 		GET_ITEMS: null as unknown as IGetItemsRes[],
-		GET_ITEM_DETAIL: null as unknown as void,
-		GET_ORDERS: null as unknown as void,
-		GET_ORDER_DETAIL: null as unknown as void,
+		GET_ITEM: null as unknown as IGetItemsRes,
 	} as const satisfies Record<ELinks, unknown>;
 
 	type TResponseByLink = {
@@ -104,13 +100,23 @@ export namespace RestInterface {
 		findStr?: string;
 	} & ItemInterface.TItemReqPub;
 
+	/*==== GET ITEM REQ ====*/
+
+	export type IGetItemReq = {
+		id: string;
+		type: ItemInterface.ETypeItem;
+	};
+
 	/*========================== HTTP RESPONSE ==================================*/
 
 	/*==== GET ITEMS LISTING RES ====*/
 
 	export type IGetItemsRes = {
+		id: string;
 		name: string;
+		desc: string;
 		price: number;
+		status: ListingInterface.EListingStatus;
 
 		sellerName: string;
 		sellerId: string;
@@ -125,9 +131,7 @@ const Links = {
 	CREATE_LISTING: "CREATE_LISTING",
 	CREATE_LISTING_ARR: "CREATE_LISTING_ARR",
 	GET_ITEMS: "GET_ITEMS",
-	GET_ITEM_DETAIL: "GET_ITEM_DETAIL",
-	GET_ORDERS: "GET_ORDERS",
-	GET_ORDER_DETAIL: "GET_ORDER_DETAIL",
+	GET_ITEM: "GET_ITEM",
 };
 
 const HttpMethod = {

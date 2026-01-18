@@ -13,6 +13,10 @@ export const Errors: ErrorInterface.TErrorMap = {
 		httpCode: 404,
 		message: "Сделка не найдена",
 	},
+	LISTING_NOT_FOUND: {
+		httpCode: 404,
+		message: "Лот не найден",
+	},
 	CHAT_NOT_FOUND: {
 		httpCode: 404,
 		message: "Чат не найдена",

@@ -5,6 +5,7 @@ export namespace ListingInterface {
 		saveNewListing(data: TListingMin): string;
 		updateListing(id: string, data: IListing): void;
 		getQtyListing(limit: number, status: EListingStatus, saleKind: EListingSaleKind, cursorId?: string, filter?: TGetParams): IListing[];
+		getListing(id: string): IListing;
 	}
 
 	export interface IListingBase<T extends EListingSaleKind = EListingSaleKind> {

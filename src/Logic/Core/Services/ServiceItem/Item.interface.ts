@@ -26,7 +26,7 @@ export namespace ItemInterface {
 	type IGuardInfoPublic = Omit<IGuardInfoAll, "zxc">;
 
 	type TItemVar<T extends ETypeItem, B> = { type: T; info: B };
-	export type TPickItem<T extends ETypeItem> = Extract<ItemInterface.TItemAll, { type: T }>;
+	export type TPickItem<T extends ETypeItem> = Extract<TItemAll, { type: T }>;
 	export type TPickItemInfo<T extends ETypeItem> = TPickItem<T>["info"];
 
 	export type TItemCard = TItemVar<"CARD", ICardInfoAll>;

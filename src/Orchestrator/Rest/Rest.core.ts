@@ -6,6 +6,7 @@ import { Utils } from "../../Utils";
 import { type UserInterface, UserRole } from "../../Logic/Core/Services/ServiceUser/User.interface";
 import { ErrorSys } from "../../Utils/Error/Error.imp";
 import { RestSchema } from "./Schema/Rest.schema";
+import cors from "cors";
 
 const routeNoCheck: Interface.ELinks[] = ["LOGIN", "REGISTER"];
 
@@ -45,8 +46,8 @@ export class RestCore extends OrchestratorBase {
 	/* ======================= REGISTER ======================= */
 
 	private registerMiddlewares(app: Express): void {
-		// расширить: cors, logger, loginCheck
 		app.use(express.json());
+		app.use(this.CORS());
 		app.use(this.rightChecker);
 	}
 
@@ -57,6 +58,45 @@ export class RestCore extends OrchestratorBase {
 	}
 
 	/* ======================= MIDDLEWARE ======================= */
+
+	private CORS = () => {
+		return cors({
+			// `origin` — значение заголовка Origin (например "http://localhost:3000").
+			origin: (origin, cb) => {
+				// Если Origin отсутствует (curl/postman/сервер-сервер) — разрешаем.
+				if (!origin) return cb(null, true);
+
+				// Белый список разрешённых origins (фронт).
+				const allow = ["http://localhost:3000", "http://127.0.0.1:3000"];
+
+				// Если origin в белом списке — разрешаем.
+				if (allow.includes(origin)) return cb(null, true);
+
+				// Иначе запрещаем: браузер заблокирует запрос из этого origin.
+				return cb(new Error("CORS: origin not allowed"));
+			},
+
+			// Разрешаем отправку credentials:
+			// cookies / Authorization / другие "учётные" данные.
+			// Важно: при credentials нельзя использовать Access-Control-Allow-Origin: "*".
+			credentials: true,
+
+			// Разрешённые HTTP-методы в CORS.
+			methods: [...new Set(Object.values(this.links).map((el) => el.http))],
+
+			// Разрешённые заголовки, которые браузер может отправлять в кросс-доменном запросе.
+			// Нужны для preflight: браузер спросит OPTIONS, сервер должен разрешить эти headers.
+			allowedHeaders: ["Content-Type", "Authorization", "login", "token"],
+
+			// Заголовки, которые браузеру разрешено читать из ответа через JS.
+			// Если нужно читать, например, "X-Request-Id" — добавляешь сюда.
+			exposedHeaders: [],
+
+			// На сколько секунд браузер может кэшировать результат preflight (OPTIONS).
+			// 86400 = 24 часа, меньше OPTIONS-запросов, быстрее фронт.
+			maxAge: 86400,
+		});
+	};
 
 	private rightChecker = async (req: Request, res: Response, next: NextFunction) => {
 		try {

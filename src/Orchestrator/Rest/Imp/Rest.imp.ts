@@ -56,10 +56,10 @@ export class RestImp implements Interface.IAdapter {
 				if (params.type !== item.type) return;
 
 				if (item.type === "CARD" && params.type === "CARD") {
-					if (item.info.bank !== params.info.bank) return;
+					if (params.info.bank && item.info.bank !== params.info.bank) return;
 				}
 
-				const itemPick = toItemRes(item);
+				const itemPick = toItemRes(item, true);
 
 				if (params.priceUp != null || params.priceDown != null) {
 					const priceUp = params.priceUp ?? Infinity;
@@ -69,8 +69,11 @@ export class RestImp implements Interface.IAdapter {
 				}
 
 				itemRes.push({
+					id: el.id,
 					name: el.name,
+					desc: el.desc,
 					price: el.price,
+					status: el.status,
 
 					sellerName: seller.nickname,
 					sellerId: seller.id,
@@ -85,19 +88,47 @@ export class RestImp implements Interface.IAdapter {
 		return { returned: itemRes };
 	}
 
-	public async GET_ITEM_DETAIL() {}
-	public async GET_ORDERS() {}
-	public async GET_ORDER_DETAIL() {}
+	public async GET_ITEM(params: Interface.IGetItemReq) {
+		const listing = this.module.listing.getListing(params.id);
+
+		const item = this.module.item.getItemByListingId(listing.id, params.type);
+		const seller = this.module.user.getUser(listing.sellerId);
+
+		const itemPick = toItemRes(item, true);
+
+		return {
+			returned: {
+				id: listing.id,
+				name: listing.name,
+				desc: listing.desc,
+				price: listing.price,
+				status: listing.status,
+
+				sellerName: seller.nickname,
+				sellerId: seller.id,
+				sellerLike: 0,
+				sellerDislike: 0,
+
+				...itemPick,
+			},
+		};
+	}
 }
 
-function toItemRes(item: ItemInterface.TItemAll): ItemInterface.TItemRes {
+function toItemRes(item: ItemInterface.TItemAll, isPublicData: true): ItemInterface.TItemResPub;
+function toItemRes(item: ItemInterface.TItemAll, isPublicData: boolean): ItemInterface.TItemResPub | ItemInterface.TItemRes {
 	switch (item.type) {
 		case "CARD": {
-			const { id, listingId, ...info } = item.info;
+			const { id, listingId, name, ...rest } = item.info;
+			const info = isPublicData ? rest : { name, ...rest };
+
 			return { type: "CARD", info };
 		}
+
 		case "GUARD": {
-			const { id, listingId, ...info } = item.info;
+			const { id, listingId, zxc, ...rest } = item.info;
+			const info = isPublicData ? { zxc, ...rest } : rest;
+
 			return { type: "GUARD", info };
 		}
 	}
