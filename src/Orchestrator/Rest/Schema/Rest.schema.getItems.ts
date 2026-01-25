@@ -16,7 +16,7 @@ const GetItemsCardSchema = GetItemsCoreSchema.extend({
 	saleKind: z.literal("GOODS"),
 	type: z.literal("CARD"),
 	info: z.object({
-		bank: SchemaBank.optional(),
+		bank: SchemaBank.array().min(1).optional(),
 		age: z.string().min(1).optional(),
 	}),
 });

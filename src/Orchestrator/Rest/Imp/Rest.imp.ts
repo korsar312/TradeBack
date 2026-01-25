@@ -56,7 +56,7 @@ export class RestImp implements Interface.IAdapter {
 				if (params.type !== item.type) return;
 
 				if (item.type === "CARD" && params.type === "CARD") {
-					if (params.info.bank && item.info.bank !== params.info.bank) return;
+					if (params.info.bank?.length && !params.info.bank.includes(item.info.bank)) return;
 				}
 
 				const itemPick = toItemRes(item, true);

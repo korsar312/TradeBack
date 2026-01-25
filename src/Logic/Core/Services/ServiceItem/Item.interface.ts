@@ -18,12 +18,14 @@ export namespace ItemInterface {
 		name: string;
 	}
 	type ICardInfoPublic = Omit<ICardInfoAll, "name">;
+	type ICardInfoFilter = typesUtils.ReplaceKeyStrict<ICardInfoPublic, "bank", EBank[]>;
 
 	interface IGuardInfoAll extends IBaseInfo {
 		zxc: number;
 		cvb: string;
 	}
 	type IGuardInfoPublic = Omit<IGuardInfoAll, "zxc">;
+	type IGuardInfoFilter = IGuardInfoPublic;
 
 	type TItemVar<T extends ETypeItem, B> = { type: T; info: B };
 	export type TPickItem<T extends ETypeItem> = Extract<TItemAll, { type: T }>;
@@ -35,8 +37,12 @@ export namespace ItemInterface {
 	type TItemCardPublic = TItemVar<"CARD", ICardInfoPublic>;
 	type TItemGuardPublic = TItemVar<"GUARD", IGuardInfoPublic>;
 
+	type TItemCardFilter = TItemVar<"CARD", ICardInfoFilter>;
+	type TItemGuardFilter = TItemVar<"GUARD", IGuardInfoFilter>;
+
 	export type TItemAll = TItemCard | TItemGuard;
 	export type TItemPublic = TItemCardPublic | TItemGuardPublic;
+	export type TItemFilter = TItemCardFilter | TItemGuardFilter;
 
 	export type TItemMinCard = typesUtils.TItemChange<TItemCard, "info", "id">;
 	export type TItemMin = typesUtils.TItemChange<TItemAll, "info", "id">;
@@ -44,7 +50,7 @@ export namespace ItemInterface {
 	export type TItemRes = typesUtils.TItemChange<TItemAll, "info", "id" | "listingId">;
 	export type TItemResPub = typesUtils.TItemChange<TItemPublic, "info", "id" | "listingId">;
 	export type TItemReq = typesUtils.TItemChange<TItemAll, "info", "id" | "listingId">;
-	export type TItemReqPub = typesUtils.TItemChange<typesUtils.PartialField<TItemPublic, "info">, "info", "id" | "listingId">;
+	export type TItemReqPub = typesUtils.TItemChange<typesUtils.PartialField<TItemFilter, "info">, "info", "id" | "listingId">;
 
 	export type ETypeItem = keyof typeof ItemTypeItem;
 	export type EBank = keyof typeof ItemBank;
