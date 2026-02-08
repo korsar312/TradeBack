@@ -44,12 +44,12 @@ export namespace RestInterface {
 	/* ===================== RESPONSE MAP ===================== */
 
 	const responseByLink = {
-		LOGIN: null as unknown as string,
-		REGISTER: null as unknown as UserInterface.IUserAll,
-		CREATE_LISTING: null as unknown as void,
-		CREATE_LISTING_ARR: null as unknown as void,
-		GET_ITEMS: null as unknown as IGetItemsRes[],
-		GET_ITEM: null as unknown as IGetItemsRes,
+		LOGIN: {} as IGetUserRes,
+		REGISTER: {} as UserInterface.IUserAll,
+		CREATE_LISTING: {} as string,
+		CREATE_LISTING_ARR: {} as unknown as void,
+		GET_ITEMS: {} as IGetItemsRes[],
+		GET_ITEM: {} as IGetItemsRes,
 	} as const satisfies Record<ELinks, unknown>;
 
 	type TResponseByLink = {
@@ -123,6 +123,8 @@ export namespace RestInterface {
 		sellerLike: number;
 		sellerDislike: number;
 	} & ItemInterface.TItemResPub;
+
+	export type IGetUserRes = Omit<UserInterface.IUser, "role">;
 }
 
 const Links = {

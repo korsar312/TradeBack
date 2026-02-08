@@ -8,8 +8,9 @@ export class RestImp implements Interface.IAdapter {
 	public async LOGIN(params: Interface.ILoginReq) {
 		const { login, token } = params;
 		const userId = this.module.user.login(login, token);
+		const { role, ...rest } = this.module.user.getUser(userId);
 
-		return { returned: userId };
+		return { returned: rest };
 	}
 
 	public async REGISTER(params: Interface.IRegisterReq) {
@@ -27,6 +28,8 @@ export class RestImp implements Interface.IAdapter {
 		this.module.item.saveNewItem({ info: { ...info, listingId } as any, type });
 		this.module.delivery.saveNewDelivery({ dealId, deliveryPlace: null, departurePlace: null, trackNumber: null });
 		this.module.chat.saveNewChat({ dealId });
+
+		return { returned: listingId };
 	}
 
 	public async CREATE_LISTING_ARR(params: Interface.ICreateListingReq[], userId: string) {
