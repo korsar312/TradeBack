@@ -19,7 +19,12 @@ class BDImp implements Interface.IAdapter {
 
 	constructor(filename: string = ":memory:") {
 		this.sqlite = new Database(filename);
-		this.sqlite.exec("PRAGMA foreign_keys = ON;");
+		this.sqlite.exec(`
+			PRAGMA foreign_keys = ON;
+			PRAGMA journal_mode = WAL;
+			PRAGMA synchronous = NORMAL;
+			PRAGMA busy_timeout = 5000; 
+		`);
 		this.db = drizzle(this.sqlite);
 
 		migrate(this.db, { migrationsFolder: path.resolve("./drizzle") });

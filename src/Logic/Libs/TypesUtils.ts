@@ -155,11 +155,11 @@ export namespace typesUtils {
 	 * Пример:
 	 * type Item =
 	 *   | { type: "CARD"; info: { bank: string; age: string } }
-	 *   | { type: "GUARD"; info: { cvb: string } };
+	 *   | { type: "FREE"; info: { cvb: string } };
 	 *
 	 * type ItemFilter = PartialField<Item, "info">;
 	 * // { type:"CARD"; info:{ bank?:string; age?:string } } ✅
-	 * // { type:"GUARD"; info:{ cvb?:string } } ✅
+	 * // { type:"FREE"; info:{ cvb?:string } } ✅
 	 *
 	 * Это позволяет писать:
 	 * if (item.type === "CARD" && params.type === "CARD") {

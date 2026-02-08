@@ -125,11 +125,11 @@ function toItemRes(item: ItemInterface.TItemAll, isPublicData: boolean): ItemInt
 			return { type: "CARD", info };
 		}
 
-		case "GUARD": {
-			const { id, listingId, zxc, ...rest } = item.info;
-			const info = isPublicData ? { zxc, ...rest } : rest;
+		case "FREE": {
+			const { id, listingId, desc, ...rest } = item.info;
+			const info = isPublicData ? { desc, ...rest } : rest;
 
-			return { type: "GUARD", info };
+			return { type: "FREE", info };
 		}
 	}
 }

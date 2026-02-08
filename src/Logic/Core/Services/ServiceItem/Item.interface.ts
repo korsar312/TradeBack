@@ -20,29 +20,28 @@ export namespace ItemInterface {
 	type ICardInfoPublic = Omit<ICardInfoAll, "name">;
 	type ICardInfoFilter = typesUtils.ReplaceKeyStrict<ICardInfoPublic, "bank", EBank[]>;
 
-	interface IGuardInfoAll extends IBaseInfo {
-		zxc: number;
-		cvb: string;
+	interface IFreeInfoAll extends IBaseInfo {
+		desc: string;
 	}
-	type IGuardInfoPublic = Omit<IGuardInfoAll, "zxc">;
-	type IGuardInfoFilter = IGuardInfoPublic;
+	type IFreeInfoPublic = Omit<IFreeInfoAll, "desc">;
+	type IFreeInfoFilter = IFreeInfoPublic;
 
 	type TItemVar<T extends ETypeItem, B> = { type: T; info: B };
 	export type TPickItem<T extends ETypeItem> = Extract<TItemAll, { type: T }>;
 	export type TPickItemInfo<T extends ETypeItem> = TPickItem<T>["info"];
 
 	export type TItemCard = TItemVar<"CARD", ICardInfoAll>;
-	export type TItemGuard = TItemVar<"GUARD", IGuardInfoAll>;
+	export type TItemFree = TItemVar<"FREE", IFreeInfoAll>;
 
 	type TItemCardPublic = TItemVar<"CARD", ICardInfoPublic>;
-	type TItemGuardPublic = TItemVar<"GUARD", IGuardInfoPublic>;
+	type TItemFreePublic = TItemVar<"FREE", IFreeInfoPublic>;
 
 	type TItemCardFilter = TItemVar<"CARD", ICardInfoFilter>;
-	type TItemGuardFilter = TItemVar<"GUARD", IGuardInfoFilter>;
+	type TItemFreeFilter = TItemVar<"FREE", IFreeInfoFilter>;
 
-	export type TItemAll = TItemCard | TItemGuard;
-	export type TItemPublic = TItemCardPublic | TItemGuardPublic;
-	export type TItemFilter = TItemCardFilter | TItemGuardFilter;
+	export type TItemAll = TItemCard | TItemFree;
+	export type TItemPublic = TItemCardPublic | TItemFreePublic;
+	export type TItemFilter = TItemCardFilter | TItemFreeFilter;
 
 	export type TItemMinCard = typesUtils.TItemChange<TItemCard, "info", "id">;
 	export type TItemMin = typesUtils.TItemChange<TItemAll, "info", "id">;
@@ -64,5 +63,5 @@ export const ItemBank = {
 
 export const ItemTypeItem = {
 	CARD: "CARD",
-	GUARD: "GUARD",
+	FREE: "FREE",
 } as const;

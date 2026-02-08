@@ -21,16 +21,16 @@ const GetItemsCardSchema = GetItemsCoreSchema.extend({
 	}),
 });
 
-const GetItemsGuardSchema = GetItemsCoreSchema.extend({
+const GetItemsFreeSchema = GetItemsCoreSchema.extend({
 	saleKind: z.literal("SERVICE"),
-	type: z.literal("GUARD"),
+	type: z.literal("FREE"),
 	info: z.object({
 		cvb: z.string().min(1),
 	}),
 });
 
 export const getItemsReq: RestInterface.TSchemaMap["GET_ITEMS"] = z
-	.discriminatedUnion("type", [GetItemsCardSchema, GetItemsGuardSchema])
+	.discriminatedUnion("type", [GetItemsCardSchema, GetItemsFreeSchema])
 	.superRefine((v, ctx) => {
 		if (v.priceUp != null && v.priceDown != null && v.priceDown > v.priceUp) {
 			ctx.addIssue({
