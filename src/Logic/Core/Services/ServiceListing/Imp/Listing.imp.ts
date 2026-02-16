@@ -5,7 +5,9 @@ import { Utils } from "../../../../../Utils";
 class ListingImp extends ServiceBase implements Interface.IAdapter {
 	private CreateListing(data: Interface.TListingMin): Interface.IListing {
 		const id = "listing__" + crypto.randomUUID();
-		return { ...data, id, createdAt: new Date().getTime(), status: "ACTIVE" };
+		const date = new Date().getTime();
+
+		return { ...data, id, createdAt: date, updatedAt: date, status: "ACTIVE" };
 	}
 
 	private GetListing = (id: string): Interface.IListing => Utils.error.require(this.API.BD.read.Listing(id), "LISTING_NOT_FOUND");

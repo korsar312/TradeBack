@@ -5,7 +5,7 @@ import { Utils } from "../../../../../Utils";
 class DealImp extends ServiceBase implements Interface.IAdapter {
 	private CreateDeal(data: Interface.IDealMin): Interface.IDeal {
 		const id = "deal__" + crypto.randomUUID();
-		return { ...data, id, buyerId: null, status: "FULFILLED" };
+		return { ...data, id, status: "IN_ACTIVE" };
 	}
 
 	private GetDeal = (id: string): Interface.IDeal => Utils.error.require(this.API.BD.read.Deal(id), "DEAL_NOT_FOUND");

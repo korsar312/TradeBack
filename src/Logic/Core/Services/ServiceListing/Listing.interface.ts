@@ -8,15 +8,16 @@ export namespace ListingInterface {
 		getListing(id: string): IListing;
 	}
 
-	export interface IListingBase<T extends EListingSaleKind = EListingSaleKind> {
+	export interface IListing {
 		id: string;
 		sellerId: string;
-		saleKind: T;
-		createdAt: number;
+		saleKind: EListingSaleKind;
 		status: EListingStatus;
 		name: string;
 		desc: string;
 		price: number;
+		createdAt: number;
+		updatedAt: number;
 	}
 
 	export type TGetParams = Partial<{
@@ -25,26 +26,19 @@ export namespace ListingInterface {
 		findStr: string;
 	}>;
 
-	type UnionOf<M extends Record<PropertyKey, any>> = M[keyof M];
-	type MapOmit<M extends Record<PropertyKey, any>, K extends PropertyKey> = { [P in keyof M]: Omit<M[P], K> };
-	type ListingMap = { [K in EListingSaleKind]: IListingBase<K> };
-
-	export type IListing = UnionOf<ListingMap>;
-	export type TListingMin = UnionOf<MapOmit<ListingMap, "id" | "createdAt" | "status">>;
+	export type TListingMin = Omit<IListing, "id" | "createdAt" | "status" | "updatedAt">;
 
 	export type EListingStatus = keyof typeof ListingStatus;
 	export type EListingSaleKind = keyof typeof ListingSaleKind;
 }
 
-const ListingStatus = {
-	DRAFT: "DRAFT",
+export const ListingStatus = {
 	ACTIVE: "ACTIVE",
-	RESERVED: "RESERVED",
-	SOLD: "SOLD",
+	FREEZE: "FREEZE",
 	ARCHIVED: "ARCHIVED",
 } as const;
 
-const ListingSaleKind = {
-	GOODS: "GOODS",
-	SERVICE: "SERVICE",
+export const ListingSaleKind = {
+	ONE: "ONE",
+	INFINITY: "INFINITY",
 } as const;

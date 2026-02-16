@@ -9,6 +9,7 @@ import type { ServiceItem } from "../Services/ServiceItem";
 import type { ServiceListing } from "../Services/ServiceListing";
 import type { ServicePayment } from "../Services/ServicePayment";
 import { ServiceLanguage } from "../Services/ServiceLanguage";
+import { ServiceTransaction } from "../Services/ServiceTransaction";
 
 export namespace ProjectInterface {
 	export type TModuleInf = {
@@ -26,6 +27,7 @@ export namespace ProjectInterface {
 		delivery: ServiceDelivery;
 		language: ServiceLanguage;
 		evaluation: ServiceEvaluation;
+		transaction: ServiceTransaction;
 	};
 
 	type TDI<M> = <T extends keyof M>(key: T) => M[T];

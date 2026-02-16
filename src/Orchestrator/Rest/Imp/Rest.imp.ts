@@ -23,11 +23,12 @@ export class RestImp implements Interface.IAdapter {
 	public async CREATE_LISTING(params: Interface.ICreateListingReq, userId: string) {
 		const { desc, name, info, price, saleKind, type } = params;
 		const listingId = this.module.listing.saveNewListing({ name, desc, sellerId: userId, saleKind, price });
-		const dealId = this.module.deal.saveNewDeal({ listingId, sellerId: userId });
-		this.module.payment.saveNewPayment({ dealId, price });
 		this.module.item.saveNewItem({ info: { ...info, listingId } as any, type });
-		this.module.delivery.saveNewDelivery({ dealId, deliveryPlace: null, departurePlace: null, trackNumber: null });
-		this.module.chat.saveNewChat({ dealId });
+
+		//const dealId = this.module.deal.saveNewDeal({ listingId, sellerId: userId });
+		//this.module.payment.saveNewPayment({ dealId, price });
+		//this.module.delivery.saveNewDelivery({ dealId, deliveryPlace: null, departurePlace: null, trackNumber: null });
+		//this.module.chat.saveNewChat({ dealId });
 
 		return { returned: listingId };
 	}

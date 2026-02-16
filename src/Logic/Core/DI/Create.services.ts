@@ -23,6 +23,8 @@ import EvaluationImp from "../Services/ServiceEvaluation/Imp/Evaluation.imp";
 import { ServiceEvaluation } from "../Services/ServiceEvaluation";
 import LanguageImp from "../Services/ServiceLanguage/Imp/Language.imp";
 import { ServiceLanguage } from "../Services/ServiceLanguage";
+import TransactionImp from "../Services/ServiceTransaction/Imp/Transaction.imp";
+import { ServiceTransaction } from "../Services/ServiceTransaction";
 
 const inf: IServiceProps = { infrastructure: Infrastructure };
 
@@ -53,6 +55,9 @@ const delivery = new ServiceDelivery(deliveryImp);
 const evaluationImp = new EvaluationImp(inf);
 const evaluation = new ServiceEvaluation(evaluationImp);
 
+const transactionImp = new TransactionImp(inf);
+const transaction = new ServiceTransaction(transactionImp);
+
 const languageImp = new LanguageImp(inf, dictionary);
 const language = new ServiceLanguage(languageImp);
 
@@ -68,5 +73,6 @@ service.use("message", message);
 service.use("delivery", delivery);
 service.use("language", language);
 service.use("evaluation", evaluation);
+service.use("transaction", transaction);
 
 export default service.get;
