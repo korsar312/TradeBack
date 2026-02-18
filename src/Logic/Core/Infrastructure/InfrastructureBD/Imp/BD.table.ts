@@ -1,4 +1,4 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text, uniqueIndex, index } from "drizzle-orm/sqlite-core";
 import type { BDInterface } from "../BD.interface.ts";
 
 const table = {
@@ -7,6 +7,8 @@ const table = {
 		nickname: text("nickname").notNull(),
 		role: text("role").$type<BDInterface.User["role"]>().notNull(),
 		login: text("login").notNull(),
+		balance: integer("balance").notNull(),
+		balanceHold: integer("balance_hold").notNull(),
 		createdAt: integer("created_at").notNull(),
 	},
 	usersAuth: {
@@ -32,7 +34,7 @@ const table = {
 		desc: text("description").notNull(),
 		price: integer("price").notNull(),
 		createdAt: integer("created_at").notNull(),
-		updatedAt: integer("updatedAt").notNull(),
+		updatedAt: integer("updated_at").notNull(),
 	},
 	itemCards: {
 		id: text("id").primaryKey(),
@@ -47,8 +49,8 @@ const table = {
 		sellerId: text("seller_id").notNull(),
 		buyerId: text("buyer_id").notNull(),
 		status: text("status").$type<BDInterface.Deal["status"]>().notNull(),
-		buyerCancelAt: integer("buyerCancel_at"),
-		sellerCancelAt: integer("sellerCancel_at"),
+		buyerCancelAt: integer("buyer_cancel_at"),
+		sellerCancelAt: integer("seller_cancel_at"),
 		createdAt: integer("created_at").notNull(),
 	},
 	payments: {
@@ -56,6 +58,9 @@ const table = {
 		dealId: text("deal_id").notNull(),
 		status: text("status").$type<BDInterface.Payment["status"]>().notNull(),
 		price: integer("price").notNull(),
+		fee: integer("fee").notNull(),
+		createdAt: integer("created_at").notNull(),
+		updatedAt: integer("updated_at").notNull(),
 	},
 	deliveries: {
 		id: text("id").primaryKey(),
@@ -89,17 +94,32 @@ const table = {
 	},
 } satisfies BDInterface.TTable;
 
-export const __users = sqliteTable("users", table.users);
+export const __users = sqliteTable("users", table.users, (t) => ({
+	ux_users_login: uniqueIndex("ux_users_login").on(t.login),
+}));
 export const __usersAuth = sqliteTable("usersAuth", table.usersAuth);
 export const __userRestrictions = sqliteTable("userRestrictions", table.userRestrictions);
-export const __listings = sqliteTable("listings", table.listings);
-export const __itemCards = sqliteTable("itemCards", table.itemCards);
-export const __deals = sqliteTable("deals", table.deals);
-export const __payments = sqliteTable("payments", table.payments);
+export const __listings = sqliteTable("listings", table.listings, (t) => ({
+	ix_listings_status_saleKind_id: index("ix_listings_status_sale_kind_id").on(t.status, t.saleKind, t.id),
+	ix_listings_sellerId: index("ix_listings_seller_id").on(t.sellerId),
+}));
+export const __itemCards = sqliteTable("itemCards", table.itemCards, (t) => ({
+	ux_itemCards_listingId: uniqueIndex("ux_itemCards_listing_id").on(t.listingId),
+}));
+export const __deals = sqliteTable("deals", table.deals, (t) => ({
+	ix_deals_listingId: index("ix_deals_listing_id").on(t.listingId),
+	ix_deals_sellerId: index("ix_deals_seller_id").on(t.sellerId),
+	ix_deals_buyerId: index("ix_deals_buyer_id").on(t.buyerId),
+}));
+export const __payments = sqliteTable("payments", table.payments, (t) => ({
+	ux_payments_dealId: uniqueIndex("ux_payments_deal_id").on(t.dealId),
+}));
 export const __deliveries = sqliteTable("deliveries", table.deliveries);
 export const __evaluations = sqliteTable("evaluations", table.evaluations);
 export const __chats = sqliteTable("chats", table.chats);
-export const __messages = sqliteTable("messages", table.messages);
+export const __messages = sqliteTable("messages", table.messages, (t) => ({
+	ix_messages_chatId_createdAt: index("ix_messages_chat_id_created_at").on(t.chatId, t.createdAt),
+}));
 
 export const Table = {
 	users: __users,

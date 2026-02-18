@@ -7,7 +7,7 @@ export namespace DealInterface {
 
 	export interface IDeal {
 		id: string; // id сделки
-		listingId: string; // FK listings.id (unique)
+		listingId: string; // FK listings.id
 		sellerId: string; // FK users.id
 		buyerId: string; // FK users.id
 		status: EDealStatus; // статус

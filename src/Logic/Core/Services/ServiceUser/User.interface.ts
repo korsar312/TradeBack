@@ -10,6 +10,8 @@ export namespace UserInterface {
 		nickname: string; // никнейм
 		role: ERole; // роль (ADMIN)
 		login: string; // логин (unique)
+		balance: number; // доступные деньги
+		balanceHold: number; // замороженные деньги
 		createdAt: number; // timestamp (INTEGER)
 	}
 

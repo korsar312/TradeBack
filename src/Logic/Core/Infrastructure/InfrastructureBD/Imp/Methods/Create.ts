@@ -14,5 +14,4 @@ export class Create extends BDHelpers implements Interface.ICreate {
 	Evaluation = (d: Interface.Evaluation) => (this.db.insert(Table.evaluations).values(d).run(), d.id);
 	Chat = (d: Interface.Chat) => (this.db.insert(Table.chats).values(d).run(), d.id);
 	Message = (d: Interface.Message) => (this.db.insert(Table.messages).values(d).run(), d.id);
-	// last_message_id and last_message_at in chats will update via triggers
 }

@@ -25,6 +25,7 @@ import LanguageImp from "../Services/ServiceLanguage/Imp/Language.imp";
 import { ServiceLanguage } from "../Services/ServiceLanguage";
 import TransactionImp from "../Services/ServiceTransaction/Imp/Transaction.imp";
 import { ServiceTransaction } from "../Services/ServiceTransaction";
+import { Consts } from "../../Config/Consts";
 
 const inf: IServiceProps = { infrastructure: Infrastructure };
 
@@ -43,7 +44,7 @@ const item = new ServiceItem(itemImp);
 const listingImp = new ListingImp(inf);
 const listing = new ServiceListing(listingImp);
 
-const paymentImp = new PaymentImp(inf);
+const paymentImp = new PaymentImp(inf, Consts.FEE);
 const payment = new ServicePayment(paymentImp);
 
 const messageImp = new MessageImp(inf);
