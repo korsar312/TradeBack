@@ -6,13 +6,30 @@ export namespace PaymentInterface {
 		getPaymentByDealId(dealId: string): IPayment;
 	}
 
+	/**
+	 * Платёж.
+	 * Фиксирует финансовую часть сделки.
+	 */
 	export interface IPayment {
-		id: string; // id платежа
-		dealId: string; // FK deals.id (unique => 1↔1)
-		status: EPaymentStatus; // статус платежа
-		price: number; // зафиксированная сумма на момент покупки
-		fee: number; // сумма комиссии
+		/** id платежа */
+		id: string;
+
+		/** FK deals.id (1↔1) */
+		dealId: string;
+
+		/** статус платежа */
+		status: EPaymentStatus;
+
+		/** зафиксированная сумма на момент покупки */
+		price: number;
+
+		/** сумма комиссии */
+		fee: number;
+
+		/** время создания */
 		createdAt: number;
+
+		/** время последнего обновления */
 		updatedAt: number;
 	}
 
@@ -21,8 +38,17 @@ export namespace PaymentInterface {
 	export type EPaymentStatus = keyof typeof PaymentStatus;
 }
 
+/**
+ * Статус платежа.
+ * Отражает текущее состояние средств по сделке.
+ */
 const PaymentStatus = {
-	ESCROW: "ESCROW", // деньги заморожены
-	RELEASED: "RELEASED", // деньги переведены продавцу
-	REFUNDED: "REFUNDED", // деньги разморожены у покупателя
-};
+	/** деньги заморожены */
+	ESCROW: "ESCROW",
+
+	/** деньги переведены продавцу */
+	RELEASED: "RELEASED",
+
+	/** деньги разморожены у покупателя */
+	REFUNDED: "REFUNDED",
+} as const;

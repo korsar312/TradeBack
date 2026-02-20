@@ -3,7 +3,7 @@ import ServiceBase, { type IServiceProps } from "../../Service.base";
 import { Utils } from "../../../../../Utils";
 
 class PaymentImp extends ServiceBase implements Interface.IAdapter {
-	private createPayment(data: Interface.TPaymentMin): Interface.IPayment {
+	private CreatePayment(data: Interface.TPaymentMin): Interface.IPayment {
 		const id = "payment__" + crypto.randomUUID();
 		const date = new Date().getTime();
 		return { ...data, id, status: "ESCROW", createdAt: date, updatedAt: date };
@@ -24,7 +24,7 @@ class PaymentImp extends ServiceBase implements Interface.IAdapter {
 	//==============================================================================================
 
 	public saveNewPayment(data: Interface.TPaymentMin) {
-		const payment = this.createPayment(data);
+		const payment = this.CreatePayment(data);
 		this.API.BD.create.Payment(payment);
 
 		return payment.id;

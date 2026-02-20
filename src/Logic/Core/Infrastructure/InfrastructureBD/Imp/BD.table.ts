@@ -1,4 +1,4 @@
-import { integer, sqliteTable, text, uniqueIndex, index } from "drizzle-orm/sqlite-core";
+import { index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 import type { BDInterface } from "../BD.interface.ts";
 
 const table = {
@@ -92,6 +92,20 @@ const table = {
 		createdAt: integer("created_at").notNull(),
 		text: text("text").notNull(),
 	},
+	transaction: {
+		id: text("id").primaryKey(),
+		userId: text("user_id").notNull(),
+		paymentId: text("payment_id"),
+		type: text("type").$type<BDInterface.Transaction["type"]>().notNull(),
+		direction: text("direction").$type<BDInterface.Transaction["direction"]>().notNull(),
+		walletBeforeSnapshot: integer("wallet_before_snapshot").notNull(),
+		walletAfterSnapshot: integer("wallet_after_snapshot").notNull(),
+		holdBeforeSnapshot: integer("hold_before_snapshot").notNull(),
+		holdAfterSnapshot: integer("hold_after_snapshot").notNull(),
+		account: text("account").$type<BDInterface.Transaction["account"]>().notNull(),
+		amount: integer("amount").notNull(),
+		createdAt: integer("created_at").notNull(),
+	},
 } satisfies BDInterface.TTable;
 
 export const __users = sqliteTable("users", table.users, (t) => ({
@@ -120,6 +134,7 @@ export const __chats = sqliteTable("chats", table.chats);
 export const __messages = sqliteTable("messages", table.messages, (t) => ({
 	ix_messages_chatId_createdAt: index("ix_messages_chat_id_created_at").on(t.chatId, t.createdAt),
 }));
+export const __transaction = sqliteTable("transaction", table.transaction);
 
 export const Table = {
 	users: __users,
@@ -133,4 +148,5 @@ export const Table = {
 	evaluations: __evaluations,
 	chats: __chats,
 	messages: __messages,
+	transaction: __transaction,
 } satisfies BDInterface.TTable;

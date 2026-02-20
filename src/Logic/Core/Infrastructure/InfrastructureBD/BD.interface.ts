@@ -8,6 +8,7 @@ import type { EvaluationInterface } from "../../Services/ServiceEvaluation/Evalu
 import type { ChatInterface } from "../../Services/ServiceChat/Chat.interface.ts";
 import type { MessageInterface } from "../../Services/ServiceMessage/Message.interface.ts";
 import type { PublicInterface } from "../../Services/Public.interface.ts";
+import { TransactionInterface } from "../../Services/ServiceTransaction/Transaction.interface";
 
 export namespace BDInterface {
 	export interface IAdapter {
@@ -29,6 +30,7 @@ export namespace BDInterface {
 		evaluations: Record<keyof Evaluation, unknown>;
 		chats: Record<keyof Chat, unknown>;
 		messages: Record<keyof Message, unknown>;
+		transaction: Record<keyof Transaction, unknown>;
 	};
 
 	export type Listing = ListingInterface.IListing;
@@ -42,6 +44,7 @@ export namespace BDInterface {
 	export type User = UserInterface.IUser;
 	export type UserAuth = UserInterface.IUserAuth;
 	export type UserRestriction = UserInterface.IUserRestriction;
+	export type Transaction = TransactionInterface.ITransaction;
 
 	/* ===================== CRUD API SHAPES ===================== */
 
@@ -72,6 +75,7 @@ export namespace BDInterface {
 		Evaluation: CreateEntity<Evaluation>;
 		Chat: CreateEntity<Chat>;
 		Message: CreateEntity<Message>;
+		Transaction: CreateEntity<Transaction>;
 	}
 
 	export interface IRead {
@@ -86,6 +90,7 @@ export namespace BDInterface {
 		Evaluation: ReadEntity<Evaluation>;
 		Chat: ReadEntity<Chat>;
 		Message: ReadEntity<Message>;
+		Transaction: ReadEntity<Transaction>;
 
 		/* связи */
 		ListMessagesByChat: (chatId: string) => Message[];
@@ -94,6 +99,7 @@ export namespace BDInterface {
 		ItemCardByListingId: (listingId: string) => ItemCard | null; // item_cards.listing_id unique
 		ListDealsByListingId: (listingId: string) => Deal[]; // deals.listing_id
 		PaymentByDealId: (dealId: string) => Payment | null; // payments.deal_id unique
+		TransactionByUserId: (userId: string) => Transaction[]; // transaction.user_id unique
 
 		/* прочее */
 		ListListings: (p: {
@@ -119,6 +125,7 @@ export namespace BDInterface {
 		Evaluation: UpdateEntity<Evaluation>;
 		Chat: UpdateEntity<Chat>;
 		Message: UpdateEntity<Message>;
+		Transaction: UpdateEntity<Transaction>;
 	}
 
 	export interface IDelete {
@@ -133,5 +140,6 @@ export namespace BDInterface {
 		Evaluation: DeleteEntity;
 		Chat: DeleteEntity;
 		Message: DeleteEntity;
+		Transaction: DeleteEntity;
 	}
 }

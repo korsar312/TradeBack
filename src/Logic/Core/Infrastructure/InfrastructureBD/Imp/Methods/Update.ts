@@ -14,4 +14,5 @@ export class Update extends BDHelpers implements Interface.IUpdate {
 	Evaluation = this.mkUpdateEntity<Interface.Evaluation>(Table.evaluations, (e) => e);
 	Chat = this.mkUpdateEntity<Interface.Chat>(Table.chats, (c) => c);
 	Message = this.mkUpdateEntity<Interface.Message>(Table.messages, (m) => m);
+	Transaction = this.mkUpdateEntity<Interface.Transaction>(Table.transaction, (m) => m);
 }

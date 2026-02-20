@@ -22,6 +22,8 @@ class UserImp extends ServiceBase implements Interface.IAdapter {
 	private IsExistUserAuth = (login: string): boolean => Boolean(this.API.BD.read.UsersAuthByLogin(login));
 	private GetUser = (id: string): Interface.IUser => Utils.error.require(this.API.BD.read.User(id), "USER_NOT_FOUND");
 
+	//==============================================================================================
+
 	public saveNewUser(login: string) {
 		if (this.IsExistUserAuth(login)) throw Utils.error.createError({ reason: "USER_ALREADY_EXIST" });
 

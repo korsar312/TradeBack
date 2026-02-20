@@ -59,6 +59,11 @@ export class Read extends BDHelpers implements Interface.IRead {
 		return r ? (r as Interface.Message) : null;
 	});
 
+	Transaction = this.mkReadEntity<Interface.Transaction>(Table.transaction, (id) => {
+		const r = this.db.select().from(Table.transaction).where(eq(Table.transaction.id, id)).get();
+		return r ? (r as Interface.Transaction) : null;
+	});
+
 	ListMessagesByChat = (chatId: string) => {
 		const rows = this.db.select().from(Table.messages).where(eq(Table.messages.chatId, chatId)).orderBy(asc(Table.messages.createdAt)).all();
 		return rows as Interface.Message[];
@@ -100,6 +105,10 @@ export class Read extends BDHelpers implements Interface.IRead {
 	PaymentByDealId = (dealId: string) => {
 		const r = this.db.select().from(Table.payments).where(eq(Table.payments.dealId, dealId)).get();
 		return r ? (r as Interface.Payment) : null;
+	};
+
+	TransactionByUserId = (userId: string) => {
+		return this.db.select().from(Table.transaction).where(eq(Table.transaction.userId, userId)).orderBy(asc(Table.transaction.id)).all();
 	};
 
 	ListListings = (p: {

@@ -12,6 +12,8 @@ class ListingImp extends ServiceBase implements Interface.IAdapter {
 
 	private GetListing = (id: string): Interface.IListing => Utils.error.require(this.API.BD.read.Listing(id), "LISTING_NOT_FOUND");
 
+	//==============================================================================================
+
 	public saveNewListing(data: Interface.TListingMin) {
 		const listing = this.CreateListing(data);
 		this.API.BD.create.Listing(listing);

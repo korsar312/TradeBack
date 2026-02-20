@@ -8,15 +8,36 @@ export namespace ListingInterface {
 		getListing(id: string): IListing;
 	}
 
+	/**
+	 * Лот.
+	 * Описывает предложение продавца.
+	 */
 	export interface IListing {
+		/** уникальный номер */
 		id: string;
+
+		/** идентификатор продавца */
 		sellerId: string;
+
+		/** тип продажи */
 		saleKind: EListingSaleKind;
+
+		/** статус объявления */
 		status: EListingStatus;
+
+		/** название лота */
 		name: string;
+
+		/** описание лота */
 		desc: string;
+
+		/** цена лота */
 		price: number;
+
+		/** время создания */
 		createdAt: number;
+
+		/** время последнего обновления */
 		updatedAt: number;
 	}
 
@@ -32,13 +53,29 @@ export namespace ListingInterface {
 	export type EListingSaleKind = keyof typeof ListingSaleKind;
 }
 
+/**
+ * Статус объявления.
+ * Определяет доступность для покупки.
+ */
 export const ListingStatus = {
+	/** активно и доступно для покупки */
 	ACTIVE: "ACTIVE",
+
+	/** приостановлено */
 	FREEZE: "FREEZE",
+
+	/** архивировано */
 	ARCHIVED: "ARCHIVED",
 } as const;
 
+/**
+ * Тип продажи.
+ * Определяет количество возможных покупок.
+ */
 export const ListingSaleKind = {
+	/** единичная продажа лота */
 	ONE: "ONE",
+
+	/** неограниченное количество продаж лота */
 	INFINITY: "INFINITY",
 } as const;

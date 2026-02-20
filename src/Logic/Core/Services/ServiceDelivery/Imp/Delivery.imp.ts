@@ -10,6 +10,8 @@ class DeliveryImp extends ServiceBase implements Interface.IAdapter {
 
 	private GetDelivery = (id: string): Interface.IDelivery => Utils.error.require(this.API.BD.read.Delivery(id), "DELIVERY_NOT_FOUND");
 
+	//==============================================================================================
+
 	public saveNewDelivery(data: Interface.IDeliveryMin) {
 		const delivery = this.CreateDelivery(data);
 		this.API.BD.create.Delivery(delivery);

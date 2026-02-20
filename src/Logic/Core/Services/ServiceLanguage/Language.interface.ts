@@ -15,15 +15,31 @@ export namespace LanguageInterface {
 	export type TWordParam = { arrReplace?: EWordAll[]; case?: ECase };
 }
 
+/**
+ * Ключ слова.
+ * Используется для выбора текстового шаблона.
+ */
 const Word = {
 	BUY: "BUY",
 } as const;
 
+/**
+ * Язык.
+ * Определяет локализацию текста.
+ */
 const Lang = {
+	/** русский */
 	RU: "RU",
 } as const;
 
+/**
+ * Регистр.
+ * Определяет формат написания слова.
+ */
 const Case = {
+	/** первая буква заглавная / верхний регистр */
 	CAPITAL: "CAPITAL",
+
+	/** нижний регистр */
 	SMALL: "SMALL",
 } as const;

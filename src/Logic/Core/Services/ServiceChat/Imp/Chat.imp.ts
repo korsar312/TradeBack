@@ -10,6 +10,8 @@ class ChatImp extends ServiceBase implements Interface.IAdapter {
 
 	private GetChat = (id: string): Interface.IChat => Utils.error.require(this.API.BD.read.Chat(id), "CHAT_NOT_FOUND");
 
+	//==============================================================================================
+
 	public saveNewChat(data: Interface.IChatMin) {
 		const chat = this.CreateChat(data);
 		this.API.BD.create.Chat(chat);

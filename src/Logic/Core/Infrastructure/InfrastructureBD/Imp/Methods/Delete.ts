@@ -48,4 +48,8 @@ export class Delete extends BDHelpers implements Interface.IDelete {
 		const res = this.db.delete(Table.messages).where(eq(Table.messages.id, id)).run();
 		return Number(res.changes ?? 0);
 	};
+	Transaction = (id: string) => {
+		const res = this.db.delete(Table.transaction).where(eq(Table.transaction.id, id)).run();
+		return Number(res.changes ?? 0);
+	};
 }

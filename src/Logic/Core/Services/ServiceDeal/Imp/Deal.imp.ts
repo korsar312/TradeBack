@@ -11,6 +11,8 @@ class DealImp extends ServiceBase implements Interface.IAdapter {
 	private GetDeal = (id: string): Interface.IDeal => Utils.error.require(this.API.BD.read.Deal(id), "DEAL_NOT_FOUND");
 	private GetDealsByListingId = (listingId: string): Interface.IDeal[] => this.API.BD.read.ListDealsByListingId(listingId);
 
+	//==============================================================================================
+
 	public saveNewDeal(data: Interface.IDealMin) {
 		const deal = this.CreateDeal(data);
 		this.API.BD.create.Deal(deal);

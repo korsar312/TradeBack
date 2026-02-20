@@ -26,6 +26,8 @@ class ItemImp extends ServiceBase implements Interface.IAdapter {
 		}
 	}
 
+	//==============================================================================================
+
 	public saveNewItem(data: Interface.TItemReq) {
 		switch (data.type) {
 			case "CARD":
