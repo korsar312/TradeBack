@@ -1,8 +1,6 @@
 import { z } from "zod";
-import type { PublicInterface } from "../../Logic/Core/Services/Public.interface.ts";
-import type { UserInterface } from "../../Logic/Core/Services/ServiceUser/User.interface.ts";
-import type { ItemInterface } from "../../Logic/Core/Services/ServiceItem/Item.interface.ts";
-import { ListingInterface } from "../../Logic/Core/Services/ServiceListing/Listing.interface";
+import { UseCasesInterface } from "../../Logic/Domain/UseCases/UseCases.interface";
+import { UserInterface } from "../../Logic/Domain/Services/ServiceUser/User.interface";
 
 export namespace RestInterface {
 	export type IAdapter = {
@@ -27,12 +25,12 @@ export namespace RestInterface {
 	/* ===================== REQUEST MAP ===================== */
 
 	const inputByLink = {
-		LOGIN: {} as ILoginReq,
-		REGISTER: {} as IRegisterReq,
-		CREATE_LISTING: {} as ICreateListingReq,
-		CREATE_LISTING_ARR: {} as ICreateListingReq[],
-		GET_ITEMS: {} as IGetItemsReq,
-		GET_ITEM: {} as IGetItemReq,
+		LOGIN: {} as UseCasesInterface.TLoginReq,
+		REGISTER: {} as UseCasesInterface.TRegisterReq,
+		CREATE_LISTING: {} as UseCasesInterface.TCreateListingReq,
+		CREATE_LISTING_ARR: {} as UseCasesInterface.TCreateListingReq[],
+		GET_ITEMS: {} as UseCasesInterface.TGetItemListReq,
+		GET_ITEM: {} as UseCasesInterface.TGetItemReq,
 	} as const satisfies Record<ELinks, unknown>;
 
 	type TInputByLink = {
@@ -44,12 +42,12 @@ export namespace RestInterface {
 	/* ===================== RESPONSE MAP ===================== */
 
 	const responseByLink = {
-		LOGIN: {} as IGetUserRes,
-		REGISTER: {} as UserInterface.IUserAll,
-		CREATE_LISTING: {} as string,
+		LOGIN: {} as UseCasesInterface.TLoginRes,
+		REGISTER: {} as UseCasesInterface.TRegisterRes,
+		CREATE_LISTING: {} as UseCasesInterface.TCreateListingRes,
 		CREATE_LISTING_ARR: {} as unknown as void,
-		GET_ITEMS: {} as IGetItemsRes[],
-		GET_ITEM: {} as IGetItemsRes,
+		GET_ITEMS: {} as UseCasesInterface.TGetItemListRes,
+		GET_ITEM: {} as UseCasesInterface.TGetItemRes,
 	} as const satisfies Record<ELinks, unknown>;
 
 	type TResponseByLink = {
@@ -60,71 +58,7 @@ export namespace RestInterface {
 
 	/* ===================== METHOD RETURN ===================== */
 
-	export type TReturn<L extends ELinks> = { code?: number; returned?: TRes<L> };
-	export type TMethod<L extends ELinks> = (req: TReq<L>, userId: string) => Promise<TReturn<L> | void>;
-
-	/*========================== HTTP REQUEST ==================================*/
-
-	/*==== LOGIN REQ ====*/
-
-	export interface ILoginReq {
-		login: string;
-		token: string;
-	}
-
-	/*==== REGISTER REQ ====*/
-
-	export interface IRegisterReq {
-		login: string;
-	}
-
-	/*==== CREATE LISTING REQ ====*/
-
-	export type ICreateListingReq = {
-		name: string;
-		desc: string;
-		price: number;
-		saleKind: ListingInterface.EListingSaleKind;
-	} & ItemInterface.TItemReq;
-
-	/*==== GET ITEMS REQ ====*/
-
-	export type IGetItemsReq = {
-		limit: number;
-		saleKind: ListingInterface.EListingSaleKind;
-		cursorId?: string;
-		sort?: PublicInterface.ESort;
-		sellerId?: string;
-		priceUp?: number;
-		priceDown?: number;
-		findStr?: string;
-	} & ItemInterface.TItemReqPub;
-
-	/*==== GET ITEM REQ ====*/
-
-	export type IGetItemReq = {
-		id: string;
-		type: ItemInterface.ETypeItem;
-	};
-
-	/*========================== HTTP RESPONSE ==================================*/
-
-	/*==== GET ITEMS LISTING RES ====*/
-
-	export type IGetItemsRes = {
-		id: string;
-		name: string;
-		desc: string;
-		price: number;
-		status: ListingInterface.EListingStatus;
-
-		sellerName: string;
-		sellerId: string;
-		sellerLike: number;
-		sellerDislike: number;
-	} & ItemInterface.TItemResPub;
-
-	export type IGetUserRes = Omit<UserInterface.IUser, "role">;
+	export type TMethod<L extends ELinks> = (req: TReq<L>, userId: string) => Promise<TRes<L> | void>;
 }
 
 const Links = {

@@ -3,7 +3,7 @@ import type { RestInterface as Interface } from "./Rest.interface.ts";
 import express, { Express, NextFunction, Request, Response } from "express";
 import { TModules } from "../../Logic";
 import { Utils } from "../../Utils";
-import { type UserInterface, UserRole } from "../../Logic/Core/Services/ServiceUser/User.interface";
+import { type UserInterface, UserRole } from "../../Logic/Domain/Services/ServiceUser/User.interface";
 import { ErrorSys } from "../../Utils/Error/Error.imp";
 import { RestSchema } from "./Schema/Rest.schema";
 import cors from "cors";
@@ -107,14 +107,14 @@ export class RestCore extends OrchestratorBase {
 			if (isNoCheck) return next();
 
 			const { login, token } = Utils.error.parseQuery(req.headers, RestSchema.LOGIN, "UNAUTHORIZE");
-			const userId = this.module.user.login(login, token);
-			const user = this.module.user.getUser(userId);
+
+			const user = this.module.login({ login, token }, "");
 
 			const routeRight = this.role[user.role] || [];
 			const isAccess = routeRight.includes(route);
 			if (!isAccess) throw Utils.error.createError({ reason: "NOT_RIGHT", data: `${route} !== ${routeRight}` });
 
-			res.locals.userId = userId;
+			res.locals.userId = user.id;
 
 			return next();
 		} catch (e: unknown) {
@@ -141,7 +141,7 @@ export class RestCore extends OrchestratorBase {
 				const result = await method(allParams, res.locals.userId);
 
 				if (res.headersSent) return;
-				res.status(result?.code ?? 200).json(result?.returned ?? { ok: true });
+				res.status(result?.code ?? 200).json(result ?? { ok: true });
 			} catch (e: unknown) {
 				this.errorHandler(res, e);
 			}

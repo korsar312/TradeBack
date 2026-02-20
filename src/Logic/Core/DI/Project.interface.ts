@@ -1,15 +1,15 @@
-import type { ServiceMessage } from "../Services/ServiceMessage";
-import type { InfrastructureBD } from "../Infrastructure/InfrastructureBD";
-import type { ServiceUser } from "../Services/ServiceUser";
-import type { ServiceEvaluation } from "../Services/ServiceEvaluation";
-import type { ServiceDelivery } from "../Services/ServiceDelivery";
-import type { ServiceChat } from "../Services/ServiceChat";
-import type { ServiceDeal } from "../Services/ServiceDeal";
-import type { ServiceItem } from "../Services/ServiceItem";
-import type { ServiceListing } from "../Services/ServiceListing";
-import type { ServicePayment } from "../Services/ServicePayment";
-import { ServiceLanguage } from "../Services/ServiceLanguage";
-import { ServiceTransaction } from "../Services/ServiceTransaction";
+import type { ServiceMessage } from "../../Domain/Services/ServiceMessage";
+import type { InfrastructureBD } from "../../Domain/Infrastructure/InfrastructureBD";
+import type { ServiceUser } from "../../Domain/Services/ServiceUser";
+import type { ServiceEvaluation } from "../../Domain/Services/ServiceEvaluation";
+import type { ServiceDelivery } from "../../Domain/Services/ServiceDelivery";
+import type { ServiceChat } from "../../Domain/Services/ServiceChat";
+import type { ServiceDeal } from "../../Domain/Services/ServiceDeal";
+import type { ServiceItem } from "../../Domain/Services/ServiceItem";
+import type { ServiceListing } from "../../Domain/Services/ServiceListing";
+import type { ServicePayment } from "../../Domain/Services/ServicePayment";
+import { ServiceLanguage } from "../../Domain/Services/ServiceLanguage";
+import { ServiceTransaction } from "../../Domain/Services/ServiceTransaction";
 
 export namespace ProjectInterface {
 	export type TModuleInf = {
@@ -32,8 +32,8 @@ export namespace ProjectInterface {
 
 	type TDI<M> = <T extends keyof M>(key: T) => M[T];
 
-	export type TServices = TDI<TModuleService>;
 	export type TInfrastructure = TDI<TModuleInf>;
+	export type TServices = TDI<TModuleService>;
 
 	type InvokeOf<T> = T extends { invoke: infer I } ? I : never;
 

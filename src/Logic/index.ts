@@ -1,8 +1,9 @@
 import type { ProjectInterface } from "./Core/DI/Project.interface.ts";
-import service from "./Core/DI/Create.services";
+import useCases from "./Core/DI/Create.useCases.js";
+import { UseCasesInterface } from "./Domain/UseCases/UseCases.interface";
 
-export type TModules = ProjectInterface.ActType<ProjectInterface.TModuleService>;
+export type TModules = ProjectInterface.ActType<UseCasesInterface.TScenarioList>;
 
 export const Act = new Proxy({} as TModules, {
-	get: (_, prop: keyof ProjectInterface.TModuleService) => service(prop).invoke,
+	get: (_, prop: keyof UseCasesInterface.TScenarioList) => useCases.scenarioList[prop].invoke,
 });

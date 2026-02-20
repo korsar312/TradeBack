@@ -1,4 +1,4 @@
-import ServiceProxy from "../Common/ServiceProxy";
+import ServiceProxy from "../../Core/Common/ServiceProxy";
 
 class BaseInfrastructure<T extends object> extends ServiceProxy<T> {}
 

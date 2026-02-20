@@ -1,4 +1,4 @@
-import type { ProjectInterface } from "../DI/Project.interface.ts";
+import type { ProjectInterface } from "../../Core/DI/Project.interface.ts";
 
 export interface IServiceProps {
 	infrastructure: ProjectInterface.TInfrastructure;

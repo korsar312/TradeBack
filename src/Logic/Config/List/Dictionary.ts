@@ -1,4 +1,4 @@
-import type { LanguageInterface } from "../../Core/Services/ServiceLanguage/Language.interface.ts";
+import type { LanguageInterface } from "../../Domain/Services/ServiceLanguage/Language.interface.ts";
 
 const Dictionary: LanguageInterface.TDictionary = {
 	BUY: {
