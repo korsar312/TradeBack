@@ -26,6 +26,8 @@ import { ServiceLanguage } from "../../Domain/Services/ServiceLanguage";
 import TransactionImp from "../../Domain/Services/ServiceTransaction/Imp/Transaction.imp";
 import { ServiceTransaction } from "../../Domain/Services/ServiceTransaction";
 import { Consts } from "../../Config/Consts";
+import WalletImp from "../../Domain/Services/ServiceWallet/Imp/Wallet.imp";
+import { ServiceWallet } from "../../Domain/Services/ServiceWallet";
 
 const inf: IServiceProps = { infrastructure: Infrastructure };
 
@@ -40,6 +42,9 @@ const deal = new ServiceDeal(dealImp);
 
 const itemImp = new ItemImp(inf);
 const item = new ServiceItem(itemImp);
+
+const wallerImp = new WalletImp(inf);
+const waller = new ServiceWallet(wallerImp);
 
 const listingImp = new ListingImp(inf);
 const listing = new ServiceListing(listingImp);
@@ -68,6 +73,7 @@ service.use("user", user);
 service.use("chat", chat);
 service.use("deal", deal);
 service.use("item", item);
+service.use("wallet", waller);
 service.use("listing", listing);
 service.use("payment", payment);
 service.use("message", message);

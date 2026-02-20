@@ -10,6 +10,7 @@ import type { ServiceListing } from "../../Domain/Services/ServiceListing";
 import type { ServicePayment } from "../../Domain/Services/ServicePayment";
 import { ServiceLanguage } from "../../Domain/Services/ServiceLanguage";
 import { ServiceTransaction } from "../../Domain/Services/ServiceTransaction";
+import { ServiceWallet } from "../../Domain/Services/ServiceWallet";
 
 export namespace ProjectInterface {
 	export type TModuleInf = {
@@ -21,6 +22,7 @@ export namespace ProjectInterface {
 		chat: ServiceChat;
 		deal: ServiceDeal;
 		item: ServiceItem;
+		wallet: ServiceWallet;
 		listing: ServiceListing;
 		payment: ServicePayment;
 		message: ServiceMessage;
