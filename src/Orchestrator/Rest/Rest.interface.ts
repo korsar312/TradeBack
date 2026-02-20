@@ -19,42 +19,50 @@ export namespace RestInterface {
 
 	export type TLinks = Record<ELinks, TLinksParam>;
 	export type ELinks = keyof typeof Links;
+
 	export type TRouteRole = Record<UserInterface.ERole, string[]>;
 	export type EHttpMethod = keyof typeof HttpMethod;
 
-	/* ===================== REQUEST MAP ===================== */
+	/* ===================== REQUEST/RESPONSE MAP ===================== */
 
-	const inputByLink = {
-		LOGIN: {} as UseCasesInterface.TLoginReq,
-		REGISTER: {} as UseCasesInterface.TRegisterReq,
-		CREATE_LISTING: {} as UseCasesInterface.TCreateListingReq,
-		CREATE_LISTING_ARR: {} as UseCasesInterface.TCreateListingReq[],
-		GET_ITEMS: {} as UseCasesInterface.TGetItemListReq,
-		GET_ITEM: {} as UseCasesInterface.TGetItemReq,
-	} as const satisfies Record<ELinks, unknown>;
+	const dtoByLink = {
+		LOGIN: {
+			request: {} as UseCasesInterface.TLoginReq,
+			response: {} as UseCasesInterface.TLoginRes,
+		},
+		REGISTER: {
+			request: {} as UseCasesInterface.TRegisterReq,
+			response: {} as UseCasesInterface.TRegisterRes,
+		},
+		CREATE_LISTING: {
+			request: {} as UseCasesInterface.TCreateListingReq,
+			response: {} as UseCasesInterface.TCreateListingRes,
+		},
+		CREATE_LISTING_ARR: {
+			request: {} as UseCasesInterface.TCreateListingReq[],
+			response: {} as unknown as void,
+		},
+		GET_ITEMS: {
+			request: {} as UseCasesInterface.TGetItemListReq,
+			response: {} as UseCasesInterface.TGetItemListRes,
+		},
+		GET_ITEM: {
+			request: {} as UseCasesInterface.TGetItemReq,
+			response: {} as UseCasesInterface.TGetItemRes,
+		},
+	} as const satisfies Record<ELinks, TDtoStruct>;
 
-	type TInputByLink = {
-		[K in keyof typeof inputByLink]: (typeof inputByLink)[K];
+	type TDtoStruct = {
+		request: unknown;
+		response: unknown;
 	};
 
-	export type TReq<L extends ELinks> = TInputByLink[L];
-
-	/* ===================== RESPONSE MAP ===================== */
-
-	const responseByLink = {
-		LOGIN: {} as UseCasesInterface.TLoginRes,
-		REGISTER: {} as UseCasesInterface.TRegisterRes,
-		CREATE_LISTING: {} as UseCasesInterface.TCreateListingRes,
-		CREATE_LISTING_ARR: {} as unknown as void,
-		GET_ITEMS: {} as UseCasesInterface.TGetItemListRes,
-		GET_ITEM: {} as UseCasesInterface.TGetItemRes,
-	} as const satisfies Record<ELinks, unknown>;
-
-	type TResponseByLink = {
-		[K in keyof typeof responseByLink]: (typeof responseByLink)[K];
+	type TDtoByLink = {
+		[K in keyof typeof dtoByLink]: (typeof dtoByLink)[K];
 	};
 
-	export type TRes<L extends ELinks> = TResponseByLink[L];
+	export type TReq<L extends ELinks> = TDtoByLink[L]["request"];
+	export type TRes<L extends ELinks> = TDtoByLink[L]["response"];
 
 	/* ===================== METHOD RETURN ===================== */
 

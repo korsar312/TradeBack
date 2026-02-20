@@ -7,7 +7,9 @@ export interface IUseCasesProps {
 }
 
 abstract class UseCasesBase<T, R> implements Interface.TScenarioBase<T, R> {
-	constructor(private readonly params: IUseCasesProps) {}
+	constructor(private readonly params: IUseCasesProps) {
+		this.invoke = this.invoke.bind(this);
+	}
 
 	abstract invoke(params: T, userId: string): R;
 
@@ -31,7 +33,9 @@ abstract class UseCasesBase<T, R> implements Interface.TScenarioBase<T, R> {
 	}
 
 	public service = new Proxy({} as ProjectInterface.ActType<ProjectInterface.TModuleService>, {
-		get: (_, prop: keyof ProjectInterface.TModuleService) => this.params.service(prop).invoke,
+		get: (_, prop: keyof ProjectInterface.TModuleService) => {
+			return this.params.service(prop).invoke;
+		},
 	});
 }
 

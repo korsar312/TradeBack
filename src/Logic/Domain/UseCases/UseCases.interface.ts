@@ -52,13 +52,6 @@ export namespace UseCasesInterface {
 		saleKind: ListingInterface.EListingSaleKind;
 	} & ItemInterface.TItemReq;
 
-	export type TRightCheckerReq = {
-		login: string;
-		token: string;
-		route: string;
-		noCheckPath: string[];
-	};
-
 	//========================= RES ==============================
 
 	export type TLoginRes = UserInterface.IUser;
@@ -81,6 +74,4 @@ export namespace UseCasesInterface {
 	} & ItemInterface.TItemResPub;
 
 	export type TCreateListingRes = string;
-
-	export type TRightCheckerRes = string;
 }

@@ -1,5 +1,5 @@
 import type { ProjectInterface } from "./Core/DI/Project.interface.ts";
-import useCases from "./Core/DI/Create.useCases.js";
+import useCases from "./Core/DI/Create.useCases";
 import { UseCasesInterface } from "./Domain/UseCases/UseCases.interface";
 
 export type TModules = ProjectInterface.ActType<UseCasesInterface.TScenarioList>;
