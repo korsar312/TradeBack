@@ -69,4 +69,8 @@ export const Errors: ErrorInterface.TErrorMap = {
 		httpCode: 404,
 		message: "Неизвестный тип товара",
 	},
+	NEGATIVE_TRANSACTION: {
+		httpCode: 422,
+		message: "Транзакция нарушает инвариант баланса",
+	},
 } as const;

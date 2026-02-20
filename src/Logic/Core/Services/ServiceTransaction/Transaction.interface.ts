@@ -5,8 +5,8 @@ export namespace TransactionInterface {
 		walletInPlus(data: TTransactionParams): TTransactionSum;
 		walletInMinus(data: TTransactionParams): TTransactionSum;
 
-		holdPlus(data: TTransactionParams): TTransactionSum;
-		holdMinus(data: TTransactionParams): TTransactionSum;
+		hold(data: TTransactionParams): TTransactionSum;
+		unhold(data: TTransactionParams): TTransactionSum;
 
 		systemPlus(data: TTransactionParams): TTransactionSum;
 		systemMinus(data: TTransactionParams): TTransactionSum;
@@ -61,6 +61,7 @@ export namespace TransactionInterface {
 	export type TTransactionWork = Omit<ITransaction, keyof TTransactionInner | keyof TTransactionBalance>;
 	export type TTransactionPath = Pick<ITransaction, "type" | "direction" | "account">;
 	export type TTransactionParams = Omit<TTransactionWork, keyof TTransactionPath>;
+	export type TTransactionParamsSys = Omit<TTransactionParams, "userId">;
 
 	export type TTransactionSum = {
 		balance: number;

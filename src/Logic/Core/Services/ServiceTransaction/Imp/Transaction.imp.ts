@@ -1,7 +1,10 @@
 import type { TransactionInterface as Interface } from "../Transaction.interface.ts";
 import ServiceBase from "../../Service.base";
+import { Utils } from "../../../../../Utils";
 
 class TransactionImp extends ServiceBase implements Interface.IAdapter {
+	private readonly SystemUser = "__SystemUser__";
+
 	private CreatePayment(data: Interface.TTransactionMin): Interface.ITransaction {
 		const id = "transaction__" + crypto.randomUUID();
 		return { ...data, id, createdAt: new Date().getTime() };
@@ -10,12 +13,18 @@ class TransactionImp extends ServiceBase implements Interface.IAdapter {
 	private GetTransactionByUserId = (userId: string): Interface.ITransaction[] => this.API.BD.read.TransactionByUserId(userId);
 
 	private HandlePayment(data: Interface.TTransactionParams, path: Interface.TTransactionPath): Interface.TTransactionSum {
-		const beforeWallet: Interface.TTransactionSum = this.GetTransactionByUserId(data.userId).reduce((prev, cur) => this.CalcSum(cur, cur.amount, prev), {
+		const userTrans = this.GetTransactionByUserId(data.userId);
+
+		const beforeWallet: Interface.TTransactionSum = userTrans.reduce((prev, cur) => this.CalcSum(cur, cur.amount, prev), {
 			balance: 0,
 			hold: 0,
 		});
 
 		const afterWallet: Interface.TTransactionSum = this.CalcSum(path, data.amount, beforeWallet);
+
+		if (Object.values(afterWallet).some((el) => el < 0)) {
+			throw Utils.error.createError({ reason: "NEGATIVE_TRANSACTION", data: JSON.stringify({ beforeWallet, data }) });
+		}
 
 		const newTrans = this.CreatePayment({
 			...data,
@@ -42,43 +51,35 @@ class TransactionImp extends ServiceBase implements Interface.IAdapter {
 	//==============================================================================================
 
 	public walletOutPlus(data: Interface.TTransactionParams): Interface.TTransactionSum {
-		const path: Interface.TTransactionPath = { type: "EXTERNAL", direction: "IN", account: "BALANCE" };
-		return this.HandlePayment(data, path);
+		return this.HandlePayment(data, { type: "EXTERNAL", direction: "IN", account: "BALANCE" });
 	}
 
 	public walletOutMinus(data: Interface.TTransactionParams): Interface.TTransactionSum {
-		const path: Interface.TTransactionPath = { type: "EXTERNAL", direction: "IN", account: "BALANCE" };
-		return this.HandlePayment(data, path);
+		return this.HandlePayment(data, { type: "EXTERNAL", direction: "OUT", account: "BALANCE" });
 	}
 
 	public walletInPlus(data: Interface.TTransactionParams): Interface.TTransactionSum {
-		const path: Interface.TTransactionPath = { type: "EXTERNAL", direction: "IN", account: "BALANCE" };
-		return this.HandlePayment(data, path);
+		return this.HandlePayment(data, { type: "WALLET", direction: "IN", account: "BALANCE" });
 	}
 
 	public walletInMinus(data: Interface.TTransactionParams): Interface.TTransactionSum {
-		const path: Interface.TTransactionPath = { type: "EXTERNAL", direction: "IN", account: "BALANCE" };
-		return this.HandlePayment(data, path);
+		return this.HandlePayment(data, { type: "WALLET", direction: "OUT", account: "BALANCE" });
 	}
 
-	public holdPlus(data: Interface.TTransactionParams): Interface.TTransactionSum {
-		const path: Interface.TTransactionPath = { type: "EXTERNAL", direction: "IN", account: "BALANCE" };
-		return this.HandlePayment(data, path);
+	public hold(data: Interface.TTransactionParams): Interface.TTransactionSum {
+		return this.HandlePayment(data, { type: "WALLET", direction: "IN", account: "HOLD" });
 	}
 
-	public holdMinus(data: Interface.TTransactionParams): Interface.TTransactionSum {
-		const path: Interface.TTransactionPath = { type: "EXTERNAL", direction: "IN", account: "BALANCE" };
-		return this.HandlePayment(data, path);
+	public unhold(data: Interface.TTransactionParams): Interface.TTransactionSum {
+		return this.HandlePayment(data, { type: "WALLET", direction: "OUT", account: "HOLD" });
 	}
 
-	public systemPlus(data: Interface.TTransactionParams): Interface.TTransactionSum {
-		const path: Interface.TTransactionPath = { type: "EXTERNAL", direction: "IN", account: "BALANCE" };
-		return this.HandlePayment(data, path);
+	public systemPlus(data: Interface.TTransactionParamsSys): Interface.TTransactionSum {
+		return this.HandlePayment({ ...data, userId: this.SystemUser }, { type: "FEE", direction: "IN", account: "BALANCE" });
 	}
 
-	public systemMinus(data: Interface.TTransactionParams): Interface.TTransactionSum {
-		const path: Interface.TTransactionPath = { type: "EXTERNAL", direction: "IN", account: "BALANCE" };
-		return this.HandlePayment(data, path);
+	public systemMinus(data: Interface.TTransactionParamsSys): Interface.TTransactionSum {
+		return this.HandlePayment({ ...data, userId: this.SystemUser }, { type: "FEE", direction: "OUT", account: "BALANCE" });
 	}
 }
 
