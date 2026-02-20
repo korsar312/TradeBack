@@ -1,10 +1,8 @@
 import type { TransactionInterface as Interface } from "../Transaction.interface.ts";
-import ServiceBase from "../../Service.base";
+import ServiceBase, { type IServiceProps } from "../../Service.base";
 import { Utils } from "../../../../../Utils";
 
 class TransactionImp extends ServiceBase implements Interface.IAdapter {
-	private readonly SystemUser = "__SystemUser__";
-
 	private CreatePayment(data: Interface.TTransactionMin): Interface.ITransaction {
 		const id = "transaction__" + crypto.randomUUID();
 		return { ...data, id, createdAt: new Date().getTime() };
@@ -50,6 +48,15 @@ class TransactionImp extends ServiceBase implements Interface.IAdapter {
 
 	//==============================================================================================
 
+	constructor(
+		props: IServiceProps,
+		private readonly systemUser: string,
+	) {
+		super(props);
+	}
+
+	//==============================================================================================
+
 	public walletOutPlus(data: Interface.TTransactionParams): Interface.TTransactionSum {
 		return this.HandlePayment(data, { type: "EXTERNAL", direction: "IN", account: "BALANCE" });
 	}
@@ -75,11 +82,11 @@ class TransactionImp extends ServiceBase implements Interface.IAdapter {
 	}
 
 	public systemPlus(data: Interface.TTransactionParamsSys): Interface.TTransactionSum {
-		return this.HandlePayment({ ...data, userId: this.SystemUser }, { type: "FEE", direction: "IN", account: "BALANCE" });
+		return this.HandlePayment({ ...data, userId: this.systemUser }, { type: "FEE", direction: "IN", account: "BALANCE" });
 	}
 
 	public systemMinus(data: Interface.TTransactionParamsSys): Interface.TTransactionSum {
-		return this.HandlePayment({ ...data, userId: this.SystemUser }, { type: "FEE", direction: "OUT", account: "BALANCE" });
+		return this.HandlePayment({ ...data, userId: this.systemUser }, { type: "FEE", direction: "OUT", account: "BALANCE" });
 	}
 }
 

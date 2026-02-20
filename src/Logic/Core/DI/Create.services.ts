@@ -26,8 +26,8 @@ import { ServiceLanguage } from "../../Domain/Services/ServiceLanguage";
 import TransactionImp from "../../Domain/Services/ServiceTransaction/Imp/Transaction.imp";
 import { ServiceTransaction } from "../../Domain/Services/ServiceTransaction";
 import { Consts } from "../../Config/Consts";
-import WalletImp from "../../Domain/Services/ServiceWallet/Imp/Wallet.imp";
-import { ServiceWallet } from "../../Domain/Services/ServiceWallet";
+import CashFlowImp from "../../Domain/Services/ServiceCashFlow/Imp/CashFlow.imp";
+import { ServiceCashFlow } from "../../Domain/Services/ServiceCashFlow";
 
 const inf: IServiceProps = { infrastructure: Infrastructure };
 
@@ -43,14 +43,14 @@ const deal = new ServiceDeal(dealImp);
 const itemImp = new ItemImp(inf);
 const item = new ServiceItem(itemImp);
 
-const wallerImp = new WalletImp(inf);
-const waller = new ServiceWallet(wallerImp);
-
 const listingImp = new ListingImp(inf);
 const listing = new ServiceListing(listingImp);
 
 const paymentImp = new PaymentImp(inf, Consts.FEE);
 const payment = new ServicePayment(paymentImp);
+
+const cashFlowImp = new CashFlowImp(inf);
+const cashFlow = new ServiceCashFlow(cashFlowImp);
 
 const messageImp = new MessageImp(inf);
 const message = new ServiceMessage(messageImp);
@@ -61,7 +61,7 @@ const delivery = new ServiceDelivery(deliveryImp);
 const evaluationImp = new EvaluationImp(inf);
 const evaluation = new ServiceEvaluation(evaluationImp);
 
-const transactionImp = new TransactionImp(inf);
+const transactionImp = new TransactionImp(inf, Consts.SYSTEM_USER);
 const transaction = new ServiceTransaction(transactionImp);
 
 const languageImp = new LanguageImp(inf, dictionary);
@@ -73,10 +73,10 @@ service.use("user", user);
 service.use("chat", chat);
 service.use("deal", deal);
 service.use("item", item);
-service.use("wallet", waller);
 service.use("listing", listing);
 service.use("payment", payment);
 service.use("message", message);
+service.use("cashFlow", cashFlow);
 service.use("delivery", delivery);
 service.use("language", language);
 service.use("evaluation", evaluation);
