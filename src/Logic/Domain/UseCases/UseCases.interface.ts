@@ -1,7 +1,8 @@
-import type { PublicInterface } from "../Services/Public.interface";
+import type { CashFlowInterface } from "../Services/ServiceCashFlow/CashFlow.interface";
 import type { ListingInterface } from "../Services/ServiceListing/Listing.interface";
-import type { ItemInterface } from "../Services/ServiceItem/Item.interface";
+import type { PublicInterface } from "../Services/Public.interface";
 import type { UserInterface } from "../Services/ServiceUser/User.interface";
+import type { ItemInterface } from "../Services/ServiceItem/Item.interface";
 
 export namespace UseCasesInterface {
 	export type IAdapter = {};
@@ -52,6 +53,10 @@ export namespace UseCasesInterface {
 		saleKind: ListingInterface.EListingSaleKind;
 	} & ItemInterface.TItemReq;
 
+	export type TStartDepositReq = {
+		amount: number;
+	};
+
 	//========================= RES ==============================
 
 	export type TLoginRes = UserInterface.IUser;
@@ -74,4 +79,6 @@ export namespace UseCasesInterface {
 	} & ItemInterface.TItemResPub;
 
 	export type TCreateListingRes = string;
+
+	export type TStartDepositRes = CashFlowInterface.TDeposit | false;
 }
