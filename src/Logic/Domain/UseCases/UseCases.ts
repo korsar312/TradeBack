@@ -7,6 +7,7 @@ import Register from "./Scenario/Register";
 import Login from "./Scenario/Login";
 import CreateDeposit from "./Scenario/CreateDeposit";
 import CheckExistDeposit from "./Scenario/CheckExistDeposit";
+import AwaitPayDeposit from "./Scenario/AwaitPayDeposit";
 
 class UseCases implements Interface.IAdapter {
 	public scenarioList: Interface.TScenarioList;
@@ -20,6 +21,7 @@ class UseCases implements Interface.IAdapter {
 			getItem: new GetItem({ service }),
 			checkExistDeposit: new CheckExistDeposit({ service }),
 			createDeposit: new CreateDeposit({ service }),
+			awaitPayDeposit: new AwaitPayDeposit({ service }),
 		};
 	}
 }

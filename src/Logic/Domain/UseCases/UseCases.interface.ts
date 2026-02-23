@@ -15,6 +15,7 @@ export namespace UseCasesInterface {
 		getItem: TScenarioBase<TGetItemReq, TGetItemRes>;
 		checkExistDeposit: TScenarioBase<TCheckExistDepositReq, TCheckExistDepositRes>;
 		createDeposit: TScenarioBase<TCreateDepositReq, TCreateDepositRes>;
+		awaitPayDeposit: TScenarioBase<TAwaitPayDepositReq, TAwaitPayDepositRes>;
 	};
 
 	export type TScenarioBase<T, R> = {
