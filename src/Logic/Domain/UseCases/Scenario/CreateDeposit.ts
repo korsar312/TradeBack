@@ -15,7 +15,7 @@ class CreateDeposit extends UseCasesBase {
 				this.service.transaction.walletInPlus({ userId, amount: params.amount, paymentId: null });
 				this.depositAwaitMap.get(userId)?.forEach((el) => el(true));
 			})
-			.catch((e) => this.depositAwaitMap.get(userId)?.forEach((el) => el(Boolean(e))))
+			.catch(() => this.depositAwaitMap.get(userId)?.forEach((el) => el(false)))
 			.finally(() => {
 				this.service.cashFlow.removeDeposit(userId);
 				this.depositAwaitMap.delete(userId);
