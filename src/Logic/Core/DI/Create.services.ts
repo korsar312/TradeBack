@@ -28,6 +28,9 @@ import { ServiceTransaction } from "../../Domain/Services/ServiceTransaction";
 import { Consts } from "../../Config/Consts";
 import CashFlowImp from "../../Domain/Services/ServiceCashFlow/Imp/CashFlow.imp";
 import { ServiceCashFlow } from "../../Domain/Services/ServiceCashFlow";
+import { CashFlowInterface } from "../../Domain/Services/ServiceCashFlow/CashFlow.interface";
+
+const walletInfo: CashFlowInterface.TWallet = { address: Consts.ADDRESS_WALLET, privateKey: Consts.PRIVATE_KEY_WALLET, publicKey: Consts.PUBLIC_KEY_WALLET };
 
 const inf: IServiceProps = { infrastructure: Infrastructure };
 
@@ -46,10 +49,10 @@ const item = new ServiceItem(itemImp);
 const listingImp = new ListingImp(inf);
 const listing = new ServiceListing(listingImp);
 
-const paymentImp = new PaymentImp(inf, Consts.FEE);
+const paymentImp = new PaymentImp(inf, Consts.TRADE_FEE);
 const payment = new ServicePayment(paymentImp);
 
-const cashFlowImp = new CashFlowImp(inf);
+const cashFlowImp = new CashFlowImp(inf, walletInfo, Consts.CONTRACT_USDT, Consts.PAY_AWAIT_TIME, Consts.CASHOUT_FEE);
 const cashFlow = new ServiceCashFlow(cashFlowImp);
 
 const messageImp = new MessageImp(inf);

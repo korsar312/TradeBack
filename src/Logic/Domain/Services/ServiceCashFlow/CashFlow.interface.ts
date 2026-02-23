@@ -1,21 +1,20 @@
 export namespace CashFlowInterface {
 	export interface IAdapter {
 		createWallet(): Promise<TWallet>;
-		getWalletAddress(): string;
 
-		checkUSDT(address?: string): Promise<number>;
-		checkTrx(address?: string): Promise<number>;
+		checkMoneyWallet(address: string, type: EMoneyType): Promise<number>;
 
 		getActiveDeposit(id: string): TDeposit | null;
-		createDeposit(): Promise<TDeposit>;
+		createDeposit(userId: string, amount: number): Promise<TDeposit>;
 		checkTransaction(address: string, minTimestamp: string, sum: string, timeChecking: number): Promise<boolean>;
 		sendUSDT(privateKey: string, toAddress: string, amount: number): Promise<boolean>;
 	}
 
 	export type TDeposit = {
 		address: string;
-		timeOut: number;
-		amount: number;
+		amount: string;
+		timeStart: number;
+		timeEnd: number;
 	};
 
 	export type TWallet = {
@@ -23,4 +22,11 @@ export namespace CashFlowInterface {
 		publicKey: string;
 		address: string;
 	};
+
+	export type EMoneyType = keyof typeof CashFlowMoneyType;
 }
+
+const CashFlowMoneyType = {
+	TRX: "TRX",
+	USDT: "USDT",
+};
