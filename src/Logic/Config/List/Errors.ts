@@ -19,7 +19,7 @@ export const Errors: ErrorInterface.TErrorMap = {
 	},
 	CHAT_NOT_FOUND: {
 		httpCode: 404,
-		message: "Чат не найдена",
+		message: "Чат не найден",
 	},
 	MESSAGE_NOT_FOUND: {
 		httpCode: 404,
@@ -39,7 +39,7 @@ export const Errors: ErrorInterface.TErrorMap = {
 	},
 	PAYMENT_NOT_FOUND: {
 		httpCode: 404,
-		message: "Информация об оплате не найден",
+		message: "Информация об оплате не найдена",
 	},
 	INTERNAL_SERVER_ERROR: {
 		httpCode: 500,
@@ -47,21 +47,21 @@ export const Errors: ErrorInterface.TErrorMap = {
 	},
 	ROUTE_NOT_FOUND: {
 		httpCode: 404,
-		message: "Маршрут не найден ",
+		message: "Маршрут не найден",
 	},
 	PARAMS_NOT_VALID: {
 		httpCode: 400,
 		message: "Параметры запроса неверны",
 	},
 	USER_ALREADY_EXIST: {
-		httpCode: 400,
+		httpCode: 409,
 		message: "Пользователь уже существует",
 	},
 	NOT_RIGHT: {
 		httpCode: 403,
 		message: "Нет прав для данного АПИ",
 	},
-	UNAUTHORIZE: {
+	UNAUTHORIZED: {
 		httpCode: 401,
 		message: "Не авторизован",
 	},
@@ -69,8 +69,16 @@ export const Errors: ErrorInterface.TErrorMap = {
 		httpCode: 404,
 		message: "Неизвестный тип товара",
 	},
+	CONTRACT_DEPOSIT_NOT_FOUND: {
+		httpCode: 404,
+		message: "Ненайден контракт пополнения",
+	},
 	NEGATIVE_TRANSACTION: {
 		httpCode: 422,
 		message: "Транзакция нарушает инвариант баланса",
+	},
+	CONTRACT_DEPOSIT_ALREADY_EXIST: {
+		httpCode: 409,
+		message: "Неоплаченный контракт уже существует",
 	},
 } as const;

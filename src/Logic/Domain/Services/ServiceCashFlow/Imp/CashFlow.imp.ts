@@ -2,6 +2,7 @@ import type { CashFlowInterface as Interface } from "../CashFlow.interface.ts";
 import ServiceBase, { type IServiceProps } from "../../Service.base";
 import { TronWeb } from "tronweb";
 import { Utils } from "../../../../../Utils";
+import Libs from "../../../../Libs";
 
 class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 	private userPayList: Map<string, Interface.TDeposit> = new Map();
@@ -30,7 +31,7 @@ class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 				if (!isBusy) return (this.reservedAmounts.add(candidate), candidate);
 			}
 
-			await new Promise((resolve) => setTimeout(resolve, 5000));
+			await Libs.delay(5000);
 		}
 	}
 
@@ -66,29 +67,42 @@ class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 		return payContract;
 	}
 
-	public async awaitPay() {
-		return new Promise(async (resolve, reject) => {});
+	public removeDeposit(userId: string): void {
+		this.userPayList.delete(userId);
+	}
+
+	public async awaitPay(userId: string): Promise<boolean> {
+		const contract = Utils.error.require(this.getActiveDeposit(userId), "CONTRACT_DEPOSIT_NOT_FOUND");
+
+		while (true) {
+			const isPaySuccess = await this.checkTransaction(contract);
+
+			if (isPaySuccess) return true;
+			if (Number(new Date()) > contract.timeEnd || this.getActiveDeposit(userId)) return false;
+
+			await Libs.delay(5000);
+		}
 	}
 
 	public getActiveDeposit(userId: string): Interface.TDeposit | null {
 		return this.userPayList.get(userId) || null;
 	}
 
-	public async checkTransaction(address: string, minTimestamp: string, sum: string, timeChecking: number) {
+	public async checkTransaction(deposit: Interface.TDeposit) {
+		const { timeStart, amount, address } = deposit;
+
 		try {
-			const url = `https://api.trongrid.io/v1/accounts/${address}/transactions/trc20?min_timestamp=${minTimestamp}&contract_address=${this.contractUSDT}`;
+			const url = `https://api.trongrid.io/v1/accounts/${address}/transactions/trc20?min_timestamp=${timeStart}&contract_address=${this.contractUSDT}`;
 
 			const response = await fetch(url);
 			const result = await response.json();
-
-			const minTime = Number(minTimestamp);
 
 			const match = result.data.find((tx: any) => {
 				const sumTrans = (parseInt(tx.value) / 1000000).toFixed(2);
 				const isToAddress = tx.to === address;
 				const isUsdt = tx.token_info?.address === this.contractUSDT;
-				const isAfterTime = tx.block_timestamp >= minTime;
-				const isCorrectSum = sum === sumTrans;
+				const isAfterTime = tx.block_timestamp >= timeStart;
+				const isCorrectSum = amount === sumTrans;
 
 				return isToAddress && isUsdt && isAfterTime && isCorrectSum;
 			});
@@ -111,6 +125,10 @@ class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 		} catch (e) {
 			throw Utils.error.createError({ reason: "INTERNAL_SERVER_ERROR" });
 		}
+	}
+
+	public withdraw(toAddress: string, amount: number): Promise<Interface.TDeposit> {
+		return this.sendUSDT(this.systemWalletData.privateKey, toAddress, amount);
 	}
 
 	public async createWallet(): Promise<Interface.TWallet> {
@@ -147,7 +165,7 @@ class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 			}
 
 			return amount;
-		} catch (e: any) {
+		} catch (e) {
 			throw Utils.error.createError({ reason: "INTERNAL_SERVER_ERROR" });
 		}
 	}

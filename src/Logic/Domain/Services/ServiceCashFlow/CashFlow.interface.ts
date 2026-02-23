@@ -1,13 +1,14 @@
 export namespace CashFlowInterface {
 	export interface IAdapter {
-		createWallet(): Promise<TWallet>;
-
-		checkMoneyWallet(address: string, type: EMoneyType): Promise<number>;
-
-		getActiveDeposit(id: string): TDeposit | null;
 		createDeposit(userId: string, amount: number): Promise<TDeposit>;
-		checkTransaction(address: string, minTimestamp: string, sum: string, timeChecking: number): Promise<boolean>;
-		sendUSDT(privateKey: string, toAddress: string, amount: number): Promise<boolean>;
+		getActiveDeposit(id: string): TDeposit | null;
+		withdraw(toAddress: string, amount: number): Promise<unknown>;
+		checkMoneyWallet(address: string, type: EMoneyType): Promise<number>;
+		checkTransaction(deposit: TDeposit): Promise<boolean>;
+		createWallet(): Promise<TWallet>;
+		sendUSDT(privateKey: string, toAddress: string, amount: number): Promise<unknown>;
+		removeDeposit(userId: string): void;
+		awaitPay(userId: string): Promise<boolean>;
 	}
 
 	export type TDeposit = {

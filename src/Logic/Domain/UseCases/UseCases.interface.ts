@@ -13,6 +13,8 @@ export namespace UseCasesInterface {
 		createListing: TScenarioBase<TCreateListingReq, TCreateListingRes>;
 		getItemList: TScenarioBase<TGetItemListReq, TGetItemListRes>;
 		getItem: TScenarioBase<TGetItemReq, TGetItemRes>;
+		checkExistDeposit: TScenarioBase<TCheckExistDepositReq, TCheckExistDepositRes>;
+		createDeposit: TScenarioBase<TCreateDepositReq, TCreateDepositRes>;
 	};
 
 	export type TScenarioBase<T, R> = {
@@ -53,9 +55,13 @@ export namespace UseCasesInterface {
 		saleKind: ListingInterface.EListingSaleKind;
 	} & ItemInterface.TItemReq;
 
-	export type TStartDepositReq = {
+	export type TCreateDepositReq = {
 		amount: number;
 	};
+
+	export type TCheckExistDepositReq = void;
+
+	export type TAwaitPayDepositReq = void;
 
 	//========================= RES ==============================
 
@@ -80,5 +86,9 @@ export namespace UseCasesInterface {
 
 	export type TCreateListingRes = string;
 
-	export type TStartDepositRes = CashFlowInterface.TDeposit | false;
+	export type TCreateDepositRes = Promise<CashFlowInterface.TDeposit | false>;
+
+	export type TCheckExistDepositRes = CashFlowInterface.TDeposit | false;
+
+	export type TAwaitPayDepositRes = Promise<boolean>;
 }

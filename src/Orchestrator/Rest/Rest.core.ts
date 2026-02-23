@@ -106,7 +106,7 @@ export class RestCore extends OrchestratorBase {
 			const isNoCheck = routeNoCheckPath.includes(route);
 			if (isNoCheck) return next();
 
-			const { login, token } = Utils.error.parseQuery(req.headers, RestSchema.LOGIN, "UNAUTHORIZE");
+			const { login, token } = Utils.error.parseQuery(req.headers, RestSchema.LOGIN, "UNAUTHORIZED");
 
 			const user = this.module.login({ login, token }, "");
 
@@ -117,7 +117,7 @@ export class RestCore extends OrchestratorBase {
 			res.locals.userId = user.id;
 
 			return next();
-		} catch (e: unknown) {
+		} catch (e) {
 			this.errorHandler(res, e);
 		}
 	};
@@ -142,7 +142,7 @@ export class RestCore extends OrchestratorBase {
 
 				if (res.headersSent) return;
 				res.status(result?.code ?? 200).json(result ?? { ok: true });
-			} catch (e: unknown) {
+			} catch (e) {
 				this.errorHandler(res, e);
 			}
 		};

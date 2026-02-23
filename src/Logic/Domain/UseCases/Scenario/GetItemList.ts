@@ -1,7 +1,7 @@
 import { UseCasesInterface as Interface } from "../UseCases.interface";
 import UseCasesBase from "../UseCases.base";
 
-class GetItemList extends UseCasesBase<Interface.TGetItemListReq, Interface.TGetItemListRes> {
+class GetItemList extends UseCasesBase {
 	invoke(params: Interface.TGetItemListReq): Interface.TGetItemListRes {
 		const itemRes: Interface.TGetItemListRes = [];
 		let lastListingId: string | undefined;

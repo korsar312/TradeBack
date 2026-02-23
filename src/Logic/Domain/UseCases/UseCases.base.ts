@@ -6,12 +6,14 @@ export interface IUseCasesProps {
 	service: ProjectInterface.TServices;
 }
 
-abstract class UseCasesBase<T, R> implements Interface.TScenarioBase<T, R> {
+abstract class UseCasesBase implements Interface.TScenarioBase<unknown, unknown> {
+	protected depositAwaitMap: Map<string, Array<(val: boolean) => void>> = new Map();
+
 	constructor(private readonly params: IUseCasesProps) {
 		this.invoke = this.invoke.bind(this);
 	}
 
-	abstract invoke(params: T, userId: string): R;
+	abstract invoke(params: unknown, userId: string): unknown;
 
 	protected toItemRes(item: ItemInterface.TItemAll, isPublicData: true): ItemInterface.TItemResPub;
 	protected toItemRes(item: ItemInterface.TItemAll, isPublicData: boolean): ItemInterface.TItemResPub | ItemInterface.TItemRes {

@@ -1,7 +1,7 @@
 import { UseCasesInterface as Interface } from "../UseCases.interface";
 import UseCasesBase from "../UseCases.base";
 
-class GetItem extends UseCasesBase<Interface.TGetItemReq, Interface.TGetItemRes> {
+class GetItem extends UseCasesBase {
 	invoke(params: Interface.TGetItemReq): Interface.TGetItemRes {
 		const listing = this.service.listing.getListing(params.id);
 

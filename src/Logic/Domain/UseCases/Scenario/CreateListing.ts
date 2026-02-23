@@ -1,7 +1,7 @@
 import { UseCasesInterface as Interface } from "../UseCases.interface";
 import UseCasesBase from "../UseCases.base";
 
-class CreateListing extends UseCasesBase<Interface.TCreateListingReq, Interface.TCreateListingRes> {
+class CreateListing extends UseCasesBase {
 	invoke(params: Interface.TCreateListingReq, userId: string): Interface.TCreateListingRes {
 		const { desc, name, info, price, saleKind, type } = params;
 
