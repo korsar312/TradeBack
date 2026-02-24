@@ -8,11 +8,10 @@ export namespace UserInterface {
 	export interface IUser {
 		id: string; // id пользователя
 		nickname: string; // никнейм
-		role: ERole; // роль (ADMIN)
+		role: ERole; // роль
 		login: string; // логин (unique)
-		balance: number; // доступные деньги
-		balanceHold: number; // замороженные деньги
-		createdAt: number; // timestamp (INTEGER)
+		telegramId: string | null; // id tg
+		createdAt: number; // timestamp
 	}
 
 	export interface IUserAll {

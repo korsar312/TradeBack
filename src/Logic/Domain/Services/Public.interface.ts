@@ -1,9 +1,4 @@
 export namespace PublicInterface {
-	export type TPublicMoney = {
-		balance: number;
-		hold: number;
-	};
-
 	export type ESort = keyof typeof PublicSort;
 }
 

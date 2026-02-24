@@ -8,7 +8,7 @@ class UserImp extends ServiceBase implements Interface.IAdapter {
 		const id = "user__" + crypto.randomUUID();
 		const nickname = UserNames[Math.floor(Math.random() * UserNames.length)];
 
-		return { id, balance: 0, balanceHold: 0, login, createdAt: new Date().getTime(), nickname, role: "USER" };
+		return { id, telegramId: null, login, createdAt: new Date().getTime(), nickname, role: "USER" };
 	}
 
 	private CreateUserAuth(userId: string): Interface.IUserAuth {

@@ -7,8 +7,7 @@ const table = {
 		nickname: text("nickname").notNull(),
 		role: text("role").$type<BDInterface.User["role"]>().notNull(),
 		login: text("login").notNull(),
-		balance: integer("balance").notNull(),
-		balanceHold: integer("balance_hold").notNull(),
+		telegramId: text("telegram_id").notNull(),
 		createdAt: integer("created_at").notNull(),
 	},
 	usersAuth: {
