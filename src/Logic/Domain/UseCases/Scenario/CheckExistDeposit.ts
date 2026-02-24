@@ -3,7 +3,14 @@ import UseCasesBase from "../UseCases.base";
 
 class CheckExistDeposit extends UseCasesBase {
 	invoke(_params: Interface.TCheckExistDepositReq, userId: string): Interface.TCheckExistDepositRes {
-		return this.service.cashFlow.getActiveDeposit(userId) || false;
+		const deposit = this.service.cashFlow.getActiveDeposit(userId);
+
+		if (deposit) {
+			const { timeStart, ...rest } = deposit;
+			return { ...rest, serverTime: Number(new Date()) };
+		}
+
+		return false;
 	}
 }
 

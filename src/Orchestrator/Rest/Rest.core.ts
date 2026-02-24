@@ -135,7 +135,9 @@ export class RestCore extends OrchestratorBase {
 
 		const innerRequest = async (req: Request, res: Response) => {
 			try {
-				const allParams = Array.isArray(req.body) ? req.body : { ...req.body, ...req.query, ...req.params };
+				const merged = Array.isArray(req.body) ? req.body : { ...req.body, ...req.query, ...req.params };
+				const allParams = Array.isArray(merged) || Object.keys(merged).length ? merged : undefined;
+
 				Utils.error.parseQuery(allParams, RestSchema[linkName]);
 
 				const result = await method(allParams, res.locals.userId);

@@ -62,6 +62,10 @@ export namespace RestInterface {
 			request: {} as UseCasesInterface.TCreateDepositReq,
 			response: {} as UseCasesInterface.TCreateDepositRes,
 		},
+		REMOVE_DEPOSIT: {
+			request: {} as unknown as UseCasesInterface.TRemoveDepositReq,
+			response: {} as UseCasesInterface.TRemoveDepositRes,
+		},
 	} as const satisfies Record<ELinks, TDtoStruct>;
 
 	type TDtoStruct = {
@@ -91,6 +95,7 @@ const Links = {
 	AWAIT_PAY_DEPOSIT: "AWAIT_PAY_DEPOSIT",
 	IS_EXIST_DEPOSIT: "IS_EXIST_DEPOSIT",
 	CREATE_DEPOSIT: "CREATE_DEPOSIT",
+	REMOVE_DEPOSIT: "REMOVE_DEPOSIT",
 };
 
 const HttpMethod = {

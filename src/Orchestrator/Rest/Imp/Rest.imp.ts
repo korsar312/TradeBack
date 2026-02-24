@@ -40,4 +40,8 @@ export class RestImp implements Interface.IAdapter {
 	public CREATE_DEPOSIT(params: UseCasesInterface.TCreateDepositReq, userId: string) {
 		return this.module.createDeposit(params, userId);
 	}
+
+	public REMOVE_DEPOSIT(params: UseCasesInterface.TRemoveDepositReq, userId: string) {
+		return this.module.removeDeposit(params, userId);
+	}
 }

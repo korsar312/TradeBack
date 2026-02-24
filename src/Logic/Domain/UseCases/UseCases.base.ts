@@ -6,8 +6,12 @@ export interface IUseCasesProps {
 	service: ProjectInterface.TServices;
 }
 
+const _depositAwaitMap: Map<string, Array<(val: boolean) => void>> = new Map();
+
 abstract class UseCasesBase implements Interface.TScenarioBase<unknown, unknown> {
-	protected depositAwaitMap: Map<string, Array<(val: boolean) => void>> = new Map();
+	protected get depositAwaitMap(): Map<string, Array<(val: boolean) => void>> {
+		return _depositAwaitMap;
+	}
 
 	constructor(private readonly params: IUseCasesProps) {
 		this.invoke = this.invoke.bind(this);

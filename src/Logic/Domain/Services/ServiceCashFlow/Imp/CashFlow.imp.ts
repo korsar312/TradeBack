@@ -52,13 +52,14 @@ class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 	public async createDeposit(userId: string, amount: number): Promise<Interface.TDeposit> {
 		const uniqSum = await this.CreateUniqSum(amount);
 
-		const date = Number(new Date());
+		const stratDate = Number(new Date());
+		const endDate = stratDate + this.timeOutPay * 1000;
 
 		const payContract: Interface.TDeposit = {
 			address: this.systemWalletData.address,
 			amount: uniqSum,
-			timeStart: date,
-			timeEnd: date + this.timeOutPay * 1000,
+			timeStart: stratDate,
+			timeEnd: endDate,
 		};
 
 		this.userPayList.set(userId, payContract);
@@ -78,7 +79,7 @@ class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 			const isPaySuccess = await this.checkTransaction(contract);
 
 			if (isPaySuccess) return true;
-			if (Number(new Date()) > contract.timeEnd || this.getActiveDeposit(userId)) return false;
+			if (Number(new Date()) > contract.timeEnd || !this.getActiveDeposit(userId)) return false;
 
 			await Libs.delay(5000);
 		}

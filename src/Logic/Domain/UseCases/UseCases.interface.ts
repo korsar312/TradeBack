@@ -16,6 +16,7 @@ export namespace UseCasesInterface {
 		checkExistDeposit: TScenarioBase<TCheckExistDepositReq, TCheckExistDepositRes>;
 		createDeposit: TScenarioBase<TCreateDepositReq, TCreateDepositRes>;
 		awaitPayDeposit: TScenarioBase<TAwaitPayDepositReq, TAwaitPayDepositRes>;
+		removeDeposit: TScenarioBase<TRemoveDepositReq, TRemoveDepositRes>;
 	};
 
 	export type TScenarioBase<T, R> = {
@@ -64,6 +65,8 @@ export namespace UseCasesInterface {
 
 	export type TAwaitPayDepositReq = void;
 
+	export type TRemoveDepositReq = void;
+
 	//========================= RES ==============================
 
 	export type TLoginRes = UserInterface.IUser;
@@ -87,9 +90,11 @@ export namespace UseCasesInterface {
 
 	export type TCreateListingRes = string;
 
-	export type TCreateDepositRes = Promise<CashFlowInterface.TDeposit | false>;
+	export type TCreateDepositRes = Promise<Omit<CashFlowInterface.TDeposit, "timeStart"> & { serverTime: number }>;
 
-	export type TCheckExistDepositRes = CashFlowInterface.TDeposit | false;
+	export type TCheckExistDepositRes = (Omit<CashFlowInterface.TDeposit, "timeStart"> & { serverTime: number }) | false;
 
 	export type TAwaitPayDepositRes = Promise<boolean>;
+
+	export type TRemoveDepositRes = Promise<void>;
 }

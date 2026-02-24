@@ -1,7 +1,7 @@
 export namespace CashFlowInterface {
 	export interface IAdapter {
 		createDeposit(userId: string, amount: number): Promise<TDeposit>;
-		getActiveDeposit(id: string): TDeposit | null;
+		getActiveDeposit(userId: string): TDeposit | null;
 		withdraw(toAddress: string, amount: number): Promise<unknown>;
 		checkMoneyWallet(address: string, type: EMoneyType): Promise<number>;
 		checkTransaction(deposit: TDeposit): Promise<boolean>;
