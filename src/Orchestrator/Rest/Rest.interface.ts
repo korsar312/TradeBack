@@ -50,6 +50,18 @@ export namespace RestInterface {
 			request: {} as UseCasesInterface.TGetItemReq,
 			response: {} as UseCasesInterface.TGetItemRes,
 		},
+		AWAIT_PAY_DEPOSIT: {
+			request: {} as unknown as UseCasesInterface.TAwaitPayDepositReq,
+			response: {} as UseCasesInterface.TAwaitPayDepositRes,
+		},
+		IS_EXIST_DEPOSIT: {
+			request: {} as unknown as UseCasesInterface.TCheckExistDepositReq,
+			response: {} as UseCasesInterface.TCheckExistDepositRes,
+		},
+		CREATE_DEPOSIT: {
+			request: {} as UseCasesInterface.TCreateDepositReq,
+			response: {} as UseCasesInterface.TCreateDepositRes,
+		},
 	} as const satisfies Record<ELinks, TDtoStruct>;
 
 	type TDtoStruct = {
@@ -66,7 +78,7 @@ export namespace RestInterface {
 
 	/* ===================== METHOD RETURN ===================== */
 
-	export type TMethod<L extends ELinks> = (req: TReq<L>, userId: string) => Promise<TRes<L> | void>;
+	export type TMethod<L extends ELinks> = (req: TReq<L>, userId: string) => TRes<L> | void;
 }
 
 const Links = {
@@ -76,6 +88,9 @@ const Links = {
 	CREATE_LISTING_ARR: "CREATE_LISTING_ARR",
 	GET_ITEMS: "GET_ITEMS",
 	GET_ITEM: "GET_ITEM",
+	AWAIT_PAY_DEPOSIT: "AWAIT_PAY_DEPOSIT",
+	IS_EXIST_DEPOSIT: "IS_EXIST_DEPOSIT",
+	CREATE_DEPOSIT: "CREATE_DEPOSIT",
 };
 
 const HttpMethod = {

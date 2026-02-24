@@ -31,4 +31,22 @@ export const Links: RestInterface.TLinks = {
 		http: "get",
 		role: ["USER", "ADMIN"],
 	},
+
+	AWAIT_PAY_DEPOSIT: {
+		link: "/awaitPayDeposit",
+		http: "get",
+		role: ["USER", "ADMIN"],
+	},
+
+	IS_EXIST_DEPOSIT: {
+		link: "/isExistDeposit",
+		http: "get",
+		role: ["USER", "ADMIN"],
+	},
+
+	CREATE_DEPOSIT: {
+		link: "/createDeposit",
+		http: "post",
+		role: ["USER", "ADMIN"],
+	},
 } as const;
