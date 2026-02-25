@@ -70,6 +70,10 @@ export namespace RestInterface {
 			request: {} as unknown as UseCasesInterface.TGetBalanceReq,
 			response: {} as UseCasesInterface.TGetBalanceRes,
 		},
+		WITHDRAW_BALANCE: {
+			request: {} as unknown as UseCasesInterface.TWithdrawBalanceReq,
+			response: {} as UseCasesInterface.TWithdrawBalanceRes,
+		},
 	} as const satisfies Record<ELinks, TDtoStruct>;
 
 	type TDtoStruct = {
@@ -101,6 +105,7 @@ const Links = {
 	CREATE_DEPOSIT: "CREATE_DEPOSIT",
 	REMOVE_DEPOSIT: "REMOVE_DEPOSIT",
 	GET_BALANCE: "GET_BALANCE",
+	WITHDRAW_BALANCE: "WITHDRAW_BALANCE",
 };
 
 const HttpMethod = {

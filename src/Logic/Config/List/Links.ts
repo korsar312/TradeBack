@@ -12,4 +12,5 @@ export const Links: RestInterface.TLinks = {
 	CREATE_DEPOSIT: { link: "/createDeposit", http: "post", role: ["USER", "ADMIN"] },
 	REMOVE_DEPOSIT: { link: "/removeDeposit", http: "post", role: ["USER", "ADMIN"] },
 	GET_BALANCE: { link: "/getBalance", http: "get", role: ["USER", "ADMIN"] },
+	WITHDRAW_BALANCE: { link: "/withdrawBalance", http: "post", role: ["USER", "ADMIN"] },
 } as const;

@@ -48,4 +48,8 @@ export class RestImp implements Interface.IAdapter {
 	public GET_BALANCE(params: UseCasesInterface.TGetBalanceReq, userId: string) {
 		return this.module.getBalance(params, userId);
 	}
+
+	public WITHDRAW_BALANCE(params: UseCasesInterface.TWithdrawBalanceReq, userId: string) {
+		return this.module.withdrawBalance(params, userId);
+	}
 }

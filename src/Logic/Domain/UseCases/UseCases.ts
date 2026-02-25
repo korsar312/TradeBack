@@ -10,6 +10,7 @@ import CheckExistDeposit from "./Scenario/CheckExistDeposit";
 import AwaitPayDeposit from "./Scenario/AwaitPayDeposit";
 import RemoveDeposit from "./Scenario/RemoveDeposit";
 import GetBalance from "./Scenario/GetBalance";
+import WithdrawBalance from "./Scenario/WithdrawBalance";
 
 class UseCases implements Interface.IAdapter {
 	public scenarioList: Interface.TScenarioList;
@@ -26,6 +27,7 @@ class UseCases implements Interface.IAdapter {
 			awaitPayDeposit: new AwaitPayDeposit({ service }),
 			removeDeposit: new RemoveDeposit({ service }),
 			getBalance: new GetBalance({ service }),
+			withdrawBalance: new WithdrawBalance({ service }),
 		};
 	}
 }

@@ -94,6 +94,22 @@ class TransactionImp extends ServiceBase implements Interface.IAdapter {
 
 		return { balance: trans?.walletAfterSnapshot || 0, hold: trans?.holdAfterSnapshot || 0 };
 	}
+
+	public userAccounting(userId: string): Interface.TTransactionSum {
+		const trans = this.API.BD.read.TransactionByUserId(userId);
+
+		return trans.reduce<Interface.TTransactionSum>(
+			(prev, cur) => {
+				const sign = cur.direction === "IN" ? 1 : -1;
+				const delta = sign * cur.amount;
+
+				if (cur.account === "BALANCE") return { ...prev, balance: prev.balance + delta };
+
+				return { ...prev, hold: prev.hold + delta };
+			},
+			{ balance: 0, hold: 0 },
+		);
+	}
 }
 
 export default TransactionImp;

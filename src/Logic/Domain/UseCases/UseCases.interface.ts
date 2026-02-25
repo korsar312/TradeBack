@@ -19,6 +19,7 @@ export namespace UseCasesInterface {
 		awaitPayDeposit: TScenarioBase<TAwaitPayDepositReq, TAwaitPayDepositRes>;
 		removeDeposit: TScenarioBase<TRemoveDepositReq, TRemoveDepositRes>;
 		getBalance: TScenarioBase<TGetBalanceReq, TGetBalanceRes>;
+		withdrawBalance: TScenarioBase<TWithdrawBalanceReq, TWithdrawBalanceRes>;
 	};
 
 	export type TScenarioBase<T, R> = {
@@ -71,6 +72,8 @@ export namespace UseCasesInterface {
 
 	export type TGetBalanceReq = void;
 
+	export type TWithdrawBalanceReq = { address: string; amount: number };
+
 	//========================= RES ==============================
 
 	export type TLoginRes = UserInterface.IUser;
@@ -103,4 +106,6 @@ export namespace UseCasesInterface {
 	export type TRemoveDepositRes = Promise<void>;
 
 	export type TGetBalanceRes = TransactionInterface.TTransactionSum;
+
+	export type TWithdrawBalanceRes = Promise<void>;
 }

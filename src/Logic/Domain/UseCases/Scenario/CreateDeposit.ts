@@ -23,9 +23,6 @@ class CreateDeposit extends UseCasesBase {
 
 		const { timeStart, ...rest } = deposit;
 
-		console.log(1);
-		console.log(this.depositAwaitMap);
-
 		return { ...rest, serverTime: Number(new Date()) };
 	}
 }
