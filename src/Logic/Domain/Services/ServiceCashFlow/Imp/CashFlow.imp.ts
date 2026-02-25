@@ -6,7 +6,7 @@ import Libs from "../../../../Libs";
 
 class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 	private userPayList: Map<string, Interface.TDeposit> = new Map();
-	private reservedAmounts: Set<string> = new Set();
+	private reservedAmounts: Set<number> = new Set();
 
 	private CreateTron(privateKey?: string) {
 		return new TronWeb({
@@ -16,7 +16,7 @@ class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 		});
 	}
 
-	private async CreateUniqSum(baseAmount: number): Promise<string> {
+	private async CreateUniqSum(baseAmount: number): Promise<number> {
 		const STEP = 1;
 		const MAX_VARIANTS = 1000;
 
@@ -25,10 +25,14 @@ class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 		while (true) {
 			for (let i = 0; i < MAX_VARIANTS; i++) {
 				const candidateCents = base + STEP * i;
-				const candidate = (candidateCents / 100).toFixed(2);
+				const candidate = Number((candidateCents / 100).toFixed(2));
 
 				const isBusy = this.reservedAmounts.has(candidate) || Array.from(this.userPayList.values()).some((dep) => dep.amount === candidate);
-				if (!isBusy) return (this.reservedAmounts.add(candidate), candidate);
+
+				if (!isBusy) {
+					this.reservedAmounts.add(candidate);
+					return candidate;
+				}
 			}
 
 			await Libs.delay(5000);
@@ -99,7 +103,7 @@ class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 			const result = await response.json();
 
 			const match = result.data.find((tx: any) => {
-				const sumTrans = (parseInt(tx.value) / 1000000).toFixed(2);
+				const sumTrans = parseInt(tx.value) / 1000000;
 				const isToAddress = tx.to === address;
 				const isUsdt = tx.token_info?.address === this.contractUSDT;
 				const isAfterTime = tx.block_timestamp >= timeStart;

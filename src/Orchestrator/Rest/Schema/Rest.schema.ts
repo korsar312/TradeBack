@@ -8,6 +8,7 @@ import { awaitPayDepositReq } from "./Rest.schema.awaitPayDeposit";
 import { isExistDepositReq } from "./Rest.schema.isExistDeposit";
 import { createDepositReq } from "./Rest.schema.createDeposit";
 import { removeDepositReq } from "./Rest.schema.removeDeposit";
+import { getBalance } from "./Rest.schema.getBalance";
 
 export const RestSchema: RestInterface.TSchemaMap = {
 	LOGIN: loginReq,
@@ -20,4 +21,5 @@ export const RestSchema: RestInterface.TSchemaMap = {
 	IS_EXIST_DEPOSIT: isExistDepositReq,
 	CREATE_DEPOSIT: createDepositReq,
 	REMOVE_DEPOSIT: removeDepositReq,
+	GET_BALANCE: getBalance,
 } as const;

@@ -13,7 +13,7 @@ export namespace CashFlowInterface {
 
 	export type TDeposit = {
 		address: string;
-		amount: string;
+		amount: number;
 		timeStart: number;
 		timeEnd: number;
 	};
