@@ -66,6 +66,10 @@ export namespace RestInterface {
 			request: {} as unknown as UseCasesInterface.TRemoveDepositReq,
 			response: {} as UseCasesInterface.TRemoveDepositRes,
 		},
+		GET_BALANCE: {
+			request: {} as unknown as UseCasesInterface.TGetBalanceReq,
+			response: {} as UseCasesInterface.TGetBalanceRes,
+		},
 	} as const satisfies Record<ELinks, TDtoStruct>;
 
 	type TDtoStruct = {
@@ -96,6 +100,7 @@ const Links = {
 	IS_EXIST_DEPOSIT: "IS_EXIST_DEPOSIT",
 	CREATE_DEPOSIT: "CREATE_DEPOSIT",
 	REMOVE_DEPOSIT: "REMOVE_DEPOSIT",
+	GET_BALANCE: "GET_BALANCE",
 };
 
 const HttpMethod = {

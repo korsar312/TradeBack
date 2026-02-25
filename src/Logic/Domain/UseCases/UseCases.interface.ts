@@ -3,6 +3,7 @@ import type { ListingInterface } from "../Services/ServiceListing/Listing.interf
 import type { PublicInterface } from "../Services/Public.interface";
 import type { UserInterface } from "../Services/ServiceUser/User.interface";
 import type { ItemInterface } from "../Services/ServiceItem/Item.interface";
+import { TransactionInterface } from "../Services/ServiceTransaction/Transaction.interface";
 
 export namespace UseCasesInterface {
 	export type IAdapter = {};
@@ -17,6 +18,7 @@ export namespace UseCasesInterface {
 		createDeposit: TScenarioBase<TCreateDepositReq, TCreateDepositRes>;
 		awaitPayDeposit: TScenarioBase<TAwaitPayDepositReq, TAwaitPayDepositRes>;
 		removeDeposit: TScenarioBase<TRemoveDepositReq, TRemoveDepositRes>;
+		getBalance: TScenarioBase<TGetBalanceReq, TGetBalanceRes>;
 	};
 
 	export type TScenarioBase<T, R> = {
@@ -67,6 +69,8 @@ export namespace UseCasesInterface {
 
 	export type TRemoveDepositReq = void;
 
+	export type TGetBalanceReq = void;
+
 	//========================= RES ==============================
 
 	export type TLoginRes = UserInterface.IUser;
@@ -97,4 +101,6 @@ export namespace UseCasesInterface {
 	export type TAwaitPayDepositRes = Promise<boolean>;
 
 	export type TRemoveDepositRes = Promise<void>;
+
+	export type TGetBalanceRes = TransactionInterface.TTransactionSum;
 }

@@ -88,6 +88,12 @@ class TransactionImp extends ServiceBase implements Interface.IAdapter {
 	public systemMinus(data: Interface.TTransactionParamsSys): Interface.TTransactionSum {
 		return this.HandlePayment({ ...data, userId: this.systemUser }, { type: "FEE", direction: "OUT", account: "BALANCE" });
 	}
+
+	public getLastUserTransaction(userId: string): Interface.TTransactionSum {
+		const trans = this.API.BD.read.LastUserTransaction(userId);
+
+		return { balance: trans?.walletAfterSnapshot || 0, hold: trans?.holdAfterSnapshot || 0 };
+	}
 }
 
 export default TransactionImp;

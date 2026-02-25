@@ -44,4 +44,8 @@ export class RestImp implements Interface.IAdapter {
 	public REMOVE_DEPOSIT(params: UseCasesInterface.TRemoveDepositReq, userId: string) {
 		return this.module.removeDeposit(params, userId);
 	}
+
+	public GET_BALANCE(params: UseCasesInterface.TGetBalanceReq, userId: string) {
+		return this.module.getBalance(params, userId);
+	}
 }

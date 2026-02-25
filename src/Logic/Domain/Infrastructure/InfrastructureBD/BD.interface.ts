@@ -100,6 +100,7 @@ export namespace BDInterface {
 		ListDealsByListingId: (listingId: string) => Deal[]; // deals.listing_id
 		PaymentByDealId: (dealId: string) => Payment | null; // payments.deal_id unique
 		TransactionByUserId: (userId: string) => Transaction[]; // transaction.user_id unique
+		LastUserTransaction: (userId: string) => Transaction | null; // последняя транзакция пользователя
 
 		/* прочее */
 		ListListings: (p: {

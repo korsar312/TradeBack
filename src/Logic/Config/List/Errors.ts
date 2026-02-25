@@ -1,84 +1,24 @@
 import type { ErrorInterface } from "../../../Utils/Error/Error.interface";
 
 export const Errors: ErrorInterface.TErrorMap = {
-	AUTH_INVALID: {
-		httpCode: 401,
-		message: "Ошибка авторизации",
-	},
-	USER_NOT_FOUND: {
-		httpCode: 404,
-		message: "Пользователь не найден",
-	},
-	DEAL_NOT_FOUND: {
-		httpCode: 404,
-		message: "Сделка не найдена",
-	},
-	LISTING_NOT_FOUND: {
-		httpCode: 404,
-		message: "Лот не найден",
-	},
-	CHAT_NOT_FOUND: {
-		httpCode: 404,
-		message: "Чат не найден",
-	},
-	MESSAGE_NOT_FOUND: {
-		httpCode: 404,
-		message: "Сообщение не найдено",
-	},
-	DELIVERY_NOT_FOUND: {
-		httpCode: 404,
-		message: "Доставка не найдена",
-	},
-	EVALUATION_NOT_FOUND: {
-		httpCode: 404,
-		message: "Отзыв не найден",
-	},
-	ITEM_NOT_FOUND: {
-		httpCode: 404,
-		message: "Товар не найден",
-	},
-	PAYMENT_NOT_FOUND: {
-		httpCode: 404,
-		message: "Информация об оплате не найдена",
-	},
-	INTERNAL_SERVER_ERROR: {
-		httpCode: 500,
-		message: "Ошибка сервера",
-	},
-	ROUTE_NOT_FOUND: {
-		httpCode: 404,
-		message: "Маршрут не найден",
-	},
-	PARAMS_NOT_VALID: {
-		httpCode: 400,
-		message: "Параметры запроса неверны",
-	},
-	USER_ALREADY_EXIST: {
-		httpCode: 409,
-		message: "Пользователь уже существует",
-	},
-	NOT_RIGHT: {
-		httpCode: 403,
-		message: "Нет прав для данного АПИ",
-	},
-	UNAUTHORIZED: {
-		httpCode: 401,
-		message: "Не авторизован",
-	},
-	ITEM_TYPE_NOT_FOUND: {
-		httpCode: 404,
-		message: "Неизвестный тип товара",
-	},
-	CONTRACT_DEPOSIT_NOT_FOUND: {
-		httpCode: 404,
-		message: "Ненайден контракт пополнения",
-	},
-	NEGATIVE_TRANSACTION: {
-		httpCode: 422,
-		message: "Транзакция нарушает инвариант баланса",
-	},
-	CONTRACT_DEPOSIT_ALREADY_EXIST: {
-		httpCode: 409,
-		message: "Неоплаченный контракт уже существует",
-	},
+	AUTH_INVALID: { httpCode: 401, message: "Ошибка авторизации" },
+	USER_NOT_FOUND: { httpCode: 404, message: "Пользователь не найден" },
+	DEAL_NOT_FOUND: { httpCode: 404, message: "Сделка не найдена" },
+	LISTING_NOT_FOUND: { httpCode: 404, message: "Лот не найден" },
+	CHAT_NOT_FOUND: { httpCode: 404, message: "Чат не найден" },
+	MESSAGE_NOT_FOUND: { httpCode: 404, message: "Сообщение не найдено" },
+	DELIVERY_NOT_FOUND: { httpCode: 404, message: "Доставка не найдена" },
+	EVALUATION_NOT_FOUND: { httpCode: 404, message: "Отзыв не найден" },
+	ITEM_NOT_FOUND: { httpCode: 404, message: "Товар не найден" },
+	PAYMENT_NOT_FOUND: { httpCode: 404, message: "Информация об оплате не найдена" },
+	INTERNAL_SERVER_ERROR: { httpCode: 500, message: "Ошибка сервера" },
+	ROUTE_NOT_FOUND: { httpCode: 404, message: "Маршрут не найден" },
+	PARAMS_NOT_VALID: { httpCode: 400, message: "Параметры запроса неверны" },
+	USER_ALREADY_EXIST: { httpCode: 409, message: "Пользователь уже существует" },
+	NOT_RIGHT: { httpCode: 403, message: "Нет прав для данного АПИ" },
+	UNAUTHORIZED: { httpCode: 401, message: "Не авторизован" },
+	ITEM_TYPE_NOT_FOUND: { httpCode: 404, message: "Неизвестный тип товара" },
+	CONTRACT_DEPOSIT_NOT_FOUND: { httpCode: 404, message: "Ненайден контракт пополнения" },
+	NEGATIVE_TRANSACTION: { httpCode: 422, message: "Транзакция нарушает инвариант баланса" },
+	CONTRACT_DEPOSIT_ALREADY_EXIST: { httpCode: 409, message: "Неоплаченный контракт уже существует" },
 } as const;

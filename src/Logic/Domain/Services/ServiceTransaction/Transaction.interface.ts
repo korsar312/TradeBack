@@ -10,6 +10,8 @@ export namespace TransactionInterface {
 
 		systemPlus(data: TTransactionParams): TTransactionSum;
 		systemMinus(data: TTransactionParams): TTransactionSum;
+
+		getLastUserTransaction(userId: string): TTransactionSum;
 	}
 
 	/**

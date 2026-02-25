@@ -111,6 +111,18 @@ export class Read extends BDHelpers implements Interface.IRead {
 		return this.db.select().from(Table.transaction).where(eq(Table.transaction.userId, userId)).orderBy(asc(Table.transaction.id)).all();
 	};
 
+	LastUserTransaction = (userId: string) => {
+		const r = this.db
+			.select()
+			.from(Table.transaction)
+			.where(eq(Table.transaction.userId, userId))
+			.orderBy(desc(Table.transaction.createdAt))
+			.limit(1)
+			.get();
+
+		return r ? (r as Interface.Transaction) : null;
+	};
+
 	ListListings = (p: {
 		limit: number;
 		cursorId?: string;
