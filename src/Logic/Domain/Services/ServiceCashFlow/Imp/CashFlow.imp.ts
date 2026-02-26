@@ -163,10 +163,12 @@ class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 					const contract = await tronWeb.contract().at(this.contractUSDT);
 					const result = await contract.balanceOf(address).call();
 					amount = Number(result.toString());
+					break;
 
 				case "TRX":
 					const balance = await tronWeb.trx.getBalance(address); // возвращает баланс в SUN (1 TRX = 1_000_000 SUN)
 					amount = balance / 1_000_000; // преобразуем из SUN в TRX
+					break;
 			}
 
 			return amount;
