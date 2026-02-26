@@ -51,7 +51,7 @@ class TransactionImp extends ServiceBase implements Interface.IAdapter {
 	}
 
 	private GetLastUserTransaction(userId: string): Interface.ITransaction {
-		return Utils.error.require(this.API.BD.read.LastUserTransaction(userId), "NEGATIVE_TRANSACTION");
+		return Utils.error.require(this.API.BD.read.LastUserTransaction(userId), "CONTRACT_DEPOSIT_NOT_FOUND");
 	}
 
 	//==============================================================================================

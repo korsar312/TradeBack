@@ -13,9 +13,13 @@ abstract class UseCasesBase implements Interface.TScenarioBase<unknown, unknown>
 		return _depositAwaitMap;
 	}
 
+	//==============================================================================================
+
 	constructor(private readonly params: IUseCasesProps) {
 		this.invoke = this.invoke.bind(this);
 	}
+
+	//==============================================================================================
 
 	abstract invoke(params: unknown, userId: string, operationId: string): unknown;
 

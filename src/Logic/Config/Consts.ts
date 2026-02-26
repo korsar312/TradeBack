@@ -15,5 +15,5 @@ export const Consts = {
 	ADDRESS_WALLET: (process.env.ADDRESS_WALLET || "").trim(),
 
 	CONTRACT_USDT: "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t".trim(),
-	PAY_AWAIT_TIME: 240,
+	PAY_AWAIT_TIME: 20,
 };

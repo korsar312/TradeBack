@@ -4,7 +4,7 @@ import { Utils } from "../../../../Utils";
 
 class WithdrawBalance extends UseCasesBase {
 	async invoke(params: Interface.TWithdrawBalanceReq, userId: string, operationId: string): Interface.TWithdrawBalanceRes {
-		const balanceUser = this.service.transaction.getBalanceTrans(userId);
+		const balanceUser = this.service.transaction.userAccounting(userId);
 		const fee = this.service.cashFlow.getCashoutFee();
 
 		const fullPrice = params.amount + fee;
@@ -17,9 +17,11 @@ class WithdrawBalance extends UseCasesBase {
 
 		try {
 			await this.service.cashFlow.withdraw(params.address, params.amount);
-		} catch {
+		} catch (e) {
 			this.service.transaction.removeTransaction(usrTransId);
 			this.service.transaction.removeTransaction(sysTransId);
+
+			throw e;
 		}
 	}
 }

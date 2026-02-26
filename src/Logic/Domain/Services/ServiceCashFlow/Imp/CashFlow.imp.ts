@@ -80,12 +80,14 @@ class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 		const contract = Utils.error.require(this.getActiveDeposit(userId), "CONTRACT_DEPOSIT_NOT_FOUND");
 
 		while (true) {
-			const isPaySuccess = await this.checkTransaction(contract);
-
-			if (isPaySuccess) return true;
-			if (Number(new Date()) > contract.timeEnd || !this.getActiveDeposit(userId)) return false;
-
 			await Libs.delay(5000);
+
+			try {
+				const isPaySuccess = await this.checkTransaction(contract);
+				if (isPaySuccess) return true;
+			} catch {}
+
+			if (Number(new Date()) > contract.timeEnd || !this.getActiveDeposit(userId)) return false;
 		}
 	}
 
@@ -120,15 +122,13 @@ class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 
 	public async sendUSDT(privateKey: string, toAddress: string, amount: number) {
 		try {
-			if (amount <= 0) throw Utils.error.createError({ reason: "INTERNAL_SERVER_ERROR" });
-
 			const tronWeb = this.CreateTron(privateKey);
 			const contract = await tronWeb.contract().at(this.contractUSDT);
 			const amountInSun = tronWeb.BigNumber(amount).multipliedBy(tronWeb.toBigNumber(10).pow(6)).toFixed(0);
 
 			return await contract.transfer(toAddress, amountInSun).send({ shouldPollResponse: true });
 		} catch (e) {
-			throw Utils.error.createError({ reason: "INTERNAL_SERVER_ERROR" });
+			throw Utils.error.createError({ reason: "ERROR_MONEY_TRANSFER" });
 		}
 	}
 
