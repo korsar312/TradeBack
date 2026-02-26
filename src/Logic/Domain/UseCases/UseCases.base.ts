@@ -17,7 +17,7 @@ abstract class UseCasesBase implements Interface.TScenarioBase<unknown, unknown>
 		this.invoke = this.invoke.bind(this);
 	}
 
-	abstract invoke(params: unknown, userId: string): unknown;
+	abstract invoke(params: unknown, userId: string, operationId: string): unknown;
 
 	protected toItemRes(item: ItemInterface.TItemAll, isPublicData: true): ItemInterface.TItemResPub;
 	protected toItemRes(item: ItemInterface.TItemAll, isPublicData: boolean): ItemInterface.TItemResPub | ItemInterface.TItemRes {

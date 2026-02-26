@@ -3,7 +3,7 @@ import UseCasesBase from "../UseCases.base";
 import { Utils } from "../../../../Utils";
 
 class CreateDeposit extends UseCasesBase {
-	async invoke(params: Interface.TCreateDepositReq, userId: string): Interface.TCreateDepositRes {
+	async invoke(params: Interface.TCreateDepositReq, userId: string, operationId: string): Interface.TCreateDepositRes {
 		if (this.service.cashFlow.getActiveDeposit(userId)) throw Utils.error.createError({ reason: "CONTRACT_DEPOSIT_ALREADY_EXIST" });
 
 		const deposit = await this.service.cashFlow.createDeposit(userId, params.amount);
@@ -12,7 +12,7 @@ class CreateDeposit extends UseCasesBase {
 		this.service.cashFlow
 			.awaitPay(userId)
 			.then(() => {
-				this.service.transaction.walletInPlus({ userId, amount: params.amount, paymentId: null });
+				this.service.transaction.walletInPlus({ userId, amount: params.amount, paymentId: null, operationId });
 				this.depositAwaitMap.get(userId)?.forEach((el) => el(true));
 			})
 			.catch(() => this.depositAwaitMap.get(userId)?.forEach((el) => el(false)))

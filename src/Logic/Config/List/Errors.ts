@@ -21,4 +21,5 @@ export const Errors: ErrorInterface.TErrorMap = {
 	CONTRACT_DEPOSIT_NOT_FOUND: { httpCode: 404, message: "Ненайден контракт пополнения" },
 	NEGATIVE_TRANSACTION: { httpCode: 422, message: "Транзакция нарушает инвариант баланса" },
 	CONTRACT_DEPOSIT_ALREADY_EXIST: { httpCode: 409, message: "Неоплаченный контракт уже существует" },
+	NOT_ENOUGH_MONEY: { httpCode: 402, message: "Не хватает денежных средств" },
 } as const;

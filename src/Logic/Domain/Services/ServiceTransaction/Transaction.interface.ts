@@ -8,8 +8,8 @@ export namespace TransactionInterface {
 		hold(data: TTransactionParams): string;
 		unhold(data: TTransactionParams): string;
 
-		systemPlus(data: TTransactionParams): string;
-		systemMinus(data: TTransactionParams): string;
+		systemPlus(data: TTransactionParamsSys): string;
+		systemMinus(data: TTransactionParamsSys): string;
 
 		getLastUserTransaction(userId: string): string;
 		userAccounting(userId: string): TTransactionSum;
@@ -28,6 +28,9 @@ export namespace TransactionInterface {
 
 		/** чей баланс изменяем */
 		userId: string;
+
+		/** для группировки операций */
+		operationId: string;
 
 		/** если связано с payment */
 		paymentId: string | null;

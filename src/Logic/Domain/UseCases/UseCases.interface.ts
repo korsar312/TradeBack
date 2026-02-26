@@ -23,7 +23,7 @@ export namespace UseCasesInterface {
 	};
 
 	export type TScenarioBase<T, R> = {
-		invoke(params: T, userId: string): R;
+		invoke(params: T, userId: string, operationId: string): R;
 	};
 
 	//========================= REQ ==============================

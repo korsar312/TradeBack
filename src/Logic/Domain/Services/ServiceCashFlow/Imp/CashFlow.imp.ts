@@ -136,6 +136,10 @@ class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 		return this.sendUSDT(this.systemWalletData.privateKey, toAddress, amount);
 	}
 
+	public getCashoutFee(): number {
+		return this.cashoutFee;
+	}
+
 	public async createWallet(): Promise<Interface.TWallet> {
 		try {
 			const tronWeb = this.CreateTron();

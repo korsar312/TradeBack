@@ -94,6 +94,7 @@ const table = {
 	transaction: {
 		id: text("id").primaryKey(),
 		userId: text("user_id").notNull(),
+		operationId: text("operation_id").notNull(),
 		paymentId: text("payment_id"),
 		type: text("type").$type<BDInterface.Transaction["type"]>().notNull(),
 		direction: text("direction").$type<BDInterface.Transaction["direction"]>().notNull(),

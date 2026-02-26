@@ -108,7 +108,7 @@ export class RestCore extends OrchestratorBase {
 
 			const { login, token } = Utils.error.parseQuery(req.headers, RestSchema.LOGIN, "UNAUTHORIZED");
 
-			const user = this.module.login({ login, token }, "");
+			const user = this.module.login({ login, token }, "", `rightChecker__${crypto.randomUUID()}`);
 
 			const routeRight = this.role[user.role] || [];
 			const isAccess = routeRight.includes(route);

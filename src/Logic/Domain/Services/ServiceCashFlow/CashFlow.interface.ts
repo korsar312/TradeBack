@@ -9,6 +9,7 @@ export namespace CashFlowInterface {
 		sendUSDT(privateKey: string, toAddress: string, amount: number): Promise<unknown>;
 		removeDeposit(userId: string): void;
 		awaitPay(userId: string): Promise<boolean>;
+		getCashoutFee(): number;
 	}
 
 	export type TDeposit = {
