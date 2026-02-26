@@ -3,7 +3,9 @@ import UseCasesBase from "../UseCases.base";
 
 class GetBalance extends UseCasesBase {
 	invoke(_params: Interface.TGetBalanceReq, userId: string): Interface.TGetBalanceRes {
-		return this.service.transaction.getLastUserTransaction(userId);
+		const transId = this.service.transaction.getLastUserTransaction(userId);
+
+		return this.service.transaction.getBalanceTrans(transId);
 	}
 }
 

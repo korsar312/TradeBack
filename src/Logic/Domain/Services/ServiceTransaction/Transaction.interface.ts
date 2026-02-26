@@ -1,18 +1,21 @@
 export namespace TransactionInterface {
 	export interface IAdapter {
-		walletOutPlus(data: TTransactionParams): TTransactionSum;
-		walletOutMinus(data: TTransactionParams): TTransactionSum;
-		walletInPlus(data: TTransactionParams): TTransactionSum;
-		walletInMinus(data: TTransactionParams): TTransactionSum;
+		walletOutPlus(data: TTransactionParams): string;
+		walletOutMinus(data: TTransactionParams): string;
+		walletInPlus(data: TTransactionParams): string;
+		walletInMinus(data: TTransactionParams): string;
 
-		hold(data: TTransactionParams): TTransactionSum;
-		unhold(data: TTransactionParams): TTransactionSum;
+		hold(data: TTransactionParams): string;
+		unhold(data: TTransactionParams): string;
 
-		systemPlus(data: TTransactionParams): TTransactionSum;
-		systemMinus(data: TTransactionParams): TTransactionSum;
+		systemPlus(data: TTransactionParams): string;
+		systemMinus(data: TTransactionParams): string;
 
-		getLastUserTransaction(userId: string): TTransactionSum;
+		getLastUserTransaction(userId: string): string;
 		userAccounting(userId: string): TTransactionSum;
+
+		getBalanceTrans(id: string): TTransactionSum;
+		removeTransaction(id: string): void;
 	}
 
 	/**

@@ -3,11 +3,13 @@ import UseCasesBase from "../UseCases.base";
 
 class WithdrawBalance extends UseCasesBase {
 	async invoke(params: Interface.TWithdrawBalanceReq, userId: string): Interface.TWithdrawBalanceRes {
-		const balance = this.service.transaction.userAccounting(userId);
+		const transId = this.service.transaction.walletOutMinus({ amount: params.amount, paymentId: null, userId });
 
-		console.log(balance);
-
-		//await this.service.cashFlow.withdraw(params.address, params.amount);
+		try {
+			await this.service.cashFlow.withdraw(params.address, params.amount);
+		} catch {
+			this.service.transaction.removeTransaction(transId);
+		}
 	}
 }
 

@@ -10,7 +10,7 @@ class TransactionImp extends ServiceBase implements Interface.IAdapter {
 
 	private GetTransactionByUserId = (userId: string): Interface.ITransaction[] => this.API.BD.read.TransactionByUserId(userId);
 
-	private HandlePayment(data: Interface.TTransactionParams, path: Interface.TTransactionPath): Interface.TTransactionSum {
+	private HandlePayment(data: Interface.TTransactionParams, path: Interface.TTransactionPath): string {
 		const userTrans = this.GetTransactionByUserId(data.userId);
 
 		const beforeWallet: Interface.TTransactionSum = userTrans.reduce((prev, cur) => this.CalcSum(cur, cur.amount, prev), {
@@ -35,7 +35,7 @@ class TransactionImp extends ServiceBase implements Interface.IAdapter {
 
 		this.API.BD.create.Transaction(newTrans);
 
-		return afterWallet;
+		return newTrans.id;
 	}
 
 	private CalcSum(path: Interface.TTransactionPath, amount: number, prevSum: Interface.TTransactionSum) {
@@ -44,6 +44,14 @@ class TransactionImp extends ServiceBase implements Interface.IAdapter {
 		const field: keyof Interface.TTransactionSum = path.account === "BALANCE" ? "balance" : "hold";
 
 		return { ...prevSum, [field]: prevSum[field] + sum };
+	}
+
+	private GetTransaction(id: string): Interface.ITransaction {
+		return Utils.error.require(this.API.BD.read.Transaction(id), "NEGATIVE_TRANSACTION");
+	}
+
+	private GetLastUserTransaction(userId: string): Interface.ITransaction {
+		return Utils.error.require(this.API.BD.read.LastUserTransaction(userId), "NEGATIVE_TRANSACTION");
 	}
 
 	//==============================================================================================
@@ -57,42 +65,40 @@ class TransactionImp extends ServiceBase implements Interface.IAdapter {
 
 	//==============================================================================================
 
-	public walletOutPlus(data: Interface.TTransactionParams): Interface.TTransactionSum {
+	public walletOutPlus(data: Interface.TTransactionParams): string {
 		return this.HandlePayment(data, { type: "EXTERNAL", direction: "IN", account: "BALANCE" });
 	}
 
-	public walletOutMinus(data: Interface.TTransactionParams): Interface.TTransactionSum {
+	public walletOutMinus(data: Interface.TTransactionParams): string {
 		return this.HandlePayment(data, { type: "EXTERNAL", direction: "OUT", account: "BALANCE" });
 	}
 
-	public walletInPlus(data: Interface.TTransactionParams): Interface.TTransactionSum {
+	public walletInPlus(data: Interface.TTransactionParams): string {
 		return this.HandlePayment(data, { type: "WALLET", direction: "IN", account: "BALANCE" });
 	}
 
-	public walletInMinus(data: Interface.TTransactionParams): Interface.TTransactionSum {
+	public walletInMinus(data: Interface.TTransactionParams): string {
 		return this.HandlePayment(data, { type: "WALLET", direction: "OUT", account: "BALANCE" });
 	}
 
-	public hold(data: Interface.TTransactionParams): Interface.TTransactionSum {
+	public hold(data: Interface.TTransactionParams): string {
 		return this.HandlePayment(data, { type: "WALLET", direction: "IN", account: "HOLD" });
 	}
 
-	public unhold(data: Interface.TTransactionParams): Interface.TTransactionSum {
+	public unhold(data: Interface.TTransactionParams): string {
 		return this.HandlePayment(data, { type: "WALLET", direction: "OUT", account: "HOLD" });
 	}
 
-	public systemPlus(data: Interface.TTransactionParamsSys): Interface.TTransactionSum {
+	public systemPlus(data: Interface.TTransactionParamsSys): string {
 		return this.HandlePayment({ ...data, userId: this.systemUser }, { type: "FEE", direction: "IN", account: "BALANCE" });
 	}
 
-	public systemMinus(data: Interface.TTransactionParamsSys): Interface.TTransactionSum {
+	public systemMinus(data: Interface.TTransactionParamsSys): string {
 		return this.HandlePayment({ ...data, userId: this.systemUser }, { type: "FEE", direction: "OUT", account: "BALANCE" });
 	}
 
-	public getLastUserTransaction(userId: string): Interface.TTransactionSum {
-		const trans = this.API.BD.read.LastUserTransaction(userId);
-
-		return { balance: trans?.walletAfterSnapshot || 0, hold: trans?.holdAfterSnapshot || 0 };
+	public getLastUserTransaction(userId: string): string {
+		return this.GetLastUserTransaction(userId).id;
 	}
 
 	public userAccounting(userId: string): Interface.TTransactionSum {
@@ -109,6 +115,16 @@ class TransactionImp extends ServiceBase implements Interface.IAdapter {
 			},
 			{ balance: 0, hold: 0 },
 		);
+	}
+
+	public removeTransaction(id: string): void {
+		this.API.BD.delete.Transaction(id);
+	}
+
+	public getBalanceTrans(id: string): Interface.TTransactionSum {
+		const trans = this.GetTransaction(id);
+
+		return { balance: trans.walletAfterSnapshot, hold: trans.holdAfterSnapshot };
 	}
 }
 
