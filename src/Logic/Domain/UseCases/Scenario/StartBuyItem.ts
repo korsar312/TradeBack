@@ -27,6 +27,7 @@ class StartBuyItem extends UseCasesBase {
 
 			dealId = this.service.deal.saveNewDeal({ buyerId: userId, listingId: listing.id, sellerId: listing.sellerId });
 			paymentId = this.service.payment.saveNewPayment({ fee, dealId, price });
+			this.service.chat.saveNewChat({ dealId });
 
 			transBalanceId = this.service.transaction.walletMinus({ amount: fullPrice, paymentId, operationId, userId });
 			transHoldId = this.service.transaction.holdPlus({ amount: fullPrice, paymentId, operationId, userId });
