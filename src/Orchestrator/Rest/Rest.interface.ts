@@ -74,6 +74,10 @@ export namespace RestInterface {
 			request: {} as unknown as UseCasesInterface.TWithdrawBalanceReq,
 			response: {} as UseCasesInterface.TWithdrawBalanceRes,
 		},
+		START_BUY_ITEM: {
+			request: {} as UseCasesInterface.TStartBuyItemReq,
+			response: {} as unknown as UseCasesInterface.TStartBuyItemRes,
+		},
 	} as const satisfies Record<ELinks, TDtoStruct>;
 
 	type TDtoStruct = {
@@ -106,6 +110,7 @@ const Links = {
 	REMOVE_DEPOSIT: "REMOVE_DEPOSIT",
 	GET_BALANCE: "GET_BALANCE",
 	WITHDRAW_BALANCE: "WITHDRAW_BALANCE",
+	START_BUY_ITEM: "START_BUY_ITEM",
 };
 
 const HttpMethod = {

@@ -77,7 +77,7 @@ class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 	}
 
 	public async awaitPay(userId: string): Promise<boolean> {
-		const contract = Utils.error.require(this.getActiveDeposit(userId), "CONTRACT_DEPOSIT_NOT_FOUND");
+		const contract = Utils.error.require(this.getActiveDeposit(userId), "ENTITY_NOT_FOUND");
 
 		while (true) {
 			await Libs.delay(5000);
@@ -128,7 +128,7 @@ class CashFlowImp extends ServiceBase implements Interface.IAdapter {
 
 			return await contract.transfer(toAddress, amountInSun).send({ shouldPollResponse: true });
 		} catch (e) {
-			throw Utils.error.createError({ reason: "ERROR_MONEY_TRANSFER" });
+			throw Utils.error.createError({ reason: "MONEY_TRANSFER_FAILED" });
 		}
 	}
 

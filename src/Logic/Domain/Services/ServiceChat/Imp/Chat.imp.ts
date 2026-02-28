@@ -8,7 +8,7 @@ class ChatImp extends ServiceBase implements Interface.IAdapter {
 		return { ...data, id, buyerSeeTime: 0, sellerSeeTime: 0, lastMessageId: null, lastMessageAt: null };
 	}
 
-	private GetChat = (id: string): Interface.IChat => Utils.error.require(this.API.BD.read.Chat(id), "CHAT_NOT_FOUND");
+	private GetChat = (id: string): Interface.IChat => Utils.error.require(this.API.BD.read.Chat(id), "ENTITY_NOT_FOUND");
 
 	//==============================================================================================
 

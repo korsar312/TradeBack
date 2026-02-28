@@ -6,7 +6,7 @@ class EvaluationImp extends ServiceBase implements Interface.IAdapter {
 	public createEvaluation(data: Interface.IEvaluation) {}
 
 	public getEvaluationForDealId(dealId: string) {
-		return Utils.error.require(this.API.BD.read.Evaluation(dealId), "EVALUATION_NOT_FOUND");
+		return Utils.error.require(this.API.BD.read.Evaluation(dealId), "ENTITY_NOT_FOUND");
 	}
 }
 

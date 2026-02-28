@@ -5,12 +5,13 @@ import GetItemList from "./Scenario/GetItemList";
 import CreateListing from "./Scenario/CreateListing";
 import Register from "./Scenario/Register";
 import Login from "./Scenario/Login";
-import CreateDeposit from "./Scenario/CreateDeposit";
-import CheckExistDeposit from "./Scenario/CheckExistDeposit";
-import AwaitPayDeposit from "./Scenario/AwaitPayDeposit";
-import RemoveDeposit from "./Scenario/RemoveDeposit";
-import GetBalance from "./Scenario/GetBalance";
-import WithdrawBalance from "./Scenario/WithdrawBalance";
+import CreateDeposit from "./Scenario/Balance/CreateDeposit";
+import CheckExistDeposit from "./Scenario/Balance/CheckExistDeposit";
+import AwaitPayDeposit from "./Scenario/Balance/AwaitPayDeposit";
+import RemoveDeposit from "./Scenario/Balance/RemoveDeposit";
+import GetBalance from "./Scenario/Balance/GetBalance";
+import WithdrawBalance from "./Scenario/Balance/WithdrawBalance";
+import StartBuyItem from "./Scenario/StartBuyItem";
 
 class UseCases implements Interface.IAdapter {
 	public scenarioList: Interface.TScenarioList;
@@ -28,6 +29,7 @@ class UseCases implements Interface.IAdapter {
 			removeDeposit: new RemoveDeposit({ service }),
 			getBalance: new GetBalance({ service }),
 			withdrawBalance: new WithdrawBalance({ service }),
+			startBuyItem: new StartBuyItem({ service }),
 		};
 	}
 }

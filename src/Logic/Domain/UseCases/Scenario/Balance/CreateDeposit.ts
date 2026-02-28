@@ -1,10 +1,10 @@
-import { UseCasesInterface as Interface } from "../UseCases.interface";
-import UseCasesBase from "../UseCases.base";
-import { Utils } from "../../../../Utils";
+import { UseCasesInterface as Interface } from "../../UseCases.interface";
+import UseCasesBase from "../../UseCases.base";
+import { Utils } from "../../../../../Utils";
 
 class CreateDeposit extends UseCasesBase {
 	async invoke(params: Interface.TCreateDepositReq, userId: string, operationId: string): Interface.TCreateDepositRes {
-		if (this.service.cashFlow.getActiveDeposit(userId)) throw Utils.error.createError({ reason: "CONTRACT_DEPOSIT_ALREADY_EXIST" });
+		if (this.service.cashFlow.getActiveDeposit(userId)) throw Utils.error.createError({ reason: "ALREADY_EXISTS" });
 
 		const deposit = await this.service.cashFlow.createDeposit(userId, params.amount);
 		this.depositAwaitMap.set(userId, []);
@@ -13,7 +13,7 @@ class CreateDeposit extends UseCasesBase {
 			.awaitPay(userId)
 			.then((isSuccess: boolean) => {
 				if (isSuccess) {
-					this.service.transaction.walletInPlus({ userId, amount: params.amount, paymentId: null, operationId });
+					this.service.transaction.walletPlus({ userId, amount: params.amount, paymentId: null, operationId });
 					this.depositAwaitMap.get(userId)?.forEach((el) => el(true));
 				} else {
 					this.depositAwaitMap.get(userId)?.forEach((el) => el(false));

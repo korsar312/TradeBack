@@ -1,12 +1,10 @@
 export namespace TransactionInterface {
 	export interface IAdapter {
-		walletOutPlus(data: TTransactionParams): string;
-		walletOutMinus(data: TTransactionParams): string;
-		walletInPlus(data: TTransactionParams): string;
-		walletInMinus(data: TTransactionParams): string;
+		walletPlus(data: TTransactionParams): string;
+		walletMinus(data: TTransactionParams): string;
 
-		hold(data: TTransactionParams): string;
-		unhold(data: TTransactionParams): string;
+		holdPlus(data: TTransactionParams): string;
+		holdMinus(data: TTransactionParams): string;
 
 		systemPlus(data: TTransactionParamsSys): string;
 		systemMinus(data: TTransactionParamsSys): string;
@@ -87,11 +85,8 @@ export namespace TransactionInterface {
  * Определяет, к какому классу относится движение средств.
  */
 const TransactionType = {
-	/** движение по внутреннему балансу */
+	/** движение по балансу */
 	WALLET: "WALLET",
-
-	/** вход/выход во внешний мир */
-	EXTERNAL: "EXTERNAL",
 
 	/** комиссия сервиса */
 	FEE: "FEE",
@@ -102,10 +97,10 @@ const TransactionType = {
  * Определяет, где учитываются средства.
  */
 const TransactionAccount = {
-	/** баланс */
+	/** активный баланс */
 	BALANCE: "BALANCE",
 
-	/** заморозка */
+	/** замороженный баланс */
 	HOLD: "HOLD",
 } as const;
 

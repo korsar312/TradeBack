@@ -27,6 +27,7 @@ export class RestImp implements Interface.IAdapter {
 	public REMOVE_DEPOSIT = this.handlerRest(() => this.module.removeDeposit);
 	public GET_BALANCE = this.handlerRest(() => this.module.getBalance);
 	public WITHDRAW_BALANCE = this.handlerRest(() => this.module.withdrawBalance);
+	public START_BUY_ITEM = this.handlerRest(() => this.module.startBuyItem);
 
 	public CREATE_LISTING_ARR(params: UseCasesInterface.TCreateListingReq[], userId: string) {
 		params.forEach((el) => this.handlerRest(() => this.module.createListing)(el, userId));

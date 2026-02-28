@@ -51,7 +51,7 @@ class TransactionImp extends ServiceBase implements Interface.IAdapter {
 	}
 
 	private GetLastUserTransaction(userId: string): Interface.ITransaction {
-		return Utils.error.require(this.API.BD.read.LastUserTransaction(userId), "CONTRACT_DEPOSIT_NOT_FOUND");
+		return Utils.error.require(this.API.BD.read.LastUserTransaction(userId), "ENTITY_NOT_FOUND");
 	}
 
 	//==============================================================================================
@@ -65,27 +65,19 @@ class TransactionImp extends ServiceBase implements Interface.IAdapter {
 
 	//==============================================================================================
 
-	public walletOutPlus(data: Interface.TTransactionParams): string {
-		return this.HandlePayment(data, { type: "EXTERNAL", direction: "IN", account: "BALANCE" });
-	}
-
-	public walletOutMinus(data: Interface.TTransactionParams): string {
-		return this.HandlePayment(data, { type: "EXTERNAL", direction: "OUT", account: "BALANCE" });
-	}
-
-	public walletInPlus(data: Interface.TTransactionParams): string {
+	public walletPlus(data: Interface.TTransactionParams): string {
 		return this.HandlePayment(data, { type: "WALLET", direction: "IN", account: "BALANCE" });
 	}
 
-	public walletInMinus(data: Interface.TTransactionParams): string {
+	public walletMinus(data: Interface.TTransactionParams): string {
 		return this.HandlePayment(data, { type: "WALLET", direction: "OUT", account: "BALANCE" });
 	}
 
-	public hold(data: Interface.TTransactionParams): string {
+	public holdPlus(data: Interface.TTransactionParams): string {
 		return this.HandlePayment(data, { type: "WALLET", direction: "IN", account: "HOLD" });
 	}
 
-	public unhold(data: Interface.TTransactionParams): string {
+	public holdMinus(data: Interface.TTransactionParams): string {
 		return this.HandlePayment(data, { type: "WALLET", direction: "OUT", account: "HOLD" });
 	}
 
@@ -117,8 +109,14 @@ class TransactionImp extends ServiceBase implements Interface.IAdapter {
 		);
 	}
 
-	public removeTransaction(id: string): void {
-		this.API.BD.delete.Transaction(id);
+	public removeTransaction(id: string): string {
+		const trans = this.GetTransaction(id);
+		const { type, direction, account, paymentId, userId, amount, operationId } = trans;
+
+		const data: Interface.TTransactionParams = { paymentId, userId, amount, operationId };
+		const path: Interface.TTransactionPath = { type, account, direction: direction === "IN" ? "OUT" : "IN" };
+
+		return this.HandlePayment(data, path);
 	}
 
 	public getBalanceTrans(id: string): Interface.TTransactionSum {

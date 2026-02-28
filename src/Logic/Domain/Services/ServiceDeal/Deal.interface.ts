@@ -3,6 +3,7 @@ export namespace DealInterface {
 		saveNewDeal(data: IDealMin): string;
 		getDeal(id: string): IDeal;
 		getDealsByListingId(listingId: string): IDeal[];
+		cancelDeal(id: string): void;
 	}
 
 	/**
@@ -35,7 +36,7 @@ export namespace DealInterface {
 		createdAt: number;
 	}
 
-	export type IDealMin = Omit<IDeal, "id" | "status">;
+	export type IDealMin = Omit<IDeal, "id" | "status" | "buyerCancelAt" | "sellerCancelAt" | "createdAt">;
 	export type EDealStatus = keyof typeof DealStatus;
 }
 

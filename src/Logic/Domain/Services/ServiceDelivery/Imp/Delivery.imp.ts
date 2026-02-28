@@ -8,7 +8,7 @@ class DeliveryImp extends ServiceBase implements Interface.IAdapter {
 		return { ...data, id, status: "PENDING" };
 	}
 
-	private GetDelivery = (id: string): Interface.IDelivery => Utils.error.require(this.API.BD.read.Delivery(id), "DELIVERY_NOT_FOUND");
+	private GetDelivery = (id: string): Interface.IDelivery => Utils.error.require(this.API.BD.read.Delivery(id), "ENTITY_NOT_FOUND");
 
 	//==============================================================================================
 

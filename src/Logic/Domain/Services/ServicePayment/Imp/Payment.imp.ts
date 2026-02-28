@@ -1,4 +1,4 @@
-import type { PaymentInterface as Interface } from "../Payment.interface.ts";
+import { PaymentInterface as Interface } from "../Payment.interface";
 import ServiceBase, { type IServiceProps } from "../../Service.base";
 import { Utils } from "../../../../../Utils";
 
@@ -9,8 +9,15 @@ class PaymentImp extends ServiceBase implements Interface.IAdapter {
 		return { ...data, id, status: "ESCROW", createdAt: date, updatedAt: date };
 	}
 
-	private GetPayment = (id: string): Interface.IPayment => Utils.error.require(this.API.BD.read.Payment(id), "PAYMENT_NOT_FOUND");
-	private GetPaymentByDealId = (dealId: string): Interface.IPayment => Utils.error.require(this.API.BD.read.PaymentByDealId(dealId), "PAYMENT_NOT_FOUND");
+	private UpdatePayment(oldData: Interface.IPayment, newData: Partial<Interface.IPayment>): Interface.IPayment {
+		const newDate = Number(new Date());
+
+		return { ...oldData, ...newData, updatedAt: newDate };
+	}
+
+	private GetFee = (): number => this.feePresent;
+	private GetPayment = (id: string): Interface.IPayment => Utils.error.require(this.API.BD.read.Payment(id), "ENTITY_NOT_FOUND");
+	private GetPaymentByDealId = (dealId: string): Interface.IPayment => Utils.error.require(this.API.BD.read.PaymentByDealId(dealId), "ENTITY_NOT_FOUND");
 
 	//==============================================================================================
 
@@ -30,8 +37,12 @@ class PaymentImp extends ServiceBase implements Interface.IAdapter {
 		return payment.id;
 	}
 
-	public getFee(sum: number) {
-		return Math.floor((sum * this.feePresent) / 100);
+	public getPriceFee(amount: number): number {
+		return (amount * this.GetFee()) / 100;
+	}
+
+	public getFee() {
+		return this.GetFee();
 	}
 
 	public getPayment(id: string) {
@@ -40,6 +51,13 @@ class PaymentImp extends ServiceBase implements Interface.IAdapter {
 
 	public getPaymentByDealId(dealId: string) {
 		return this.GetPaymentByDealId(dealId);
+	}
+
+	public cancelPayment(id: string): void {
+		const payment = this.GetPayment(id);
+		const newPayment = this.UpdatePayment(payment, { status: "CANCEL" });
+
+		this.API.BD.update.Payment(newPayment);
 	}
 }
 

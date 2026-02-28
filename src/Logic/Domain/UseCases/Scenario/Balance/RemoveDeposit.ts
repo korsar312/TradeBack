@@ -1,5 +1,5 @@
-import { UseCasesInterface as Interface } from "../UseCases.interface";
-import UseCasesBase from "../UseCases.base";
+import { UseCasesInterface as Interface } from "../../UseCases.interface";
+import UseCasesBase from "../../UseCases.base";
 
 class CreateDeposit extends UseCasesBase {
 	async invoke(_params: Interface.TRemoveDepositReq, userId: string): Interface.TRemoveDepositRes {

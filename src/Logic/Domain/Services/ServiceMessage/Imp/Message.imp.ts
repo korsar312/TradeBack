@@ -8,7 +8,7 @@ class MessageImp extends ServiceBase implements Interface.IAdapter {
 		return { ...data, id };
 	}
 
-	private GetMessage = (id: string): Interface.IMessage => Utils.error.require(this.API.BD.read.Message(id), "MESSAGE_NOT_FOUND");
+	private GetMessage = (id: string): Interface.IMessage => Utils.error.require(this.API.BD.read.Message(id), "ENTITY_NOT_FOUND");
 
 	//==============================================================================================
 

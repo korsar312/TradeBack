@@ -112,7 +112,7 @@ export class RestCore extends OrchestratorBase {
 
 			const routeRight = this.role[user.role] || [];
 			const isAccess = routeRight.includes(route);
-			if (!isAccess) throw Utils.error.createError({ reason: "NOT_RIGHT", data: `${route} !== ${routeRight}` });
+			if (!isAccess) throw Utils.error.createError({ reason: "FORBIDDEN", data: `${route} !== ${routeRight}` });
 
 			res.locals.userId = user.id;
 
@@ -123,7 +123,7 @@ export class RestCore extends OrchestratorBase {
 	};
 
 	private async notFoundHandler(req: Request, res: Response) {
-		const { message, httpCode } = Utils.error.getError({ reason: "ROUTE_NOT_FOUND", data: req.path });
+		const { message, httpCode } = Utils.error.getError({ reason: "NOT_FOUND", data: req.path });
 		res.status(httpCode).json({ error: message });
 	}
 

@@ -1,9 +1,11 @@
 export namespace PaymentInterface {
 	export interface IAdapter {
 		saveNewPayment(data: TPaymentMin): string;
-		getFee(sun: number): number;
+		getPriceFee(amount: number): number;
+		getFee(): number;
 		getPayment(id: string): IPayment;
 		getPaymentByDealId(dealId: string): IPayment;
+		cancelPayment(id: string): void;
 	}
 
 	/**
@@ -51,4 +53,7 @@ const PaymentStatus = {
 
 	/** деньги разморожены у покупателя */
 	REFUNDED: "REFUNDED",
+
+	/** отмена сделки */
+	CANCEL: "CANCEL",
 } as const;

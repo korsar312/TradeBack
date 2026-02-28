@@ -3,9 +3,16 @@ import type { PublicInterface } from "../Public.interface.ts";
 export namespace ListingInterface {
 	export interface IAdapter {
 		saveNewListing(data: TListingMin): string;
-		updateListing(id: string, data: IListing): void;
-		getQtyListing(limit: number, status: EListingStatus, saleKind: EListingSaleKind, cursorId?: string, filter?: TGetParams): IListing[];
-		getListing(id: string): IListing;
+		getQtyListing(limit: number, status: EListingStatus, saleKind: EListingSaleKind, cursorId?: string, filter?: TGetParams): IInstance[];
+		getListing(id: string): IInstance;
+		freezingListing(id: string): void;
+		unFreezingListing(id: string): void;
+	}
+
+	export interface IInstance extends IListing {
+		isActive(): boolean;
+		isFreeze(): boolean;
+		isOneSale(): boolean;
 	}
 
 	/**

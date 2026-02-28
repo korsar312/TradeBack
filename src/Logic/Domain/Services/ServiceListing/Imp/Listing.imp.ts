@@ -10,7 +10,22 @@ class ListingImp extends ServiceBase implements Interface.IAdapter {
 		return { ...data, id, createdAt: date, updatedAt: date, status: "ACTIVE" };
 	}
 
-	private GetListing = (id: string): Interface.IListing => Utils.error.require(this.API.BD.read.Listing(id), "LISTING_NOT_FOUND");
+	private UpdateListing(oldData: Interface.IListing, newData: Partial<Interface.IListing>): Interface.IListing {
+		const newDate = Number(new Date());
+
+		return { ...oldData, ...newData, updatedAt: newDate };
+	}
+
+	private ListingInst(param: Interface.IListing): Interface.IInstance {
+		return {
+			...param,
+			isActive: () => param.status === "ACTIVE",
+			isFreeze: () => param.status === "FREEZE",
+			isOneSale: () => param.saleKind === "ONE",
+		};
+	}
+
+	private GetListing = (id: string): Interface.IListing => Utils.error.require(this.API.BD.read.Listing(id), "ENTITY_NOT_FOUND");
 
 	//==============================================================================================
 
@@ -21,8 +36,6 @@ class ListingImp extends ServiceBase implements Interface.IAdapter {
 		return listing.id;
 	}
 
-	public updateListing() {}
-
 	public getQtyListing(
 		limit: number,
 		status: Interface.EListingStatus,
@@ -30,19 +43,37 @@ class ListingImp extends ServiceBase implements Interface.IAdapter {
 		cursorId?: string,
 		filter?: Interface.TGetParams,
 	) {
-		return this.API.BD.read.ListListings({
-			limit,
-			cursorId,
-			status,
-			saleKind,
-			sort: filter?.sort,
-			sellerId: filter?.sellerId,
-			findStr: filter?.findStr,
-		});
+		return this.API.BD.read
+			.ListListings({
+				limit,
+				cursorId,
+				status,
+				saleKind,
+				sort: filter?.sort,
+				sellerId: filter?.sellerId,
+				findStr: filter?.findStr,
+			})
+			.map((el) => this.ListingInst(el));
 	}
 
 	public getListing(id: string) {
-		return this.GetListing(id);
+		const listing = this.GetListing(id);
+
+		return this.ListingInst(listing);
+	}
+
+	public freezingListing(id: string): void {
+		const listing = this.GetListing(id);
+		const newListing = this.UpdateListing(listing, { status: "FREEZE" });
+
+		this.API.BD.update.Listing(newListing);
+	}
+
+	public unFreezingListing(id: string): void {
+		const listing = this.GetListing(id);
+		const newListing = this.UpdateListing(listing, { status: "ACTIVE" });
+
+		this.API.BD.update.Listing(newListing);
 	}
 }
 

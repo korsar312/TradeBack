@@ -20,6 +20,7 @@ export namespace UseCasesInterface {
 		removeDeposit: TScenarioBase<TRemoveDepositReq, TRemoveDepositRes>;
 		getBalance: TScenarioBase<TGetBalanceReq, TGetBalanceRes>;
 		withdrawBalance: TScenarioBase<TWithdrawBalanceReq, TWithdrawBalanceRes>;
+		startBuyItem: TScenarioBase<TStartBuyItemReq, TStartBuyItemRes>;
 	};
 
 	export type TScenarioBase<T, R> = {
@@ -74,6 +75,8 @@ export namespace UseCasesInterface {
 
 	export type TWithdrawBalanceReq = { address: string; amount: number };
 
+	export type TStartBuyItemReq = { listingId: string };
+
 	//========================= RES ==============================
 
 	export type TLoginRes = UserInterface.IUser;
@@ -108,4 +111,6 @@ export namespace UseCasesInterface {
 	export type TGetBalanceRes = TransactionInterface.TTransactionSum;
 
 	export type TWithdrawBalanceRes = Promise<void>;
+
+	export type TStartBuyItemRes = void;
 }

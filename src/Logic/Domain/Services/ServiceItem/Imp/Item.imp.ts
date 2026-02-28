@@ -11,18 +11,18 @@ class ItemImp extends ServiceBase implements Interface.IAdapter {
 	private GetItemInfo<T extends Interface.ETypeItem>(id: string, type: T): Interface.TPickItemInfo<T> {
 		switch (type) {
 			case "CARD":
-				return Utils.error.require(this.API.BD.read.ItemCard(id), "ITEM_NOT_FOUND") as Interface.TPickItemInfo<T>;
+				return Utils.error.require(this.API.BD.read.ItemCard(id), "ENTITY_NOT_FOUND") as Interface.TPickItemInfo<T>;
 			default:
-				throw Utils.error.createError({ reason: "ITEM_TYPE_NOT_FOUND" });
+				throw Utils.error.createError({ reason: "ENTITY_NOT_FOUND" });
 		}
 	}
 
 	private GetItemInfoByListingId<T extends Interface.ETypeItem>(listingId: string, type: T): Interface.TPickItemInfo<T> {
 		switch (type) {
 			case "CARD":
-				return Utils.error.require(this.API.BD.read.ItemCardByListingId(listingId), "ITEM_NOT_FOUND") as Interface.TPickItemInfo<T>;
+				return Utils.error.require(this.API.BD.read.ItemCardByListingId(listingId), "ENTITY_NOT_FOUND") as Interface.TPickItemInfo<T>;
 			default:
-				throw Utils.error.createError({ reason: "ITEM_TYPE_NOT_FOUND" });
+				throw Utils.error.createError({ reason: "ENTITY_NOT_FOUND" });
 		}
 	}
 
@@ -36,7 +36,7 @@ class ItemImp extends ServiceBase implements Interface.IAdapter {
 
 				return card.id;
 			default:
-				throw Utils.error.createError({ reason: "ITEM_TYPE_NOT_FOUND" });
+				throw Utils.error.createError({ reason: "ENTITY_NOT_FOUND" });
 		}
 	}
 
