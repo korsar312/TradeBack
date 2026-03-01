@@ -44,9 +44,9 @@ class GetItemList extends UseCasesBase {
 					desc: el.desc,
 					price: price,
 					status: el.status,
+					sellerId: seller.id,
 
 					sellerName: seller.nickname,
-					sellerId: seller.id,
 					sellerLike: 0,
 					sellerDislike: 0,
 
