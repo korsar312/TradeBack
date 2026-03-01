@@ -2,6 +2,7 @@ export namespace PaymentInterface {
 	export interface IAdapter {
 		saveNewPayment(data: TPaymentMin): string;
 		getPriceFee(amount: number): number;
+		getPriceWidthFee(amount: number): number;
 		getFee(): number;
 		getPayment(id: string): IPayment;
 		getPaymentByDealId(dealId: string): IPayment;

@@ -21,6 +21,7 @@ class GetItemList extends UseCasesBase {
 			listings.forEach((el) => {
 				const item = this.service.item.getItemByListingId(el.id, params.type);
 				const seller = this.service.user.getUser(el.sellerId);
+				const price = this.service.payment.getPriceWidthFee(el.price);
 
 				if (params.type !== item.type) return;
 
@@ -34,14 +35,14 @@ class GetItemList extends UseCasesBase {
 					const priceUp = params.priceUp ?? Infinity;
 					const priceDown = params.priceDown ?? 0;
 
-					if (el.price < priceDown || el.price > priceUp) return;
+					if (price < priceDown || price > priceUp) return;
 				}
 
 				itemRes.push({
 					id: el.id,
 					name: el.name,
 					desc: el.desc,
-					price: el.price,
+					price: price,
 					status: el.status,
 
 					sellerName: seller.nickname,

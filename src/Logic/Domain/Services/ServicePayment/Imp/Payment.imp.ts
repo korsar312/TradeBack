@@ -37,6 +37,10 @@ class PaymentImp extends ServiceBase implements Interface.IAdapter {
 		return payment.id;
 	}
 
+	public getPriceWidthFee(amount: number): number {
+		return amount + this.getPriceFee(amount);
+	}
+
 	public getPriceFee(amount: number): number {
 		return (amount * this.GetFee()) / 100;
 	}

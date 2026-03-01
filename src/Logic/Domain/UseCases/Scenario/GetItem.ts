@@ -14,7 +14,7 @@ class GetItem extends UseCasesBase {
 			id: listing.id,
 			name: listing.name,
 			desc: listing.desc,
-			price: listing.price,
+			price: this.service.payment.getPriceWidthFee(listing.price),
 			status: listing.status,
 
 			sellerName: seller.nickname,
