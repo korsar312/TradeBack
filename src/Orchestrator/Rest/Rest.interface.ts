@@ -78,6 +78,14 @@ export namespace RestInterface {
 			request: {} as UseCasesInterface.TStartBuyItemReq,
 			response: {} as unknown as UseCasesInterface.TStartBuyItemRes,
 		},
+		GET_ORDER_LIST: {
+			request: {} as UseCasesInterface.TGetOrderListReq,
+			response: {} as UseCasesInterface.TGetOrderListRes,
+		},
+		GET_ORDER: {
+			request: {} as UseCasesInterface.TGetOrderReq,
+			response: {} as UseCasesInterface.TGetOrderRes,
+		},
 	} as const satisfies Record<ELinks, TDtoStruct>;
 
 	type TDtoStruct = {
@@ -111,6 +119,8 @@ const Links = {
 	GET_BALANCE: "GET_BALANCE",
 	WITHDRAW_BALANCE: "WITHDRAW_BALANCE",
 	START_BUY_ITEM: "START_BUY_ITEM",
+	GET_ORDER_LIST: "GET_ORDER_LIST",
+	GET_ORDER: "GET_ORDER",
 };
 
 const HttpMethod = {

@@ -1,5 +1,5 @@
-import { UseCasesInterface as Interface } from "../UseCases.interface";
-import UseCasesBase from "../UseCases.base";
+import { UseCasesInterface as Interface } from "../../UseCases.interface";
+import UseCasesBase from "../../UseCases.base";
 
 class GetItemList extends UseCasesBase {
 	invoke(params: Interface.TGetItemListReq): Interface.TGetItemListRes {
@@ -19,7 +19,7 @@ class GetItemList extends UseCasesBase {
 			lastListingId = listings.at(-1)?.id;
 
 			listings.forEach((el) => {
-				const item = this.service.item.getItemByListingId(el.id, params.type);
+				const item = this.service.item.getItemByListingId(el.id);
 				const seller = this.service.user.getUser(el.sellerId);
 				const price = this.service.payment.getPriceWidthFee(el.price);
 

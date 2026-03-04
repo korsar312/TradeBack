@@ -16,6 +16,7 @@ class DealImp extends ServiceBase implements Interface.IAdapter {
 
 	private GetDeal = (id: string): Interface.IDeal => Utils.error.require(this.API.BD.read.Deal(id), "ENTITY_NOT_FOUND");
 	private GetDealsByListingId = (listingId: string): Interface.IDeal[] => this.API.BD.read.ListDealsByListingId(listingId);
+	private GetDealsByUserId = (userId: string): Interface.IDeal[] => this.API.BD.read.ListDealsByUserId(userId);
 
 	//==============================================================================================
 
@@ -32,6 +33,10 @@ class DealImp extends ServiceBase implements Interface.IAdapter {
 
 	public getDealsByListingId(listingId: string) {
 		return this.GetDealsByListingId(listingId);
+	}
+
+	public getDealsByUserId(userId: string) {
+		return this.GetDealsByUserId(userId);
 	}
 
 	public cancelDeal(id: string): void {

@@ -3,6 +3,7 @@ export namespace DealInterface {
 		saveNewDeal(data: IDealMin): string;
 		getDeal(id: string): IDeal;
 		getDealsByListingId(listingId: string): IDeal[];
+		getDealsByUserId(userId: string): IDeal[];
 		cancelDeal(id: string): void;
 	}
 

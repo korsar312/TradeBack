@@ -1,5 +1,5 @@
-import { UseCasesInterface as Interface } from "../UseCases.interface";
-import UseCasesBase from "../UseCases.base";
+import { UseCasesInterface as Interface } from "../../UseCases.interface";
+import UseCasesBase from "../../UseCases.base";
 
 class CreateListing extends UseCasesBase {
 	invoke(params: Interface.TCreateListingReq, userId: string): Interface.TCreateListingRes {

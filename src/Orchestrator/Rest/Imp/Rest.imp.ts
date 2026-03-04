@@ -28,6 +28,8 @@ export class RestImp implements Interface.IAdapter {
 	public GET_BALANCE = this.handlerRest(() => this.module.getBalance);
 	public WITHDRAW_BALANCE = this.handlerRest(() => this.module.withdrawBalance);
 	public START_BUY_ITEM = this.handlerRest(() => this.module.startBuyItem);
+	public GET_ORDER_LIST = this.handlerRest(() => this.module.getOrderList);
+	public GET_ORDER = this.handlerRest(() => this.module.getOrder);
 
 	public CREATE_LISTING_ARR(params: UseCasesInterface.TCreateListingReq[], userId: string) {
 		params.forEach((el) => this.handlerRest(() => this.module.createListing)(el, userId));

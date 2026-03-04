@@ -1,4 +1,4 @@
-import type { ItemInterface as Interface } from "../Item.interface.ts";
+import { ItemInterface as Interface, ItemTypeItem } from "../Item.interface";
 import ServiceBase from "../../Service.base";
 import { Utils } from "../../../../../Utils";
 
@@ -17,13 +17,23 @@ class ItemImp extends ServiceBase implements Interface.IAdapter {
 		}
 	}
 
-	private GetItemInfoByListingId<T extends Interface.ETypeItem>(listingId: string, type: T): Interface.TPickItemInfo<T> {
-		switch (type) {
-			case "CARD":
-				return Utils.error.require(this.API.BD.read.ItemCardByListingId(listingId), "ENTITY_NOT_FOUND") as Interface.TPickItemInfo<T>;
-			default:
-				throw Utils.error.createError({ reason: "ENTITY_NOT_FOUND" });
-		}
+	private GetItemInfoByListingId(listingId: string): Interface.TItemAll {
+		const typeItem = Object.keys(ItemTypeItem) as Interface.ETypeItem[];
+		const itemArr: Interface.TItemAll[] = typeItem
+			.map((el) => {
+				switch (el) {
+					case "CARD":
+						return { type: el, info: this.API.BD.read.ItemCardByListingId(listingId) } as Interface.TItemAll;
+					default:
+						return null as unknown as Interface.TItemAll;
+				}
+			})
+			.filter(Boolean);
+
+		const returned = itemArr[0];
+		if (!returned) throw Utils.error.createError({ reason: "ENTITY_NOT_FOUND" });
+
+		return returned;
 	}
 
 	//==============================================================================================
@@ -45,9 +55,8 @@ class ItemImp extends ServiceBase implements Interface.IAdapter {
 		return { type, info } as Interface.TPickItem<T>;
 	}
 
-	public getItemByListingId<T extends Interface.ETypeItem>(listingId: string, type: T): Interface.TPickItem<T> {
-		const info = this.GetItemInfoByListingId(listingId, type);
-		return { type, info } as Interface.TPickItem<T>;
+	public getItemByListingId(listingId: string): Interface.TItemAll {
+		return this.GetItemInfoByListingId(listingId);
 	}
 }
 

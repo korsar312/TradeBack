@@ -14,4 +14,6 @@ export const Links: RestInterface.TLinks = {
 	GET_BALANCE: { link: "/getBalance", http: "get", role: ["USER", "ADMIN"] },
 	WITHDRAW_BALANCE: { link: "/withdrawBalance", http: "post", role: ["USER", "ADMIN"] },
 	START_BUY_ITEM: { link: "/startBuyImes", http: "get", role: ["USER", "ADMIN"] },
+	GET_ORDER_LIST: { link: "/getOrderList", http: "post", role: ["USER", "ADMIN"] },
+	GET_ORDER: { link: "/getOrderList", http: "post", role: ["USER", "ADMIN"] },
 } as const;

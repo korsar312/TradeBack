@@ -69,7 +69,7 @@ export class Read extends BDHelpers implements Interface.IRead {
 		return rows as Interface.Message[];
 	};
 
-	ListDealsByUser = (userId: string) => {
+	ListDealsByUserId = (userId: string) => {
 		const rows = this.db
 			.select()
 			.from(Table.deals)

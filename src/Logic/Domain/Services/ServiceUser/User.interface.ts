@@ -35,6 +35,8 @@ export namespace UserInterface {
 		createdAt: number; // когда выдано
 	}
 
+	export type TUserMin = Pick<IUser, "id" | "nickname">;
+
 	export type ERestriction = keyof typeof UserRestriction;
 	export type ERole = keyof typeof UserRole;
 }

@@ -1,8 +1,8 @@
 import { UseCasesInterface as Interface } from "./UseCases.interface";
 import { ProjectInterface } from "../../Core/DI/Project.interface";
-import GetItem from "./Scenario/GetItem";
-import GetItemList from "./Scenario/GetItemList";
-import CreateListing from "./Scenario/CreateListing";
+import GetItem from "./Scenario/Listing/GetItem";
+import GetItemList from "./Scenario/Listing/GetItemList";
+import CreateListing from "./Scenario/Listing/CreateListing";
 import Register from "./Scenario/Register";
 import Login from "./Scenario/Login";
 import CreateDeposit from "./Scenario/Balance/CreateDeposit";
@@ -12,6 +12,8 @@ import RemoveDeposit from "./Scenario/Balance/RemoveDeposit";
 import GetBalance from "./Scenario/Balance/GetBalance";
 import WithdrawBalance from "./Scenario/Balance/WithdrawBalance";
 import StartBuyItem from "./Scenario/StartBuyItem";
+import GetOrderList from "./Scenario/Listing/GetOrderList";
+import GetOrder from "./Scenario/Listing/GetOrder";
 
 class UseCases implements Interface.IAdapter {
 	public scenarioList: Interface.TScenarioList;
@@ -30,6 +32,8 @@ class UseCases implements Interface.IAdapter {
 			getBalance: new GetBalance({ service }),
 			withdrawBalance: new WithdrawBalance({ service }),
 			startBuyItem: new StartBuyItem({ service }),
+			getOrderList: new GetOrderList({ service }),
+			getOrder: new GetOrder({ service }),
 		};
 	}
 }

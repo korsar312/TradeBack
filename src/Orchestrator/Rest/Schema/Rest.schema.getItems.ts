@@ -3,7 +3,7 @@ import type { RestInterface } from "../Rest.interface.ts";
 import { SchemaBank, SchemaListingType, SchemaPriceKopeks, SchemaSort } from "./Rest.schema.public";
 
 const BaseItemsSchema = z.object({
-	limit: z.number().int().positive(),
+	limit: z.number().int().max(99).positive(),
 	cursorId: z.string().min(1).optional(),
 	sellerId: z.string().min(1).optional(),
 	findStr: z.string().min(1).optional(),

@@ -1,9 +1,11 @@
 import type { CashFlowInterface } from "../Services/ServiceCashFlow/CashFlow.interface";
 import type { ListingInterface } from "../Services/ServiceListing/Listing.interface";
 import type { PublicInterface } from "../Services/Public.interface";
-import type { UserInterface } from "../Services/ServiceUser/User.interface";
+import { UserInterface } from "../Services/ServiceUser/User.interface";
 import type { ItemInterface } from "../Services/ServiceItem/Item.interface";
 import { TransactionInterface } from "../Services/ServiceTransaction/Transaction.interface";
+import { DealInterface } from "../Services/ServiceDeal/Deal.interface";
+import { PaymentInterface } from "../Services/ServicePayment/Payment.interface";
 
 export namespace UseCasesInterface {
 	export type IAdapter = {};
@@ -21,10 +23,25 @@ export namespace UseCasesInterface {
 		getBalance: TScenarioBase<TGetBalanceReq, TGetBalanceRes>;
 		withdrawBalance: TScenarioBase<TWithdrawBalanceReq, TWithdrawBalanceRes>;
 		startBuyItem: TScenarioBase<TStartBuyItemReq, TStartBuyItemRes>;
+		getOrderList: TScenarioBase<TGetOrderListReq, TGetOrderListRes>;
+		getOrder: TScenarioBase<TGetOrderReq, TGetOrderRes>;
 	};
 
 	export type TScenarioBase<T, R> = {
 		invoke(params: T, userId: string, operationId: string): R;
+	};
+
+	type TGetListingBase = {
+		id: string;
+		name: string;
+		desc: string;
+		price: number;
+		status: ListingInterface.EListingStatus;
+
+		sellerName: string;
+		sellerId: string;
+		sellerLike: number;
+		sellerDislike: number;
 	};
 
 	//========================= REQ ==============================
@@ -77,6 +94,15 @@ export namespace UseCasesInterface {
 
 	export type TStartBuyItemReq = { listingId: string };
 
+	export type TGetOrderReq = { dealId: string };
+
+	export type TGetOrderListReq = {
+		isActive: boolean;
+		isSell: boolean;
+		limit: number;
+		cursorId?: string;
+	};
+
 	//========================= RES ==============================
 
 	export type TLoginRes = UserInterface.IUser;
@@ -85,18 +111,7 @@ export namespace UseCasesInterface {
 
 	export type TGetItemListRes = Array<TGetItemRes>;
 
-	export type TGetItemRes = {
-		id: string;
-		name: string;
-		desc: string;
-		price: number;
-		status: ListingInterface.EListingStatus;
-
-		sellerName: string;
-		sellerId: string;
-		sellerLike: number;
-		sellerDislike: number;
-	} & ItemInterface.TItemResPub;
+	export type TGetItemRes = TGetListingBase & ItemInterface.TItemResPub;
 
 	export type TCreateListingRes = string;
 
@@ -113,4 +128,15 @@ export namespace UseCasesInterface {
 	export type TWithdrawBalanceRes = Promise<void>;
 
 	export type TStartBuyItemRes = void;
+
+	export type TGetOrderRes = {
+		listing: ListingInterface.IListing;
+		deal: DealInterface.IDeal;
+		seller: UserInterface.TUserMin;
+		payment: PaymentInterface.IPayment;
+		buyer: UserInterface.TUserMin;
+		item: ItemInterface.TItemAll;
+	};
+
+	export type TGetOrderListRes = Array<TGetOrderRes>;
 }

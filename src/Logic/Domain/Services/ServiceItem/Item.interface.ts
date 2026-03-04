@@ -4,7 +4,7 @@ export namespace ItemInterface {
 	export interface IAdapter {
 		saveNewItem(data: TItemMin): string;
 		getItem<T extends ETypeItem>(id: string, type: T): TPickItem<T>;
-		getItemByListingId<T extends ETypeItem>(listingId: string, type: T): TPickItem<T>;
+		getItemByListingId(listingId: string): TItemAll;
 	}
 
 	interface IBaseInfo {

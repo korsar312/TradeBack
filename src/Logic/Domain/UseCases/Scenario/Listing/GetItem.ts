@@ -1,11 +1,11 @@
-import { UseCasesInterface as Interface } from "../UseCases.interface";
-import UseCasesBase from "../UseCases.base";
+import { UseCasesInterface as Interface } from "../../UseCases.interface";
+import UseCasesBase from "../../UseCases.base";
 
 class GetItem extends UseCasesBase {
 	invoke(params: Interface.TGetItemReq): Interface.TGetItemRes {
 		const listing = this.service.listing.getListing(params.id);
 
-		const item = this.service.item.getItemByListingId(listing.id, params.type);
+		const item = this.service.item.getItemByListingId(listing.id);
 		const seller = this.service.user.getUser(listing.sellerId);
 
 		const itemPick = this.toItemRes(item, true);

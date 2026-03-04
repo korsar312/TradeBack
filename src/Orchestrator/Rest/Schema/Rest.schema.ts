@@ -11,6 +11,8 @@ import { removeDepositReq } from "./Rest.schema.removeDeposit";
 import { getBalance } from "./Rest.schema.getBalance";
 import { withdrawBalanceReq } from "./Rest.schema.withdrawBalance";
 import { startBuyItemReq } from "./Rest.schema.startBuyItem";
+import { getOrderListReq } from "./Rest.schema.getOrderList";
+import { getOrderReq } from "./Rest.schema.getOrder";
 
 export const RestSchema: RestInterface.TSchemaMap = {
 	LOGIN: loginReq,
@@ -26,4 +28,6 @@ export const RestSchema: RestInterface.TSchemaMap = {
 	GET_BALANCE: getBalance,
 	WITHDRAW_BALANCE: withdrawBalanceReq,
 	START_BUY_ITEM: startBuyItemReq,
+	GET_ORDER_LIST: getOrderListReq,
+	GET_ORDER: getOrderReq,
 } as const;

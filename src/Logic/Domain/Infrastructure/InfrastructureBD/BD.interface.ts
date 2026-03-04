@@ -94,7 +94,7 @@ export namespace BDInterface {
 
 		/* связи */
 		ListMessagesByChat: (chatId: string) => Message[];
-		ListDealsByUser: (userId: string) => Deal[];
+		ListDealsByUserId: (userId: string) => Deal[];
 		UsersAuthByLogin: (login: string) => UserAuth | null; // поиск users_auth по users.login
 		ItemCardByListingId: (listingId: string) => ItemCard | null; // item_cards.listing_id unique
 		ListDealsByListingId: (listingId: string) => Deal[]; // deals.listing_id
