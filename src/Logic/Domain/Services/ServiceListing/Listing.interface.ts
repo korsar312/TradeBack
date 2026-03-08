@@ -5,6 +5,7 @@ export namespace ListingInterface {
 		saveNewListing(data: TListingMin): string;
 		getQtyListing(limit: number, status: EListingStatus, saleKind: EListingSaleKind, cursorId?: string, filter?: TGetParams): IInstance[];
 		getListing(id: string): IInstance;
+		getListingByUserId(userId: string): IInstance[];
 		freezingListing(id: string): void;
 		unFreezingListing(id: string): void;
 	}

@@ -95,9 +95,10 @@ export namespace BDInterface {
 		/* связи */
 		ListMessagesByChat: (chatId: string) => Message[];
 		ListDealsByUserId: (userId: string) => Deal[];
+		ListDealsByListingId: (listingId: string) => Deal[]; // deals.listing_id
+		ListListingByUserId: (userId: string) => Listing[];
 		UsersAuthByLogin: (login: string) => UserAuth | null; // поиск users_auth по users.login
 		ItemCardByListingId: (listingId: string) => ItemCard | null; // item_cards.listing_id unique
-		ListDealsByListingId: (listingId: string) => Deal[]; // deals.listing_id
 		PaymentByDealId: (dealId: string) => Payment | null; // payments.deal_id unique
 		TransactionByUserId: (userId: string) => Transaction[]; // transaction.user_id unique
 		LastUserTransaction: (userId: string) => Transaction | null; // последняя транзакция пользователя

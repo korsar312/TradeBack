@@ -26,6 +26,7 @@ class ListingImp extends ServiceBase implements Interface.IAdapter {
 	}
 
 	private GetListing = (id: string): Interface.IListing => Utils.error.require(this.API.BD.read.Listing(id), "ENTITY_NOT_FOUND");
+	private GetListingByUserId = (userId: string): Interface.IListing[] => this.API.BD.read.ListListingByUserId(userId);
 
 	//==============================================================================================
 
@@ -60,6 +61,12 @@ class ListingImp extends ServiceBase implements Interface.IAdapter {
 		const listing = this.GetListing(id);
 
 		return this.ListingInst(listing);
+	}
+
+	public getListingByUserId(id: string) {
+		const listing = this.GetListingByUserId(id);
+
+		return listing.map(this.ListingInst);
 	}
 
 	public freezingListing(id: string): void {

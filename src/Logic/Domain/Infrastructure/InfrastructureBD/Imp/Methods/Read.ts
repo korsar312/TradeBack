@@ -102,6 +102,10 @@ export class Read extends BDHelpers implements Interface.IRead {
 		return this.db.select().from(Table.deals).where(eq(Table.deals.listingId, listingId)).orderBy(asc(Table.deals.id)).all();
 	};
 
+	ListListingByUserId = (userId: string) => {
+		return this.db.select().from(Table.listings).where(eq(Table.listings.sellerId, userId)).orderBy(asc(Table.listings.createdAt)).all();
+	};
+
 	PaymentByDealId = (dealId: string) => {
 		const r = this.db.select().from(Table.payments).where(eq(Table.payments.dealId, dealId)).get();
 		return r ? (r as Interface.Payment) : null;
